@@ -2,10 +2,21 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from rich.console import Console
 from rich.table import Table
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+
+from app.user.models import *
+from app.home.models import *
+from app.customer.models import *
+from app.voucher.models import *
+from app.staff.models import *
+from app.invoice.models import *
+from app.service.models import *
+from app.booking.models import *
+migrate = Migrate(app, db)
 
 from app.home.routes import register_routes
 register_routes()
