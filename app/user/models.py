@@ -25,6 +25,7 @@ class User(BaseModel):
     role = Column(Enum(RoleAccount), default=RoleAccount.CUSTOMER)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")
+    staffs = relationship("Staff",backref="user" ,cascade="all, delete-orphan", lazy="selectin")
 
 class UserAuthMethod(BaseModel):
     __tablename__ = 'user_auth_method'
