@@ -34,6 +34,7 @@ class Staff(BaseModel):
         lazy='subquery'
     )
 
+
 class StaffCalendar(BaseModel):
     __tablename__ = 'staff_calendar'
 
