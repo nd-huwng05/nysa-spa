@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Table as SQLTable, Boolean, Date, Time
 from app.interface.base_model import BaseModel
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from app import db
 
 class Permission(BaseModel):
@@ -9,9 +9,8 @@ class Permission(BaseModel):
     description = Column(String(255))
 
 
-staff_permissions = SQLTable(
+staff_permissions = db.Table(
     'staff_permissions',
-    db.Model.metadata,
     Column('staff_id', Integer, ForeignKey('staff.id'), primary_key=True),
     Column('permission_id', Integer, ForeignKey('permission.id'), primary_key=True)
 )
@@ -29,8 +28,8 @@ class Staff(BaseModel):
 
     permissions = relationship(
         'Permission',
-        secondary=staff_permissions,
-        backref='staff_members',
+        secondary='staff_permissions',
+        backref=backref('staff', lazy=True),
         lazy='subquery'
     )
 
