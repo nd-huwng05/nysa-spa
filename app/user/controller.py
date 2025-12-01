@@ -1,26 +1,44 @@
 import flask
-from flask import render_template, request, redirect, url_for
-from flask_jwt_extended import create_access_token
+from flask import render_template, request, redirect, url_for, flash, make_response, session
+from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, \
+    verify_jwt_in_request, get_jwt_identity
 
+from app.user.repository import Repository
 from app.user.service import Service
 
 def login():
     if request.method == 'GET':
-        return render_template('page/login.html')
+        verify_jwt_in_request(optional=True)
+        user_id = get_jwt_identity()
+        if user_id is None:
+            return render_template('page/login.html')
+        return redirect(url_for('home.public.index'))
 
     username = request.form.get('username')
     password = request.form.get('password')
 
-    user = Service.authenticate(username, password)
-
-    if not user:
-        flask('Username or Password incorrect','danger')
+    if not(username or password):
+        flash('Missing username or password','error')
         return redirect(url_for('user.login'))
 
-    access_token = create_access_token()
+    try:
+        result = Service.authenticate(username, password)
+    except Exception as e:
+        print('failed')
+        flash(str(e),'error')
+        return redirect(url_for('user.login'))
+
+    resp = make_response(redirect(url_for('home.public.index')))
+    set_access_cookies(resp, result['access_token'])
+    set_refresh_cookies(resp, result['refresh_token'])
+    return resp
 
 def logout():
-    pass
+    session.clear()
+    response = make_response(redirect(url_for('home.public.index')))
+    set_access_cookies(response, "")
+    set_refresh_cookies(response, "")
+    return response
 
 def register():
     pass
@@ -28,5 +46,14 @@ def register():
 def refresh():
     pass
 
-def dashboard():
-    pass
+def load_logged_in_user():
+    try:
+        verify_jwt_in_request(optional=True)
+        user_id = get_jwt_identity()
+        if user_id:
+            user = Repository.get_user_by_id(int(user_id))
+            return {'current_user': user}
+    except Exception:
+        pass
+
+    return {'current_user': None}

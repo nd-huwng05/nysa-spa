@@ -11,7 +11,7 @@ JWT_SECRET_KEY = "jwt_secret"
 JWT_TOKEN_LOCATION = ["cookies"]
 JWT_COOKIE_CSRF_PROTECT = False
 
-JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
+JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=15)
 JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
 JWT_ACCESS_COOKIE_PATH = '/'

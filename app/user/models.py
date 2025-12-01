@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum
 from app.interface.base_model import BaseModel
 from sqlalchemy.orm import relationship, backref
 import enum
+import hashlib
 
 class RoleAccount(enum.Enum):
     CUSTOMER = "customer"
@@ -16,16 +17,33 @@ class AuthMethodEnum(enum.Enum):
 class User(BaseModel):
     __tablename__ = 'user'
 
-    username = Column(String(150), nullable=True, unique=True)
-    password = Column(String(150), nullable=True)
-    fullname = Column(String(50), nullable=True)
-    avatar = Column(String(150), default="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconpacks.net%2Ffree-icon%2Fuser-3296.html&psig=AOvVaw0MB6GuXKx0e4UcyX_oVPrw&ust=1763675778600000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLC4hLWa_5ADFQAAAAAdAAAAABAE")
-    phone = Column(String(150), nullable=False)
-    email = Column(String(150), nullable=False, unique=True)
+    username = Column(String(150), unique=True)
+    password = Column(String(255))
+    fullname = Column(String(50))
+    avatar = Column(String(255), default="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png")
+    phone = Column(String(150), unique=True)
+    email = Column(String(150), unique=True)
     role = Column(Enum(RoleAccount), default=RoleAccount.CUSTOMER)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")
     staffs = relationship("Staff",backref="user" ,cascade="all, delete-orphan", lazy="selectin")
+
+    def check_password_hash(self, password:str) -> bool:
+        if hashlib.md5(password.encode()).hexdigest().__eq__(self.password):
+            return True
+        return False
+
+    @property
+    def is_admin(self) -> bool:
+        return self.role == RoleAccount.ADMIN
+
+    @property
+    def is_staff(self) -> bool:
+        return self.role == RoleAccount.STAFF
+
+    @property
+    def is_customer(self) -> bool:
+        return self.role == RoleAccount.CUSTOMER
 
 class UserAuthMethod(BaseModel):
     __tablename__ = 'user_auth_method'
