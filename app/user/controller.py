@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, url_for, flash, make_respo
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, \
     verify_jwt_in_request, get_jwt_identity
 
+from app import oauth
 from app.user.repository import Repository
 from app.user.service import Service
 
@@ -32,6 +33,28 @@ def login():
     set_access_cookies(resp, result['access_token'])
     set_refresh_cookies(resp, result['refresh_token'])
     return resp
+
+def login_google():
+    redirect_uri = url_for('user.google_auth',_external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+def google_auth():
+    try:
+        token = oauth.google.authorize_access_token()
+        user_info = oauth.google.parse_id_token(token, nonce=None)
+
+        if user_info is None:
+            flash('Could not get user info','error')
+            return redirect(url_for('user.login'))
+
+        result = Service.login_with_google(user_info)
+        resp = make_response(redirect(url_for('home.public.index')))
+        set_access_cookies(resp, result['access_token'])
+        set_refresh_cookies(resp, result['refresh_token'])
+        return resp
+    except Exception as e:
+        flash(str(e),'error')
+        return redirect(url_for('user.login'))
 
 def logout():
     session.clear()

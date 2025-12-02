@@ -16,3 +16,6 @@ JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
 JWT_ACCESS_COOKIE_PATH = '/'
 JWT_REFRESH_COOKIE_PATH = '/refresh'
+
+GOOGLE_CLIENT_ID = '11651837340-1oidmak0f8vcscjuaplf8it9u0r3ie6f.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = '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'

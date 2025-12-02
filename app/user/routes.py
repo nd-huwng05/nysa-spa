@@ -10,7 +10,8 @@ def register_routes():
     user_routes.add_url_rule('/register',  view_func=controller.register, methods=['POST'])
     user_routes.add_url_rule('/logout', view_func=controller.logout, methods=['GET'])
     user_routes.add_url_rule('/refresh', view_func=controller.refresh, methods=['POST'])
-    # user_routes.add_url_rule('/user/<provider>/login', methods=['GET', 'POST'])
+    user_routes.add_url_rule('/login/google',view_func=controller.login_google, methods=['GET'])
+    user_routes.add_url_rule('/google/callback', view_func=controller.google_auth, methods=['GET'], endpoint='google_auth')
 
 
     app.register_blueprint(user_routes)
