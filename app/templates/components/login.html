@@ -1,0 +1,81 @@
+{%block login%}
+<div class="d-flex justify-content-center align-items-center min-vh-100 p-3">
+
+    <video autoplay muted loop id="bg-video">
+        <source src="https://www.pexels.com/vi-vn/download/video/6811236/" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <div class="card card-custom w-100">
+        <div class="row g-0 h-100">
+
+            <div class="col-md-6 d-none d-md-flex glass-side">
+                <div class="p-4">
+                    <h1 class="fw-bold display-4 mb-3" id="leftTitle">Welcome<br>Back!</h1>
+                    <p class="fs-5 opacity-75 fw-light" id="leftDesc" style="line-height: 1.6;">
+                        To keep connected with us please login with your personal info.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 form-side">
+
+                <div id="loginFormSection" class="fade-in">
+                    <div class="mb-4">
+                        <h2 class="fw-bold text-dark">SIGN IN</h2>
+                        <p class="text-muted small">Welcome back! Please enter your details.</p>
+                    </div>
+
+                    <form action="\user\login" method="POST">
+
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div class="mb-3">
+                            {% for category, msg in messages %}
+                            <div class="alert alert-{{ 'danger' if category=='error' else category }} rounded-3">
+                                {{ msg }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Username or email</label>
+                            <input name="username" type="text" class="form-control form-control-custom rounded-3"
+                                   placeholder="Enter your username or email" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Password</label>
+                            <input name="password" type="password" class="form-control form-control-custom rounded-3"
+                                   placeholder="••••••••" required>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="remember">
+                                <label class="form-check-label small text-muted" for="remember">Remember me</label>
+                            </div>
+                            <a href="#" class="text-decoration-none text-dark fw-semibold small">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark-custom w-100 text-white rounded-3">
+                            Log In <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+
+                        <div class="divider">OR LOGIN WITH</div>
+
+                        <div class="d-grid gap-2">
+                            <a href="/user/login/google"
+                                    class="btn btn-social rounded-3 d-flex align-items-center justify-content-center gap-2">
+                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" alt="Google">
+                                <span class="small">Log in with Google</span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

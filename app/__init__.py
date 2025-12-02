@@ -1,12 +1,24 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from rich.console import Console
 from rich.table import Table
 from flask_migrate import Migrate
+from authlib.integrations.flask_client import OAuth
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+jwt = JWTManager(app)
+oauth = OAuth(app)
+
+oauth.register(
+name='google',
+    client_id=app.config['GOOGLE_CLIENT_ID'],
+    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'}
+)
 
 from app.user.models import *
 from app.home.models import *

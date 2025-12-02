@@ -1,18 +1,26 @@
 {%block header%}
- <header id="header" class="header d-flex align-items-center sticky-top fixed-top">
+<header id="header" class="header d-flex align-items-center sticky-top fixed-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">Nysa</h1>
-      </a>
+        <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
+            <h1 class="sitename">Nysa</h1>
+        </a>
 
-      {%include 'components/nav.html'%}
+        {%include 'components/nav.html'%}
 
-      <div class="header-social-links">
-        <a class="btn-book-a-table d-none d-xl-block" href="#book-a-table">Login</a>
-        <a href="#" class="user-icon d-block d-xl-none fs-4"><i class="bi bi-person"></i></a>
-      </div>
+        <div class="header-social-links">
+            {% if not current_user %}
+            <a class="btn-login d-none d-xl-block" href="/user/login">Login</a>
+            <a href="/user/login" class="user-icon d-block d-xl-none fs-4"><i class="bi bi-person"></i></a>
+
+            {% else %}
+            <div class="d-xl-flex align-items-center gap-2">
+                <img src="{{current_user.avatar}}" alt="Avatar" class="rounded-circle border d-none d-xl-block" width="35" height="35" style="object-fit: cover;">
+                <a class="btn-login d-block" href="/user/logout">Logout</a>
+            </div>
+            {% endif %}
+        </div>
 
     </div>
-  </header>
+</header>
 {%endblock%}
