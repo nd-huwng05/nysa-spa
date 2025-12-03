@@ -1,21 +1,20 @@
 from datetime import timedelta
+import os
 
 DEBUG = False
-import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 SECRET_KEY = "secret"
 SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:root@localhost:3306/spadb?charset=utf8mb4"
 
-
 JWT_SECRET_KEY = "jwt_secret"
 JWT_TOKEN_LOCATION = ["cookies"]
 JWT_COOKIE_CSRF_PROTECT = False
-
 JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=15)
 JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
-
 JWT_ACCESS_COOKIE_PATH = '/'
 JWT_REFRESH_COOKIE_PATH = '/refresh'
 
 GOOGLE_CLIENT_ID = '11651837340-1oidmak0f8vcscjuaplf8it9u0r3ie6f.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_SERVER_METADATA_URL='https://accounts.google.com/o/oauth2/token'
+GOOGLE_CLIENT_SCOPE='https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
