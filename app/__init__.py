@@ -26,6 +26,7 @@ class Server:
 
         # Init modules
         self.init_modules()
+        self.init_models()
 
     def setup_health_check(self):
         @self.app.route('/health')
@@ -54,6 +55,11 @@ class Server:
     def init_modules(self):
         UserModule(self.app, self.env).register()
         HomeModule(self.app, self.env).register()
+
+    def init_models(self):
+        with self.app.app_context():
+            import app.modules.user.repository.models
+            import app.modules.staff.models
 
     def start(self):
         self.print_routes()

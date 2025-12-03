@@ -22,12 +22,3 @@ class Environment:
             logger.info("Google OAuth Initialized")
         except Exception as e:
             logger.error("Environment init failed", data=str(e))
-
-    def _setup_google_oauth(self):
-        self.oauth.register(
-            name='google',
-            client_id=self.app.config['GOOGLE_CLIENT_ID'],
-            client_secret=self.app.config['GOOGLE_CLIENT_SECRET'],
-            server_metadata_url=self.app.config['GOOGLE_SERVER_METADATA_URL'],
-            client_kwargs={'scope': self.app.config['GOOGLE_CLIENT_SCOPE'],}
-        )

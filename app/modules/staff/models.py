@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Boolean, Date, Time
-from app.interface.base_model import BaseModel
+from app.core.database import BaseModel
 from sqlalchemy.orm import relationship, backref
-from app import db
+from app.extensions import db
 
 class Permission(BaseModel):
     __tablename__ = 'permission'

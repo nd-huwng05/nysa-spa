@@ -1,14 +1,14 @@
 from flask import Request, url_for
-
-from app.extensions import oauth
+from app.core.environment import Environment
 from ..config.config_module import ModuleConfig
 from ..service.service import Service
 
 
 class Handler:
-    def __init__(self, config: ModuleConfig, service: Service):
+    def __init__(self, config: ModuleConfig, service: Service, env: Environment):
         self.config = config
         self.service = service
+        self.env = env
 
     def login(self, request: Request):
         username = request.form.get('username')
@@ -24,11 +24,11 @@ class Handler:
 
     def google_redirect(self):
         redirect_uri = url_for('user.google_auth', _external=True)
-        return oauth.google.authorize_redirect(redirect_uri)
+        return self.env.oauth.google.authorize_redirect(redirect_uri)
 
     def google_auth(self):
-        token = oauth.google.authorize_access_token()
-        user_info = oauth.google.parse_id_token(token, nonce=None)
+        token = self.env.oauth.google.authorize_access_token()
+        user_info = self.env.oauth.google.parse_id_token(token, nonce=None)
         if not user_info:
             raise Exception('Invalid token google')
 
