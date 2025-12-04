@@ -12,7 +12,7 @@ class Service:
         self.repo = repo
         self.config = config
 
-    def authenticate_local(self, username:str, password:str):
+    def auth_user_pass(self, username:str, password:str):
         user = self.repo.get_user_by_username(username)
         if not user or not user.check_password_hash(password):
             raise Exception('Invalid username or password')
@@ -23,7 +23,7 @@ class Service:
 
         return access_token, refresh_token
 
-    def authenticate_google(self, userinfo):
+    def google_callback(self, userinfo):
         provider_id = userinfo.get('sub')
         user_auth_google = self.repo.get_user_auth_by_provider_id(provider_id)
         if not user_auth_google:

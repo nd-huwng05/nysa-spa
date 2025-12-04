@@ -10,44 +10,48 @@ class Controller:
     def __init__(self, config:ModuleConfig, service:Service, env:Environment):
         self.handler = Handler(config, service, env)
 
-    def login(self):
-        if request.method == "GET":
-            verify_jwt_in_request(optional=True)
-            if get_jwt_identity() is None:
-                return render_template('page/login.html')
-            return redirect(url_for('home.index'))
+    @staticmethod
+    def login():
+        verify_jwt_in_request(optional=True)
+        if get_jwt_identity() is None:
+            return render_template('page/login.html')
+        return redirect(url_for('home.index'))
 
-        try:
-            access_token, refresh_token = self.handler.login(request)
-            response = make_response(redirect(url_for('home.index')))
-            set_access_cookies(response, access_token)
-            set_refresh_cookies(response, refresh_token)
-            return response
-
-        except Exception as e:
-            flash(str(e))
-            return redirect(url_for('user.login'))
-
-    def google_redirect(self):
-        return self.handler.google_redirect()
-
-    def google_auth(self):
-        try:
-            access_token, refresh_token = self.handler.google_auth()
-            response = make_response(redirect(url_for('home.index')))
-            set_access_cookies(response, access_token)
-            set_refresh_cookies(response, refresh_token)
-            return response
-        except Exception as e:
-            flash(str(e))
-            return redirect(url_for('user.login'))
-
-    def logout(self):
+    @staticmethod
+    def logout():
         session.clear()
         response = make_response(redirect(url_for('home.index')))
         set_access_cookies(response, "")
         set_refresh_cookies(response, "")
         return response
+
+    def auth_user_pass(self):
+        try:
+            access_token, refresh_token = self.handler.auth_user_pass(request)
+            response = make_response(redirect(url_for('home.index')))
+            set_access_cookies(response, access_token)
+            set_refresh_cookies(response, refresh_token)
+            return response
+
+        except Exception as e:
+            flash(str(e))
+            return redirect(url_for('user.login'))
+
+    def auth_google(self):
+        return self.handler.auth_google()
+
+    def google_callback(self):
+        try:
+            access_token, refresh_token = self.handler.google_callback()
+            response = make_response(redirect(url_for('home.index')))
+            set_access_cookies(response, access_token)
+            set_refresh_cookies(response, refresh_token)
+            return response
+        except Exception as e:
+            flash(str(e))
+            return redirect(url_for('user.login'))
+
+
 
     def load_logged_in_user(self):
         try:
