@@ -1,3 +1,5 @@
+from pymysql import OperationalError
+from sqlalchemy import text
 from app.extensions import db, jwt, oauth, migrate
 from app.core.logger import logger
 
@@ -16,6 +18,7 @@ class Environment:
         logger.info("Environment initializing...")
         try:
             self.db.init_app(app)
+            self._exam_connect_database()
             logger.info("Database connected successfully")
 
             self.jwt.init_app(app)
@@ -25,3 +28,12 @@ class Environment:
             self.migrate.init_app(app=app, db=self.db)
         except Exception as e:
             logger.error("Environment init failed", data=str(e))
+            exit(1)
+
+    def _exam_connect_database(self):
+        try:
+            with self.app.app_context():
+                with self.db.engine.connect() as conn:
+                    conn.execute(text("SELECT 1"))
+        except OperationalError as e:
+            raise OperationalError(str(e))

@@ -1,3 +1,4 @@
+
 :root {
     --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --heading-font: "Montserrat", sans-serif;
@@ -5,21 +6,58 @@
 }
 
 :root {
-    --background-color: #fdfbf7;
-    --default-color: #5a5a5a;
-    --heading-color: #417a7a;
-    --accent-color: #6fa38b;
-    --surface-color: #ffffff;
-    --contrast-color: #ffffff;
-    --nav-hover-color: #6fa38b;
+    /* 1. MÀU NỀN & CHỮ TOÀN TRANG */
+    --background-color: #FFFEFC; /* Màu Trắng Sứ (Sáng hơn màu kem cũ một chút để sạch sẽ hơn) */
+    --default-color: #5D544F;    /* Màu Nâu Xám (Taupe) - Dùng cho nội dung văn bản */
+    --heading-color: #2E2623;    /* Màu Đen Cà Phê (Gần đen nhưng ấm hơn) - Dùng cho tiêu đề lớn */
+
+    /* 2. MÀU NHẤN (BRAND COLOR) - Quan trọng */
+    --accent-color: #C18C5D;     /* Màu Đồng/Màu Da Rám Nắng (Bronze Skin) - Sang hơn màu cam cũ */
+
+    /* 3. CÁC KHỐI & BỀ MẶT */
+    --surface-color-hero: #F7F5F2; /* Màu Be nhạt cho nền Hero/Banner */
+    --surface-color: #ffffff;      /* Box nền trắng */
+
+    /* 4. TƯƠNG PHẢN */
+    --contrast-color: #ffffff;     /* Chữ trắng trên nền nút màu đồng */
+    --heading-text-color: #2E2623;
 }
 
+
+/* NAV MENU COLORS - Đã sửa lỗi bị mờ */
+:root {
+    /* QUAN TRỌNG: Đổi từ xám #b3a8a8 sang Nâu Đen #2E2623 */
+    --nav-color: #2E2623;          /* Chữ menu đậm, rõ ràng, sắc nét trên nền kem */
+
+    --nav-hover-color: #C18C5D;    /* Hover đồng bộ với màu Accent (Màu da đồng) */
+
+    --nav-scroller: #2E2623;       /* Màu khi cuộn trang (nếu có JS xử lý) */
+
+    --nav-mobile-background-color: #FFFEFC;
+    --nav-dropdown-background-color: #ffffff;
+    --nav-dropdown-color: #2E2623;
+    --nav-dropdown-hover-color: #C18C5D;
+}
+
+/* COLOR PRESETS */
+
+/* Dùng cho các phần cần nền hơi tối hơn nền chính một chút (như phần Dịch vụ) */
+.light-background {
+    --background-color: #F0EEE9; /* Màu Cát nhạt (Sand) */
+    --surface-color: #ffffff;
+}
+
+/* Dùng cho Footer hoặc Banner khuyến mãi */
 .dark-background {
-    --background-color: #1a1c1b;
-    --default-color: #e0e0e0;
-    --heading-color: #ffffff;
-    --surface-color: #2c302e;
-    --accent-color: #8fbdb2;
+    --background-color: #2E2623; /* Nền Nâu Đen Cà Phê (Thay vì đen thui) */
+    --default-color: #CDC6C0;    /* Chữ màu xám bạc */
+    --heading-color: #ffffff;    /* Tiêu đề trắng */
+    --surface-color: #453B36;    /* Box màu nâu nhạt hơn nền một chút */
+    --contrast-color: #ffffff;
+}
+
+:root {
+    scroll-behavior: smooth;
 }
 
 html {
@@ -71,149 +109,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.header {
-    color: var(--default-color);
-    background-color: var(--background-color);
-    padding: 15px 0;
-    transition: all 0.5s;
-    z-index: 997;
-    box-shadow: 0px 4px 20px rgba(47, 79, 79, 0.15);
-}
 
-.header .logo {
-    line-height: 1;
-}
 
-.header .logo img {
-    max-height: 40px;
-    margin-right: 10px;
-}
 
-.header .logo h1 {
-    font-size: 30px;
-    margin: 0;
-    font-weight: 700;
-    color: var(--accent-color);
-    font-family: 'Playfair Display', serif;
-    letter-spacing: 1px;
-}
 
-.header .header-social-links {
-    padding-right: 15px;
-}
-
-.header .header-social-links a {
-    color: var(--accent-color);
-    transition: 0.3s;
-}
-
-.header .header-social-links a i {
-    line-height: 0px;
-}
-
-.header .btn-login {
-    padding-right: 15px;
-}
-
-.header .btn-login,
-.header .btn-login:focus {
-    color: #ffffff;
-    border: 1px solid var(--accent-color);
-    background-color: transparent;
-    text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 24px;
-    margin: 0 5px 0 30px;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    letter-spacing: 1px;
-}
-
-.header .btn-login:hover {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(111, 163, 139, 0.4);
-}
-
-@media (max-width: 1200px) {
-    .header .logo {
-        order: 1;
-    }
-
-    .header .header-social-links {
-        order: 2;
-    }
-
-    .header .navmenu {
-        order: 3;
-    }
-}
-
-.scrolled .header {
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.scrolled .header {
-    --background-color: rgba(119, 113, 113, 0.05);
-}
-
-/*
-    LOGIN PAGE
-*/
-.card-custom {
-    max-width: 900px;
-    min-height: 600px;
-}
-
-.bg-gradient-custom {
-    background: rgb(108, 34, 149);
-    background: linear-gradient(180deg, rgba(108, 34, 149, 1) 0%, rgba(7, 50, 66, 1) 100%);
-}
-
-.form-control-custom {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    padding: 12px;
-}
-
-.form-control-custom:focus {
-    background-color: #fff;
-    box-shadow: none;
-    border-color: #6c2295;
-}
-
-.divider {
-    display: flex;
-    align-items: center;
-    color: #aaa;
-    margin: 1.5rem 0;
-}
-
-.divider::before,
-.divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.divider::before {
-    margin-right: .5em;
-}
-
-.divider::after {
-    margin-left: .5em;
-}
-
-.btn-social:hover {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-}
-
-.cursor-pointer {
-    cursor: pointer;
-}
