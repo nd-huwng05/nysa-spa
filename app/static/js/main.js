@@ -1,7 +1,6 @@
 (function () {
     "use strict";
 
-
     const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
 
     function mobileNavToggle() {
