@@ -19,25 +19,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hiệu ứng dịch chuyển nhẹ cho Stats Card khi hover
     if (statsCard) {
         statsCard.addEventListener('mouseenter', function() {
-            statsCard.style.transform = 'translateY(-5px) scale(1.02)';
+            statsCard.style.transition = 'transform 0.3s ease';
+            statsCard.style.transform = 'translateY(-5px)';
         });
         statsCard.addEventListener('mouseleave', function() {
-            statsCard.style.transform = 'translateY(0) scale(1)';
+            statsCard.style.transform = 'translateY(0)';
         });
     }
 
-    // Hiệu ứng nổi lên và zoom nhẹ cho Ảnh phụ khi hover (Cập nhật vị trí dịch chuyển)
+    // Hiệu ứng nổi lên và zoom nhẹ cho Ảnh phụ khi hover
     if (imageSecondary) {
         imageSecondary.addEventListener('mouseenter', function() {
-            // Vị trí dịch chuyển đã được cập nhật trong CSS
-            imageSecondary.style.transform = 'translateY(-70%) translateX(-10px) scale(1.05)';
-            imageSecondary.style.zIndex = '40'; // Tăng z-index khi hover
-            imageSecondary.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.7)'; // Thêm bóng khi hover
+            // Dịch chuyển nhẹ ra ngoài vị trí ban đầu và scale lên
+            imageSecondary.style.transform = 'translateX(-3%) translateY(-3%) scale(1.03)';
+            imageSecondary.style.boxShadow = '0 25px 60px rgba(0, 0, 0, 0.8)';
+            imageSecondary.style.zIndex = '40';
         });
         imageSecondary.addEventListener('mouseleave', function() {
-            imageSecondary.style.transform = 'translateY(-70%) translateX(0) scale(1)';
+            // Quay về vị trí CSS mặc định
+            imageSecondary.style.transform = 'translateX(0) translateY(0) scale(1)';
+            imageSecondary.style.boxShadow = '0 15px 50px rgba(0, 0, 0, 0.5)';
             imageSecondary.style.zIndex = '20';
-            imageSecondary.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.5)';
         });
     }
 
