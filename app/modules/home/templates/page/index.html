@@ -1,7 +1,7 @@
 {%extends "base.html"%}
 
 {%block css%}
-<link rel="stylesheet" href="/static/css/about.css">
+<link rel="stylesheet" href="{{ url_for('home.static', filename='css/about.css') }}">
 {%endblock%}
 
 {%block title%}
@@ -13,5 +13,5 @@ Home
 {%endblock%}
 
 {% block scripts%}
-<script src="{{ url_for('static', filename='js/about.js') }}"></script>
+<script src="{{ url_for('home.static', filename='js/about.js') }}"></script>
 {% endblock %}
