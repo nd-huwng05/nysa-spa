@@ -23,7 +23,7 @@ class Handler:
             raise e
 
     def auth_google(self):
-        redirect_uri = url_for('user.google_auth', _external=True)
+        redirect_uri = url_for('user.google_callback', _external=True)
         return self.env.oauth.google.authorize_redirect(redirect_uri)
 
     def google_callback(self):

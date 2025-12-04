@@ -34,7 +34,7 @@ class Controller:
             return response
 
         except Exception as e:
-            flash(str(e))
+            flash(str(e), category="error")
             return redirect(url_for('user.login'))
 
     def auth_google(self):
@@ -48,19 +48,19 @@ class Controller:
             set_refresh_cookies(response, refresh_token)
             return response
         except Exception as e:
-            flash(str(e))
+            flash(str(e), category="error")
             return redirect(url_for('user.login'))
 
 
 
-    def load_logged_in_user(self):
+    def load_data_user(self):
         try:
             verify_jwt_in_request(optional=True)
             user_id = get_jwt_identity()
             if user_id:
                 user = self.handler.get_information_user(int(user_id))
                 return {'current_user': user}
-        except Exception as e:
+        except Exception:
             pass
 
         return {'current_user': None}

@@ -12,5 +12,3 @@ class Controller:
 
     def index(self):
         return render_template('page/index.html')
-
-

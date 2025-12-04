@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Boolean
 from app.core.database import BaseModel
 from sqlalchemy.orm import relationship
@@ -37,5 +39,5 @@ class UserAuthMethod(BaseModel):
     provider = Column(Enum(AuthMethodEnum), nullable=False)
     provider_id = Column(String(150), nullable=False)
     role = Column(Enum(RoleAccount), default=RoleAccount.CUSTOMER)
-    last_login_at = Column(DateTime, nullable=False)
-    active = Column(Boolean, nullable=False, default=True)
+    last_login_at = Column(DateTime, default=datetime.now())
+    active = Column(Boolean, default=True)
