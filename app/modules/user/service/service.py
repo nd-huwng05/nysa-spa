@@ -12,7 +12,7 @@ class Service:
         self.repo = repo
         self.config = config
 
-    def authenticate_local(self, username:str, password:str):
+    def auth_user_pass(self, username:str, password:str):
         user = self.repo.get_user_by_username(username)
         if not user or not user.check_password_hash(password):
             raise Exception('Invalid username or password')
@@ -23,19 +23,23 @@ class Service:
 
         return access_token, refresh_token
 
-    def authenticate_google(self, userinfo):
+    def google_callback(self, userinfo):
+        user_id = None
         provider_id = userinfo.get('sub')
         user_auth_google = self.repo.get_user_auth_by_provider_id(provider_id)
-        if not user_auth_google:
-            email = userinfo.get('email')
-            name = userinfo.get('name')
-            avatar = userinfo.get('picture')
-            try:
-                user_id = self.repo.create_user_with_google(email, avatar, name, provider_id)
-            except Exception as e:
-                raise Exception('Login by google failed')
-        else:
-            user_id = user_auth_google.user_id
+        try:
+            if not user_auth_google:
+                avatar = userinfo.get('picture')
+                name = userinfo.get('name')
+                email = userinfo.get('email')
+                user_has_email = self.repo.get_user_by_email(email)
+                if not user_has_email:
+                    user_id = self.repo.create_user(email, avatar, name)
+                self.repo.create_auth_method(user_id, provider_id)
+            else:
+                user_id = user_auth_google.user_id
+        except Exception as e:
+            raise e
 
         access_token = create_access_token(identity=str(user_id))
         refresh_token = create_refresh_token(identity=str(user_id))

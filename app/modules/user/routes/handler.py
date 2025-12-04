@@ -10,29 +10,29 @@ class Handler:
         self.service = service
         self.env = env
 
-    def login(self, request: Request):
+    def auth_user_pass(self, request: Request):
         username = request.form.get('username')
         password = request.form.get('password')
         if not (username or password):
             raise Exception('Username and password are required')
 
         try:
-            access_token, refresh_token = self.service.authenticate_local(username, password)
+            access_token, refresh_token = self.service.auth_user_pass(username, password)
             return access_token, refresh_token
         except Exception as e:
             raise e
 
-    def google_redirect(self):
-        redirect_uri = url_for('user.google_auth', _external=True)
+    def auth_google(self):
+        redirect_uri = url_for('user.google_callback', _external=True)
         return self.env.oauth.google.authorize_redirect(redirect_uri)
 
-    def google_auth(self):
+    def google_callback(self):
         token = self.env.oauth.google.authorize_access_token()
         user_info = self.env.oauth.google.parse_id_token(token, nonce=None)
         if not user_info:
             raise Exception('Invalid token google')
 
-        access_token, refresh_token = self.service.authenticate_google(user_info)
+        access_token, refresh_token = self.service.google_callback(user_info)
         return access_token, refresh_token
 
     def get_information_user(self, user_id):
