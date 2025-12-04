@@ -9,22 +9,17 @@ from app.modules.user import UserModule
 
 class Server:
     def __init__(self):
-        # Init app
         self.app = Flask(__name__, template_folder='templates')
         self.app.config.from_object('config')
 
-        # Init logger
         logger.setup(self.app)
         logger.info("Logger System Initiated")
 
-        # Load environment
         self.env = Environment()
         self.env.init_app(self.app)
 
-        # Setup health_check()
         self.setup_health_check()
 
-        # Init modules
         self.init_modules()
         self.init_models()
 
