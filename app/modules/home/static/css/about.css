@@ -1,0 +1,180 @@
+/* --- Tổng thể Section --- */
+.about-section {
+    background-color: var(--background-dark);
+    padding: 80px 0;
+    color: var(--text-light);
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+/* --- Phần Nội dung (Content) --- */
+.about-content .subtitle {
+    color: var(--subtitle-color);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.about-content h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.about-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+/* --- Danh sách Đặc điểm (Features List) --- */
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.features-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.features-list li i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+/* --- Nút (Button) --- */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #6a58d1;
+    border-color: #6a58d1;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(123, 102, 255, 0.4);
+}
+
+/* --- Phần Hình ảnh Xếp lớp Cập Nhật (Image Composition) --- */
+.image-composition-wrapper {
+    position: relative;
+    /* Giảm padding dưới để thẻ stats ở vị trí tự nhiên hơn */
+    padding-bottom: 150px;
+    /* Đảm bảo hình ảnh được căn chỉnh tốt hơn trong khu vực col-lg-7 */
+    max-width: 600px;
+    margin-left: auto;
+}
+
+.image-composition .img-fluid {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Đảm bảo ảnh hiển thị đẹp */
+}
+
+.image-main,
+.image-secondary {
+    border-radius: 12px;
+    overflow: hidden;
+    /* Cập nhật box-shadow để tăng độ sâu và tương phản */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Ảnh chính (Lớn, nằm trên và được căn phải) */
+.image-composition .image-main {
+    width: 90%;
+    height: 400px; /* Đặt chiều cao cố định để kiểm soát bố cục */
+    margin-left: 10%;
+    position: relative;
+    z-index: 15;
+}
+
+/* Ảnh phụ (Nhỏ hơn, nằm dưới và dịch chuyển lên trái) */
+.image-composition .image-secondary {
+    position: absolute;
+    top: 50%; /* Dịch xuống 50% từ top */
+    left: 0; /* Đặt sát mép trái */
+    transform: translateY(-70%); /* Dịch lên cao hơn so với ảnh chính */
+    width: 50%;
+    height: 200px; /* Đặt chiều cao cố định */
+    z-index: 20; /* Luôn nằm trên ảnh chính */
+    border: 5px solid var(--background-dark);
+    transition: transform 0.5s ease, box-shadow 0.3s ease;
+}
+
+/* --- Thẻ Thống kê (Stats Card) Cập Nhật --- */
+.stats-card {
+    position: absolute;
+    bottom: 0; /* Đặt ở dưới cùng của wrapper */
+    right: 0;
+    /* Sử dụng background mờ và filter để nổi bật hơn */
+    background-color: var(--card-background);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 20px 30px;
+    display: flex;
+    gap: 40px;
+    z-index: 30; /* Đảm bảo nó nằm trên tất cả */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.stats-item h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.stats-item p {
+    font-size: 0.9rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* --- Responsive cho màn hình nhỏ hơn --- */
+@media (max-width: 992px) {
+    .image-composition-wrapper {
+        padding-bottom: 50px;
+        padding-left: 0;
+        margin: 40px auto 0 auto;
+    }
+    .image-composition .image-main {
+        width: 100%;
+        margin-left: 0;
+        height: 300px;
+    }
+    .image-composition .image-secondary {
+        top: 60%;
+        left: 5%;
+        transform: translateY(-50%);
+        width: 45%;
+        height: 150px;
+    }
+    .stats-card {
+        position: relative;
+        width: 100%;
+        bottom: auto;
+        right: auto;
+        margin-top: 20px;
+        justify-content: space-around;
+        gap: 20px;
+        padding: 15px 20px;
+    }
+}
