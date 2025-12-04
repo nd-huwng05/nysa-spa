@@ -39,6 +39,10 @@
     --nav-dropdown-hover-color: #C18C5D;
 }
 
+:root {
+    --border-color: #eee
+}
+
 /* COLOR PRESETS */
 
 /* Dùng cho các phần cần nền hơi tối hơn nền chính một chút (như phần Dịch vụ) */

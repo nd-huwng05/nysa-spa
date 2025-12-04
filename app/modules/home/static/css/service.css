@@ -1,0 +1,307 @@
+.text-gold {
+    color: var(--accent-color) !important;
+}
+
+.ls-2 {
+    letter-spacing: 2px;
+}
+
+.section-title {
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    color: var(--heading-color); /* Màu tiêu đề chuẩn */
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    color: var(--default-color);
+    opacity: 0.9;
+}
+
+.separator {
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin: 10px auto;
+}
+
+/* --- 3. LARGE FEATURED CARD (CỘT TRÁI) --- */
+.featured-service-card {
+    background: var(--surface-color);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(46, 38, 35, 0.05); /* Bóng đổ dùng tông màu nâu đen nhạt */
+    transition: transform 0.3s ease;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.featured-service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(46, 38, 35, 0.08);
+    border-color: var(--accent-color);
+}
+
+.img-wrapper-large {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+}
+
+.main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.featured-service-card:hover .main-img {
+    transform: scale(1.05);
+}
+
+/* Badge Signature */
+.badge-overlay {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    padding: 5px 12px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* Price Tag Large */
+.price-tag-large {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--heading-color);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.service-name {
+    font-family: "Playfair Display", serif;
+    font-size: 1.75rem;
+    margin-bottom: 10px;
+    color: var(--heading-color);
+}
+
+.meta-info {
+    color: var(--default-color);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.desc {
+    color: var(--default-color);
+}
+
+.feature {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Button Styles - Update theo Accent Color */
+.btn-gold {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    border: none;
+    padding: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-gold:hover {
+    background: var(--accent-hover);
+    color: var(--contrast-color);
+}
+
+/* --- 4. SMALL SERVICE CARDS (CỘT PHẢI) --- */
+.service-card-small {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.service-card-small:hover {
+    box-shadow: 0 5px 20px rgba(46, 38, 35, 0.06);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+.img-wrapper-small {
+    width: 140px;
+    /* Fixed width for image on left */
+    height: 100%;
+    /* Full height of parent */
+    min-height: 140px;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.img-wrapper-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.service-card-small:hover .img-wrapper-small img {
+    transform: scale(1.05);
+}
+
+/* Price Overlay (Giá đè lên ảnh) */
+.price-overlay {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    font-weight: bold;
+    padding: 4px 10px;
+    font-size: 1rem;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+.service-title-small {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--heading-color);
+}
+
+
+/* --- 5. MINI OVERVIEW CARDS (HÀNG DƯỚI) --- */
+.mini-overview-card {
+    background: var(--surface-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(46, 38, 35, 0.03);
+    border: 1px solid var(--border-color);
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.mini-overview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(46, 38, 35, 0.08);
+}
+
+.mini-img-box {
+    height: 120px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.mini-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.mini-overview-card:hover .mini-img-box img {
+    transform: scale(1.1);
+}
+
+.mini-content {
+    padding: 12px;
+    text-align: center;
+}
+
+.mini-content h6 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--heading-color);
+}
+
+.mini-price {
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.mini-icons {
+    font-size: 0.8rem;
+    color: var(--default-color);
+    opacity: 0.7;
+}
+
+/* Special Card (Khối Happy Hour) */
+.special-card-bg {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    border: none;
+}
+
+.special-card-bg h6,
+.special-card-bg p,
+.special-card-bg i {
+    color: var(--contrast-color);
+}
+
+/* Nút Browse All */
+.btn-outline-gold-large {
+    display: inline-block;
+    padding: 12px 40px;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.btn-outline-gold-large:hover {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+}
+
+/* --- 6. RESPONSIVE --- */
+@media (max-width: 991px) {
+    .img-wrapper-large {
+        height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .service-card-small {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .img-wrapper-small {
+        width: 100%;
+        height: 160px;
+    }
+
+    .mini-img-box {
+        height: 100px;
+    }
+
+    /* Mobile: Di chuyển giá lên góc phải ảnh */
+    .price-overlay {
+        top: 15px;
+        right: 0;
+    }
+}

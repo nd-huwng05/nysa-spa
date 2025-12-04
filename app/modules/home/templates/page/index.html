@@ -3,6 +3,7 @@
 {%block css%}
 <link rel="stylesheet" href="{{ url_for('home.static', filename='css/about.css') }}">
 <link rel="stylesheet" href="{{ url_for('home.static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('home.static', filename='css/service.css') }}">
 {%endblock%}
 
 {%block title%}
@@ -12,6 +13,7 @@ Home
 {%block content%}
 {%include "components/home.html"%}
 {%include "components/about.html"%}
+{%include "components/service.html"%}
 {%endblock%}
 
 {% block scripts%}
