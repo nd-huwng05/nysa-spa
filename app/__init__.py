@@ -59,7 +59,6 @@ class Server:
     def init_models(self):
         with self.app.app_context():
             import app.modules.user.repository.models
-            import app.modules.staff.models
 
     def start(self):
         self.print_routes()
