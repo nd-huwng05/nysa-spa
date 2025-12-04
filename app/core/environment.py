@@ -1,4 +1,4 @@
-from app.extensions import db, jwt, oauth
+from app.extensions import db, jwt, oauth, migrate
 from app.core.logger import logger
 
 
@@ -7,6 +7,7 @@ class Environment:
         self.db = db
         self.jwt = jwt
         self.oauth = oauth
+        self.migrate = migrate
         self.app = None
 
     def init_app(self, app):
@@ -20,5 +21,7 @@ class Environment:
             self.jwt.init_app(app)
             self.oauth.init_app(app)
             logger.info("Google OAuth Initialized")
+
+            self.migrate.init_app(app=app, db=self.db)
         except Exception as e:
             logger.error("Environment init failed", data=str(e))

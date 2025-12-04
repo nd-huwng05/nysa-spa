@@ -19,9 +19,9 @@ class Controller:
 
         try:
             access_token, refresh_token = self.handler.login(request)
-            response = redirect(url_for('home.index'))
-            response.set_cookie('access_token', access_token)
-            response.set_cookie('refresh_token', refresh_token)
+            response = make_response(redirect(url_for('home.index')))
+            set_access_cookies(response, access_token)
+            set_refresh_cookies(response, refresh_token)
             return response
 
         except Exception as e:

@@ -26,7 +26,7 @@ class User(BaseModel):
     role = Column(Enum(RoleAccount), default=RoleAccount.CUSTOMER)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")
-    staffs = relationship("Staff",backref="user" ,cascade="all, delete-orphan", lazy="selectin")
+    # staffs = relationship("Staff",backref="user" ,cascade="all, delete-orphan", lazy="selectin")
 
     def check_password_hash(self, password:str) -> bool:
         if hashlib.md5(password.encode()).hexdigest().__eq__(self.password):
