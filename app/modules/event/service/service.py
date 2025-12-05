@@ -6,6 +6,3 @@ class Service:
         self.repo = repo
         self.config = config
 
-    @staticmethod
-    def get_list_info():
-        pass
