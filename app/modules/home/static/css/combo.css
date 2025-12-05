@@ -1,0 +1,232 @@
+.offer-card {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Giảm độ đậm của shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    background-color: var(--combo-card-background);
+    border-radius: 0.75rem;
+    height: 100%;
+    border: 1px solid var(--combo-border-dark); /* Thêm viền nhẹ */
+}
+
+.offer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Container */
+.offer-image-container {
+    overflow: hidden;
+}
+
+.offer-image-container img {
+    transition: transform 0.5s ease;
+}
+
+.offer-card:hover .offer-image-container img {
+    transform: scale(1.05);
+}
+
+/* Price and Badge */
+.offer-price {
+    color: var(--combo-accent);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.original-price {
+    color: var(--combo-text-subtle);
+    text-decoration: line-through;
+    font-size: 0.875rem;
+}
+
+.offer-badge {
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.offer-content h3 {
+    /* Đã chuyển từ text-spa-light */
+    color: var(--combo-text-heading);
+}
+
+.offer-content p {
+    /* Đã chuyển từ text-spa-text-subtle */
+    color: var(--combo-text-subtle);
+}
+
+/* Kích thước chữ cho mô tả và checklist - CHUYỂN TỪ INLINE STYLE */
+.offer-content p {
+    font-size: 0.9rem;
+}
+
+.offer-content .space-y-2 > div {
+    font-size: 0.9rem;
+}
+
+/* RESERVE BUTTON - Đã cập nhật màu */
+.btn-reserve {
+    background-color: var(--combo-accent);
+    color: var(--contrast-color); /* Chữ trắng trên nền màu đồng */
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 50rem;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    border: none;
+}
+
+.btn-reserve:hover {
+    background-color: #a7784f; /* Màu đồng đậm hơn */
+    color: var(--contrast-color);
+}
+
+/* Feature Icons */
+.offer-features .bi,
+.offer-content .bi-check-circle { /* Áp dụng cho cả icon check trong list */
+    color: var(--combo-accent);
+    margin-right: 0.5rem;
+}
+
+/* Validity Info - KÍCH THƯỚC CHỮ CHUYỂN TỪ INLINE STYLE */
+.validity-info {
+    color: var(--combo-text-subtle); /* Màu xám nhẹ */
+    font-size: 0.75rem;
+}
+
+/* BORDER Màu cho Card 2 (Deep Detox Combo) - Đã cập nhật màu */
+.offer-card.border-3 {
+    border-color: var(--combo-accent) !important;
+}
+
+/* Badge Màu cho Card 2 (EXCLUSIVE) - Đã cập nhật màu */
+.offer-card .offer-badge.bg-dark {
+    background-color: var(--combo-card-background) !important; /* Nền trắng */
+    color: var(--combo-accent) !important; /* Chữ màu đồng */
+    border-color: var(--combo-accent) !important;
+}
+
+/* Badge Màu cho Card 3 (COUPLE DEAL) - Đã cập nhật màu */
+.offer-card .offer-badge.bg-pink-600 {
+    background-color: #C18C5D !important; /* Màu Accent */
+    color: var(--contrast-color) !important;
+}
+
+/* Badge Màu cho Card 4 (BEAUTY) - Đã cập nhật màu */
+.offer-card .offer-badge.bg-purple-600 {
+    background-color: #8C70B1 !important; /* Một màu tím/hoa oải hương nhẹ */
+    color: var(--contrast-color) !important;
+}
+
+/* --------------------------------------------------------------------- */
+/* 4. SPECIAL PROMOTION BANNER */
+/* --------------------------------------------------------------------- */
+
+.special-promotion {
+    position: relative;
+    background-color: var(--surface-color-hero); /* Nền be nhạt */
+    border: 4px solid var(--combo-accent);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.promotion-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8); /* Overlay trắng mờ */
+    z-index: 1;
+}
+
+.promo-text h2,
+.promo-text h2 .text-spa-accent { /* Tiêu đề lớn */
+    color: var(--combo-accent);
+    font-weight: 800;
+}
+
+.promo-text p {
+    /* Đã chuyển từ text-spa-light */
+    color: var(--combo-text-default);
+    font-size: 0.9rem; /* Kích thước chữ chuyển từ inline */
+}
+
+.promo-highlights li {
+    /* Đã chuyển từ text-spa-light */
+    color: var(--combo-text-default);
+}
+
+.promo-highlights .bi-star-fill {
+    color: var(--combo-accent);
+}
+
+/* Countdown Timer */
+.countdown-timer .timer-item {
+    background-color: rgba(255, 255, 255, 0.7); /* Nền trắng mờ */
+    border: 1px solid var(--combo-border-dark);
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    min-width: 60px;
+}
+
+.countdown-timer .count-value {
+    color: var(--combo-accent);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    display: block;
+}
+
+.countdown-timer label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--combo-text-subtle);
+}
+
+/* --------------------------------------------------------------------- */
+/* 5. RESPONSIVE (Giữ nguyên) */
+/* --------------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+    .offer-card .offer-image-container {
+        width: 40%;
+        border-radius: 0.75rem 0 0 0.75rem !important;
+    }
+
+    .offer-card .offer-content {
+        width: 60%;
+    }
+
+    .offer-card .offer-image-container img {
+        height: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .offer-card {
+        flex-direction: column;
+    }
+
+    .offer-card .offer-image-container {
+        width: 100%;
+        height: 200px;
+        border-radius: 0.75rem 0.75rem 0 0 !important;
+    }
+}
+
+.promo-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Đảm bảo các item con (timer và nút) được căn giữa theo chiều ngang */
+}
+
+/* Nút Grab the Deal Now */
+.btn-reserve.btn-lg {
+    max-width: 300px; /* Giới hạn chiều rộng của nút */
+    width: 100%;
+    text-align: center;
+}
