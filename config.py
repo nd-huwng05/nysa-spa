@@ -4,7 +4,7 @@ import os
 DEBUG = False
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 SECRET_KEY = "secret"
-SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:root@localhost:3306/nysadb?charset=utf8mb4"
+SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:root@localhost:3307/nysadb?charset=utf8mb4"
 
 JWT_SECRET_KEY = "jwt_secret"
 JWT_TOKEN_LOCATION = ["cookies"]
