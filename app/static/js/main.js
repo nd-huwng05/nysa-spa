@@ -39,6 +39,35 @@
         });
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const scrollTop = document.querySelector('.scroll-top');
+
+        if (scrollTop) {
+            // Hàm kiểm tra vị trí cuộn để hiện/ẩn nút
+            const togglescrollTop = () => {
+                if (window.scrollY > 100) {
+                    scrollTop.classList.add('active');
+                } else {
+                    scrollTop.classList.remove('active');
+                }
+            }
+
+            // Lắng nghe sự kiện khi tải trang và khi cuộn
+            window.addEventListener('load', togglescrollTop);
+            document.addEventListener('scroll', togglescrollTop);
+
+            // Xử lý sự kiện click để cuộn mượt mà lên đầu
+            scrollTop.addEventListener('click', (e) => {
+                e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // Hiệu ứng trượt mượt
+                });
+            });
+        }
+    });
+
 
     let navmenulinks = document.querySelectorAll('.navmenu a');
 

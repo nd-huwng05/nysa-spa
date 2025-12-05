@@ -1,0 +1,180 @@
+.testimonials-section {
+    background-color: var(--background-color);
+    padding: 80px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header Section */
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 0 15px;
+}
+
+.section-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--heading-color);
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.section-header p {
+    color: var(--default-color);
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.section-header span.line {
+    display: inline-block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin-top: 10px;
+}
+
+/* Swiper Container Padding Fix */
+.swiper.myTestimonialSwiper {
+    padding: 20px 10px 60px 10px; /* Top, Right, Bottom (cho dot), Left */
+}
+
+/* =========================================
+   4. TESTIMONIAL ITEM (CARD)
+   ========================================= */
+.testimonial-item {
+    background-color: var(--surface-color);
+    padding: 30px;
+    border-radius: 12px;
+    /* Bóng đổ nhẹ nhàng, sang trọng */
+    box-shadow: 0 10px 30px rgba(46, 38, 35, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease-in-out;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(193, 140, 93, 0.15); /* Bóng màu đồng nhạt khi hover */
+    border-color: var(--accent-color);
+}
+
+/* Header: Avatar + Rating */
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.testimonial-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-color);
+    margin-right: 15px;
+}
+
+.testimonial-rating {
+    color: var(--accent-color); /* Sao màu đồng */
+    font-size: 14px;
+}
+
+/* Body Content */
+.testimonial-body {
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+.testimonial-body p {
+    font-style: italic;
+    color: var(--default-color);
+    line-height: 1.6;
+    font-size: 15px;
+    margin: 0;
+}
+
+.quote-icon-left {
+    color: var(--accent-color);
+    font-size: 24px;
+    margin-right: 8px;
+    vertical-align: -5px;
+    opacity: 0.7;
+}
+
+/* Footer: Name + Role */
+.testimonial-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 15px;
+}
+
+.testimonial-footer h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.testimonial-footer span {
+    font-size: 13px;
+    color: #999; /* Giữ màu xám nhẹ cho chức vụ */
+    display: block;
+    margin-top: 5px;
+}
+
+/* =========================================
+   5. SWIPER DOTS (PAGINATION)
+   ========================================= */
+.swiper-pagination-bullet {
+    background-color: var(--heading-color);
+    opacity: 0.3;
+    width: 10px;
+    height: 10px;
+    margin: 0 6px !important;
+    transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: var(--accent-color) !important;
+    opacity: 1;
+    width: 30px;
+    border-radius: 5px;
+}
+
+.swiper-slide {
+    height: auto !important;
+}
+
+/* =========================================
+   6. RESPONSIVE MEDIA QUERIES
+   ========================================= */
+
+/* Mobile Devices (Dưới 768px) */
+@media (max-width: 767.98px) {
+    .testimonials-section {
+        padding: 60px 0;
+    }
+
+    .section-header h2 {
+        font-size: 26px; /* Giảm size chữ tiêu đề */
+    }
+
+    .testimonial-item {
+        padding: 20px; /* Giảm padding thẻ */
+    }
+
+    .testimonial-body p {
+        font-size: 14px; /* Chữ nhỏ hơn 1 chút trên mobile */
+    }
+}
+
+/* Tablets (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .section-header h2 {
+        font-size: 28px;
+    }
+}

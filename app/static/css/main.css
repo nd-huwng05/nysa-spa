@@ -7,7 +7,7 @@
 
 :root {
     /* 1. MÀU NỀN & CHỮ TOÀN TRANG */
-    --background-color: #FFFEFC; /* Màu Trắng Sứ (Sáng hơn màu kem cũ một chút để sạch sẽ hơn) */
+    --background-color: #fffefe; /* Màu Trắng Sứ (Sáng hơn màu kem cũ một chút để sạch sẽ hơn) */
     --default-color: #5D544F;    /* Màu Nâu Xám (Taupe) - Dùng cho nội dung văn bản */
     --heading-color: #2E2623;    /* Màu Đen Cà Phê (Gần đen nhưng ấm hơn) - Dùng cho tiêu đề lớn */
 
@@ -27,7 +27,7 @@
 /* NAV MENU COLORS - Đã sửa lỗi bị mờ */
 :root {
     /* QUAN TRỌNG: Đổi từ xám #b3a8a8 sang Nâu Đen #2E2623 */
-    --nav-color: #2E2623;          /* Chữ menu đậm, rõ ràng, sắc nét trên nền kem */
+    --nav-color: #503622;          /* Chữ menu đậm, rõ ràng, sắc nét trên nền kem */
 
     --nav-hover-color: #C18C5D;    /* Hover đồng bộ với màu Accent (Màu da đồng) */
 
@@ -43,6 +43,16 @@
     --border-color: #eee
 }
 
+
+:root {
+    --combo-background: var(--background-color);
+    --combo-card-background: var(--surface-color); /* Thẻ nền trắng */
+    --combo-accent: var(--accent-color);
+    --combo-text-default: var(--default-color);
+    --combo-text-heading: var(--heading-color);
+    --combo-text-subtle: #AFAFAF; /* Màu xám nhẹ cho chữ phụ, phù hợp với nền sáng */
+    --combo-border-dark: #eee;
+}
 /* COLOR PRESETS */
 
 /* Dùng cho các phần cần nền hơi tối hơn nền chính một chút (như phần Dịch vụ) */

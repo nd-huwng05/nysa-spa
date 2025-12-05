@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="{{ url_for('home.static', filename='css/about.css') }}">
 <link rel="stylesheet" href="{{ url_for('home.static', filename='css/home.css') }}">
 <link rel="stylesheet" href="{{ url_for('home.static', filename='css/service.css') }}">
+<link rel="stylesheet" href="{{ url_for('home.static', filename='css/combo.css') }}">
+<link rel="stylesheet" href="{{ url_for('home.static', filename='css/testimonials.css') }}">
 {%endblock%}
 
 {%block title%}
@@ -14,9 +16,13 @@ Home
 {%include "components/home.html"%}
 {%include "components/about.html"%}
 {%include "components/service.html"%}
+{%include "components/combo.html"%}
+{%include "components/testimonials.html"%}
 {%endblock%}
 
 {% block scripts%}
 <script src="{{ url_for('home.static', filename='js/about.js') }}"></script>
+<script src="{{ url_for('home.static', filename='js/combo.js') }}"></script>
+<script src="{{ url_for('home.static', filename='js/testimonials.js') }}"></script>
 <script src="{{ url_for('home.static', filename='js/home.js') }}"></script>
 {% endblock %}
