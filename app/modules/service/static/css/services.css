@@ -1,25 +1,3 @@
-/* --- 1. CONFIG VARIABLES (THEME MỚI) --- */
-:root {
-    /* MÀU NỀN & CHỮ */
-    --background-color: #fffefe;  /* Trắng sứ */
-    --default-color: #5D544F;     /* Nâu Xám (Taupe) */
-    --heading-color: #2E2623;     /* Nâu Đen Cà Phê */
-
-    /* MÀU NHẤN (BRAND COLOR) */
-    --accent-color: #C18C5D;      /* Màu Đồng/Da Rám Nắng */
-    --accent-hover: #a6764d;      /* Màu Đồng đậm hơn khi hover */
-
-    /* CÁC KHỐI & BỀ MẶT */
-    --surface-color-hero: #F7F5F2; /* Màu Be nhạt */
-    --surface-color: #ffffff;      /* Box nền trắng */
-    --border-color: #eeeeee;
-
-    /* MENU */
-    --nav-color: #503622;
-    --nav-hover-color: #C18C5D;
-}
-
-/* Thiết lập cơ bản */
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--background-color);
@@ -34,6 +12,10 @@ h1, h2, h3, h4, .text-heading {
 }
 
 a { text-decoration: none; }
+
+.btn {
+    background-color: var(--contrast-color);
+}
 
 /* --- 2. HERO SECTION (BANNER) --- */
 .page-title {
@@ -71,6 +53,10 @@ a { text-decoration: none; }
     color: var(--default-color);
 }
 
+section, .section {
+    padding: 0;
+    padding-bottom: 50px;
+}
 /* --- 3. FILTER BAR --- */
 .filter-sort-bar {
     background-color: var(--surface-color);

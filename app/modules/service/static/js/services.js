@@ -1,12 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Khởi tạo Animation khi cuộn trang (AOS)
-    AOS.init({
-        duration: 800,
-        once: true,
-        offset: 80
-    });
-
     // 2. Parallax Effect cho Header Text (Bay theo chuột)
     const heroSection = document.getElementById('heroSection');
     const parallaxText = document.getElementById('parallaxText');
