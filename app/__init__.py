@@ -4,6 +4,7 @@ from rich.table import Table
 from app.core.environment import Environment
 from app.core.logger import logger
 from app.modules.home import HomeModule
+from app.modules.service import ServiceModule
 from app.modules.user import UserModule
 
 
@@ -50,6 +51,7 @@ class Server:
     def init_modules(self):
         UserModule(self.app, self.env).register()
         HomeModule(self.app, self.env).register()
+        ServiceModule(self.app, self.env).register()
 
     def init_models(self):
         with self.app.app_context():

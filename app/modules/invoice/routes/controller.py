@@ -11,6 +11,6 @@ class Controller:
         self.handler = Handler(config, service)
 
     def index(self):
-        return render_template('page/index.html')
+        return render_template('page/service.html')
 
 

@@ -5,9 +5,9 @@ from .controller import Controller
 def register_routes(app, service, config:ModuleConfig):
     c = Controller(service=service, config=config)
 
-    home_routes = Blueprint('home', __name__, template_folder='../templates', static_folder='../static', url_prefix='/')
+    service_routes = Blueprint('service', __name__, template_folder='../templates', static_folder='../static', url_prefix='/service')
 
 
-    home_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
+    service_routes.add_url_rule('/service-view', view_func=c.service_view, methods=['GET'])
 
-    app.register_blueprint(home_routes)
+    app.register_blueprint(service_routes)
