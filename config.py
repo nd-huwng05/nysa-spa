@@ -7,6 +7,7 @@ load_dotenv()
 DEBUG = False
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 SECRET_KEY = "secret"
+
 DB_USER = os.getenv("DB_USER", "root")
 DB_PASSWORD = os.getenv("PASSWORD", "root")
 DB_HOST = os.getenv("DB_HOST", "localhost")
