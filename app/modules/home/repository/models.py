@@ -13,7 +13,8 @@ class RoleSection(enum.Enum):
 
 class Section(BaseModel):
     __tablename__ = 'section'
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(150), nullable=False)
     url = Column(String(150))
     description = Column(Text)
-    role = Column(Enum(RoleSection), nullable=False, server_default=RoleSection.DEFAULT.value)
+    role = Column(Enum(RoleSection), server_default=RoleSection.DEFAULT.value)

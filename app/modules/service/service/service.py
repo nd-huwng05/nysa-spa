@@ -8,4 +8,4 @@ class Service:
 
     @staticmethod
     def get_list_info():
-        pass
+        print(1)

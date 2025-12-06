@@ -17,7 +17,7 @@ class AuthMethodEnum(enum.Enum):
 
 class User(BaseModel):
     __tablename__ = 'user'
-
+    id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(150), unique=True)
     password = Column(String(255))
     fullname = Column(String(255))
@@ -35,6 +35,7 @@ class User(BaseModel):
 
 class UserAuthMethod(BaseModel):
     __tablename__ = 'user_auth_method'
+    id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     provider = Column(Enum(AuthMethodEnum), nullable=False)
     provider_id = Column(Text, nullable=False)

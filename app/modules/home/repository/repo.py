@@ -15,7 +15,7 @@ class Repository:
                 return Section.query.filter(Section.role == RoleSection.DEFAULT).all()
             else:
                 role_auth = role_auth_method.value
-                if role_auth == RoleSection.ADMIN.value or  role_auth == RoleSection.STAFF.value:
+                if role_auth == RoleSection.ADMIN.value or role_auth == RoleSection.STAFF.value:
                     return Section.query.filter(Section.role.value == role_auth).all()
                 else:
                     return Section.query.filter(Section.role == RoleSection.DEFAULT, Section.role == RoleSection.CUSTOMER).all()

@@ -46,6 +46,7 @@ class Service:
             logger.error("Error google callback", data=e)
             abort(500)
 
+        self.repo.update_last_login_at(user_id)
         access_token = create_access_token(identity=str(user_id))
         refresh_token = create_refresh_token(identity=str(user_id))
         return access_token, refresh_token
