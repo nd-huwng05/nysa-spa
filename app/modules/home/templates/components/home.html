@@ -1,5 +1,7 @@
 {% block wellcome %}
-<section id="hero" class="hero section light-background">
+{%for item in menu_nav%}
+    {%if item.name == "home"%}
+<section id="home" class="hero section light-background">
 
     <div class="video-background">
         <video autoplay muted loop playsinline>
@@ -123,4 +125,6 @@
     </div>
 
 </section>
+{%endif%}
+{%endfor%}
 {% endblock %}

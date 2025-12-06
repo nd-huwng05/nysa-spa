@@ -1,10 +1,11 @@
 {%block testimonials%}
+{%for item in menu_nav%}
+    {%if item.name == "testimonials"%}
 <section id="testimonials" class="testimonials-section light-background">
     <div class="container section-title aos-init aos-animate" data-aos="fade-up">
         <span class="subtitle" translate="no">Testimonials</span>
         <h2 translate="no">Customers talk about Nysa</h2>
-        <p>Explore our comprehensive and most economical treatment
-            packages, designed for the ultimate relaxation experience</p>
+        <p>{{item.description}}</p>
     </div>
 
     <div class="container" data-aos="fade-up">
@@ -130,4 +131,6 @@
 
     </div>
 </section>
+{%endif%}
+{%endfor%}
 {%endblock%}

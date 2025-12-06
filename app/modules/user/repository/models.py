@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Boolean, Text, text, func
 from app.core.database import BaseModel
 from sqlalchemy.orm import relationship
 import enum
@@ -20,10 +20,10 @@ class User(BaseModel):
 
     username = Column(String(150), unique=True)
     password = Column(String(255))
-    fullname = Column(String(50))
-    avatar = Column(String(255), default="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png")
-    phone = Column(String(150), unique=True)
-    email = Column(String(150), unique=True)
+    fullname = Column(String(255))
+    avatar = Column(String(255), server_default="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png")
+    phone = Column(String(15), unique=True)
+    email = Column(String(255), unique=True)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")
     # staffs = relationship("Staff",backref="user" ,cascade="all, delete-orphan", lazy="selectin")
@@ -37,7 +37,7 @@ class UserAuthMethod(BaseModel):
     __tablename__ = 'user_auth_method'
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     provider = Column(Enum(AuthMethodEnum), nullable=False)
-    provider_id = Column(String(150), nullable=False)
-    role = Column(Enum(RoleAccount), default=RoleAccount.CUSTOMER)
-    last_login_at = Column(DateTime, default=datetime.now())
-    active = Column(Boolean, default=True)
+    provider_id = Column(Text, nullable=False)
+    role = Column(Enum(RoleAccount), server_default=RoleAccount.CUSTOMER.value)
+    last_login_at = Column(DateTime, server_default=func.now(), server_onupdate=func.now())
+    active = Column(Boolean, server_default=text('1'))

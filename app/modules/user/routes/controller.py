@@ -1,7 +1,7 @@
-from flask import request, render_template, redirect, url_for, flash, session, make_response
-from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity, set_access_cookies, set_refresh_cookies
-
+from flask import request,abort, render_template, redirect, url_for, flash, session, make_response, g
+from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 from app.core.environment import Environment
+from app.core.logger import logger
 from ..config.config_module import ModuleConfig
 from ..service.service import Service
 from .handler import Handler
@@ -12,10 +12,14 @@ class Controller:
 
     @staticmethod
     def login():
-        verify_jwt_in_request(optional=True)
-        if get_jwt_identity() is None:
-            return render_template('page/login.html')
-        return redirect(url_for('home.index'))
+        try:
+            identity = getattr(g, 'current_user', None)
+            if identity is None:
+                return render_template('page/login.html')
+            return redirect(url_for('home.index'))
+        except Exception as e:
+            logger.error("Can't render login page", data=e)
+            abort(404)
 
     @staticmethod
     def logout():
@@ -51,18 +55,11 @@ class Controller:
             flash(str(e), category="error")
             return redirect(url_for('user.login'))
 
+    def middleware_load_user(self):
+        self.handler.load_user()
 
+    def push_data_to_template(self):
+        return self.handler.push_data_to_template()
 
-    def load_data_user(self):
-        try:
-            verify_jwt_in_request(optional=True)
-            user_id = get_jwt_identity()
-            if user_id:
-                user = self.handler.get_information_user(int(user_id))
-                return {'current_user': user}
-        except Exception:
-            pass
-
-        return {'current_user': None}
 
 

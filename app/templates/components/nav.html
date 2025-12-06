@@ -1,11 +1,13 @@
 {%block nav%}
 <nav id="navmenu" class="navmenu">
     <ul>
-        <li><a href="#hero" class="active" translate="no">Home</a></li>
-        <li><a href="#about" translate="no">About</a></li>
-        <li><a href="#services" translate="no">Services</a></li>
-        <li><a href="#combo" translate="no">Combo</a></li>
-        <li><a href="#testimonials" translate="no">Testimonials</a></li>
+        {%for n in menu_nav%}
+            {%if n.name == 'home'%}
+                <li><a href="{{n.url}}" class="active" translate="no">{{n.name}}</a></li>
+            {%else%}
+                <li><a href="{{n.url}}"  translate="no">{{n.name}}</a></li>
+            {%endif%}
+        {%endfor%}
     </ul>
     <i class=" mobile-nav-toggle d-xl-none bi bi-list list_open"></i>
 </nav>

@@ -14,5 +14,6 @@ class RoleSection(enum.Enum):
 class Section(BaseModel):
     __tablename__ = 'section'
     name = Column(String(150), nullable=False)
+    url = Column(String(150))
     description = Column(Text)
-    role = Column(Enum(RoleSection), nullable=False, default=RoleSection.DEFAULT)
+    role = Column(Enum(RoleSection), nullable=False, server_default=RoleSection.DEFAULT.value)
