@@ -13,4 +13,5 @@ class Controller:
     def service_view(self):
         return render_template('page/service.html')
 
-
+    def service_detail_view(self):
+        return render_template('page/service_detail.html')
