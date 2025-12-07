@@ -2,11 +2,7 @@
 <nav id="navmenu" class="navmenu">
     <ul>
         {%for n in menu_nav%}
-            {%if n.name == 'home'%}
-                <li><a href="{{n.url}}" class="active" translate="no">{{n.name}}</a></li>
-            {%else%}
                 <li><a href="{{n.url}}"  translate="no">{{n.name}}</a></li>
-            {%endif%}
         {%endfor%}
     </ul>
     <i class=" mobile-nav-toggle d-xl-none bi bi-list list_open"></i>

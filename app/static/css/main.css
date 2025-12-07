@@ -1,38 +1,26 @@
-
 :root {
-    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --heading-font: "Montserrat", sans-serif;
-    --nav-font: "Inter", sans-serif;
+    --heading-font: "Playfair Display", serif;
+    --default-font: "Mulish", sans-serif;
+    --nav-font: "Mulish", sans-serif;
 }
 
 :root {
-    /* 1. MÀU NỀN & CHỮ TOÀN TRANG */
-    --background-color: #fffefe; /* Màu Trắng Sứ (Sáng hơn màu kem cũ một chút để sạch sẽ hơn) */
-    --default-color: #5D544F;    /* Màu Nâu Xám (Taupe) - Dùng cho nội dung văn bản */
-    --heading-color: #2E2623;    /* Màu Đen Cà Phê (Gần đen nhưng ấm hơn) - Dùng cho tiêu đề lớn */
-
-    /* 2. MÀU NHẤN (BRAND COLOR) - Quan trọng */
-    --accent-color: #C18C5D;     /* Màu Đồng/Màu Da Rám Nắng (Bronze Skin) - Sang hơn màu cam cũ */
-
-    /* 3. CÁC KHỐI & BỀ MẶT */
-    --surface-color-hero: #F7F5F2; /* Màu Be nhạt cho nền Hero/Banner */
-    --surface-color: #ffffff;      /* Box nền trắng */
-
-    /* 4. TƯƠNG PHẢN */
-    --contrast-color: #ffffff;     /* Chữ trắng trên nền nút màu đồng */
+    --background-color: #fffefe;
+    --default-color: #5D544F;
+    --heading-color: #2E2623;
+    --accent-color: #C18C5D;
+    --surface-color-hero: #F7F5F2;
+    --surface-color: #ffffff;
+    --contrast-color: #ffffff;
     --heading-text-color: #2E2623;
 }
 
 
-/* NAV MENU COLORS - Đã sửa lỗi bị mờ */
+
 :root {
-    /* QUAN TRỌNG: Đổi từ xám #b3a8a8 sang Nâu Đen #2E2623 */
-    --nav-color: #503622;          /* Chữ menu đậm, rõ ràng, sắc nét trên nền kem */
-
-    --nav-hover-color: #C18C5D;    /* Hover đồng bộ với màu Accent (Màu da đồng) */
-
-    --nav-scroller: #2E2623;       /* Màu khi cuộn trang (nếu có JS xử lý) */
-
+    --nav-color: #503622;
+    --nav-hover-color: #C18C5D;
+    --nav-scroller: #2E2623;
     --nav-mobile-background-color: #FFFEFC;
     --nav-dropdown-background-color: #ffffff;
     --nav-dropdown-color: #2E2623;
@@ -46,27 +34,24 @@
 
 :root {
     --combo-background: var(--background-color);
-    --combo-card-background: var(--surface-color); /* Thẻ nền trắng */
+    --combo-card-background: var(--surface-color);
     --combo-accent: var(--accent-color);
     --combo-text-default: var(--default-color);
     --combo-text-heading: var(--heading-color);
-    --combo-text-subtle: #AFAFAF; /* Màu xám nhẹ cho chữ phụ, phù hợp với nền sáng */
+    --combo-text-subtle: #AFAFAF;
     --combo-border-dark: #eee;
 }
-/* COLOR PRESETS */
 
-/* Dùng cho các phần cần nền hơi tối hơn nền chính một chút (như phần Dịch vụ) */
 .light-background {
-    --background-color: #F0EEE9; /* Màu Cát nhạt (Sand) */
+    --background-color: #F0EEE9;
     --surface-color: #ffffff;
 }
 
-/* Dùng cho Footer hoặc Banner khuyến mãi */
 .dark-background {
-    --background-color: #2E2623; /* Nền Nâu Đen Cà Phê (Thay vì đen thui) */
-    --default-color: #CDC6C0;    /* Chữ màu xám bạc */
-    --heading-color: #ffffff;    /* Tiêu đề trắng */
-    --surface-color: #453B36;    /* Box màu nâu nhạt hơn nền một chút */
+    --background-color: #2E2623;
+    --default-color: #CDC6C0;
+    --heading-color: #ffffff;
+    --surface-color: #453B36;
     --contrast-color: #ffffff;
 }
 

@@ -1,0 +1,61 @@
+{% block filter %}
+<div class="filter-sort-bar p-4 mb-5 rounded shadow-sm" data-aos="fade-up" data-aos-delay="100">
+    <form action="" method="GET">
+        <div class="row align-items-center g-3">
+
+            <div class="col-lg-9 col-md-12">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+
+                    <div class="input-group w-auto" style="min-width: 200px;">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Search services...">
+                    </div>
+
+                    <div class="vr d-none d-lg-block mx-1"></div> <span class="fw-bold text-heading text-nowrap">
+                        <i class="bi bi-sliders me-2"></i>Filter:
+                    </span>
+
+                    <div class="d-flex gap-2 flex-wrap">
+
+                        <select name="category" class="form-select w-auto">
+                            <option value="">All Categories</option>
+                            <option value="body">Body Massage</option>
+                            <option value="face">Facial Care</option>
+                            <option value="therapy">Intensive Therapy</option>
+                        </select>
+
+                        <select name="duration" class="form-select w-auto">
+                            <option value="">Any Duration</option>
+                            <option value="60">60 Minutes</option>
+                            <option value="90">90 Minutes</option>
+                            <option value="120">120 Minutes</option>
+                        </select>
+
+                        <select name="badge" class="form-select w-auto">
+                            <option value="">All Tags</option>
+                            <option value="hot">🔥 Hot / Best Seller</option>
+                            <option value="new">✨ New Arrival</option>
+                            <option value="sale">🏷️ On Sale</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-12 text-lg-end">
+                <div class="d-flex align-items-center justify-content-lg-end gap-2">
+                    <span class="fw-bold text-heading text-nowrap">Sort by:</span>
+
+                    <select name="sort" class="form-select w-auto">
+                        <option value="newest">Newest</option> <option value="popular">Most Popular</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+{% endblock %}
