@@ -5,7 +5,6 @@
     position: relative;
 }
 
-/* Header Section */
 .section-header {
     text-align: center;
     margin-bottom: 50px;
@@ -36,19 +35,14 @@
     margin-top: 10px;
 }
 
-/* Swiper Container Padding Fix */
 .swiper.myTestimonialSwiper {
-    padding: 20px 10px 60px 10px; /* Top, Right, Bottom (cho dot), Left */
+    padding: 20px 10px 60px 10px;
 }
 
-/* =========================================
-   4. TESTIMONIAL ITEM (CARD)
-   ========================================= */
 .testimonial-item {
     background-color: var(--surface-color);
     padding: 30px;
     border-radius: 12px;
-    /* Bóng đổ nhẹ nhàng, sang trọng */
     box-shadow: 0 10px 30px rgba(46, 38, 35, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.03);
     transition: all 0.3s ease-in-out;
@@ -59,11 +53,10 @@
 
 .testimonial-item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(193, 140, 93, 0.15); /* Bóng màu đồng nhạt khi hover */
+    box-shadow: 0 15px 40px rgba(193, 140, 93, 0.15);
     border-color: var(--accent-color);
 }
 
-/* Header: Avatar + Rating */
 .testimonial-header {
     display: flex;
     align-items: center;
@@ -80,11 +73,10 @@
 }
 
 .testimonial-rating {
-    color: var(--accent-color); /* Sao màu đồng */
+    color: var(--accent-color);
     font-size: 14px;
 }
 
-/* Body Content */
 .testimonial-body {
     flex-grow: 1;
     margin-bottom: 20px;
@@ -106,7 +98,6 @@
     opacity: 0.7;
 }
 
-/* Footer: Name + Role */
 .testimonial-footer {
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     padding-top: 15px;
@@ -121,14 +112,11 @@
 
 .testimonial-footer span {
     font-size: 13px;
-    color: #999; /* Giữ màu xám nhẹ cho chức vụ */
+    color: #999;
     display: block;
     margin-top: 5px;
 }
 
-/* =========================================
-   5. SWIPER DOTS (PAGINATION)
-   ========================================= */
 .swiper-pagination-bullet {
     background-color: var(--heading-color);
     opacity: 0.3;
@@ -149,30 +137,24 @@
     height: auto !important;
 }
 
-/* =========================================
-   6. RESPONSIVE MEDIA QUERIES
-   ========================================= */
-
-/* Mobile Devices (Dưới 768px) */
 @media (max-width: 767.98px) {
     .testimonials-section {
         padding: 60px 0;
     }
 
     .section-header h2 {
-        font-size: 26px; /* Giảm size chữ tiêu đề */
+        font-size: 26px;
     }
 
     .testimonial-item {
-        padding: 20px; /* Giảm padding thẻ */
+        padding: 20px;
     }
 
     .testimonial-body p {
-        font-size: 14px; /* Chữ nhỏ hơn 1 chút trên mobile */
+        font-size: 14px;
     }
 }
 
-/* Tablets (768px - 1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
     .section-header h2 {
         font-size: 28px;

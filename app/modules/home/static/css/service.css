@@ -6,32 +6,12 @@
     letter-spacing: 2px;
 }
 
-.section-title {
-    font-family: "Playfair Display", serif;
-    font-weight: 700;
-    color: var(--heading-color); /* Màu tiêu đề chuẩn */
-    margin-bottom: 15px;
-}
-
-.section-subtitle {
-    color: var(--default-color);
-    opacity: 0.9;
-}
-
-.separator {
-    width: 60px;
-    height: 3px;
-    background-color: var(--accent-color);
-    margin: 10px auto;
-}
-
-/* --- 3. LARGE FEATURED CARD (CỘT TRÁI) --- */
 .featured-service-card {
     background: var(--surface-color);
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 10px 30px rgba(46, 38, 35, 0.05); /* Bóng đổ dùng tông màu nâu đen nhạt */
+    box-shadow: 0 10px 30px rgba(46, 38, 35, 0.05);
     transition: transform 0.3s ease;
     border: 1px solid var(--border-color);
     display: flex;
@@ -61,7 +41,6 @@
     transform: scale(1.05);
 }
 
-/* Badge Signature */
 .badge-overlay {
     position: absolute;
     top: 20px;
@@ -76,7 +55,6 @@
     z-index: 2;
 }
 
-/* Price Tag Large */
 .price-tag-large {
     position: absolute;
     bottom: 20px;
@@ -112,7 +90,6 @@
     font-weight: 500;
 }
 
-/* Button Styles - Update theo Accent Color */
 .btn-gold {
     background: var(--accent-color);
     color: var(--contrast-color);
@@ -128,7 +105,6 @@
     color: var(--contrast-color);
 }
 
-/* --- 4. SMALL SERVICE CARDS (CỘT PHẢI) --- */
 .service-card-small {
     background: var(--surface-color);
     border: 1px solid var(--border-color);
@@ -145,9 +121,7 @@
 
 .img-wrapper-small {
     width: 140px;
-    /* Fixed width for image on left */
     height: 100%;
-    /* Full height of parent */
     min-height: 140px;
     flex-shrink: 0;
     overflow: hidden;
@@ -165,7 +139,6 @@
     transform: scale(1.05);
 }
 
-/* Price Overlay (Giá đè lên ảnh) */
 .price-overlay {
     position: absolute;
     top: 10px;
@@ -187,8 +160,6 @@
     color: var(--heading-color);
 }
 
-
-/* --- 5. MINI OVERVIEW CARDS (HÀNG DƯỚI) --- */
 .mini-overview-card {
     background: var(--surface-color);
     border-radius: 8px;
@@ -246,7 +217,6 @@
     opacity: 0.7;
 }
 
-/* Special Card (Khối Happy Hour) */
 .special-card-bg {
     background: var(--accent-color);
     color: var(--contrast-color);
@@ -259,7 +229,6 @@
     color: var(--contrast-color);
 }
 
-/* Nút Browse All */
 .btn-outline-gold-large {
     display: inline-block;
     padding: 12px 40px;
@@ -277,7 +246,6 @@
     color: var(--contrast-color);
 }
 
-/* --- 6. RESPONSIVE --- */
 @media (max-width: 991px) {
     .img-wrapper-large {
         height: 250px;
@@ -299,7 +267,6 @@
         height: 100px;
     }
 
-    /* Mobile: Di chuyển giá lên góc phải ảnh */
     .price-overlay {
         top: 15px;
         right: 0;
