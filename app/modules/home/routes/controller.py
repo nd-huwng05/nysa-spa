@@ -10,5 +10,9 @@ class Controller:
     def __init__(self, config:ModuleConfig, service:Service):
         self.handler = Handler(config, service)
 
-    def index(self):
+    @staticmethod
+    def index():
         return render_template('page/index.html')
+
+    def push_section_nav(self):
+        return self.handler.push_section_nav()

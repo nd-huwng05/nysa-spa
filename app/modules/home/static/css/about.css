@@ -1,28 +1,24 @@
-/* --- ÁP DỤNG THEME NYSA GOLDEN HOUR CHO ABOUT SECTION --- */
-
 .about-section {
-    background-color: var(--background-color); /* Nền Kem sáng (#FFFEFC) */
+    background-color: var(--background-color);
     padding: 80px 0;
-    color: var(--default-color); /* Chữ màu Nâu Xám (#5D544F) */
+    color: var(--default-color);
     overflow: hidden;
-    font-family: var(--default-font); /* Dùng font chuẩn của web */
+    font-family: var(--default-font);
 }
 
-/* --- Section Title (Phần tiêu đề chung) --- */
 .section-title .subtitle {
-    color: var(--accent-color); /* Màu Đồng (#C18C5D) */
+    color: var(--accent-color);
     font-family: var(--nav-font);
     display: block;
 }
 
 .section-title h2 {
-    color: var(--heading-color); /* Màu Nâu Đen (#2E2623) */
+    color: var(--heading-color);
     font-family: var(--heading-font);
 }
 
-/* --- Content bên trái --- */
 .about-content .subtitle {
-    color: var(--accent-color); /* Màu Đồng */
+    color: var(--accent-color);
     font-size: 0.9rem;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -36,18 +32,17 @@
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 20px;
-    color: var(--heading-color); /* Màu Nâu Đen - Rất sang */
+    color: var(--heading-color);
     font-family: var(--heading-font);
 }
 
 .about-content p {
     font-size: 1rem;
-    line-height: 1.7; /* Tăng khoảng cách dòng để dễ đọc hơn */
+    line-height: 1.7;
     margin-bottom: 30px;
     color: var(--default-color);
 }
 
-/* --- List check --- */
 .features-list {
     list-style: none;
     padding: 0;
@@ -59,36 +54,34 @@
     align-items: flex-start;
     margin-bottom: 15px;
     font-size: 1rem;
-    color: var(--heading-color); /* Chữ trong list đậm hơn văn bản thường 1 chút */
+    color: var(--heading-color);
 }
 
 .features-list li i {
-    color: var(--accent-color); /* Icon màu Đồng */
+    color: var(--accent-color);
     font-size: 1.2rem;
     margin-right: 15px;
     margin-top: 2px;
 }
 
-/* --- Button Nysa Style --- */
 .btn-primary {
-    background-color: var(--accent-color); /* Nền nút màu Đồng */
+    background-color: var(--accent-color);
     border: 1px solid var(--accent-color);
-    color: var(--contrast-color); /* Chữ trắng */
-    padding: 12px 35px; /* Nút to hơn chút cho sang */
-    border-radius: 50px; /* Bo tròn mềm mại hợp với Spa */
+    color: var(--contrast-color);
+    padding: 12px 35px;
+    border-radius: 50px;
     font-weight: 600;
     transition: all 0.3s ease;
     font-family: var(--nav-font);
 }
 
 .btn-primary:hover {
-    background-color: var(--heading-color); /* Hover chuyển sang màu Nâu Đen */
+    background-color: var(--heading-color);
     border-color: var(--heading-color);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(193, 140, 93, 0.4); /* Bóng màu đồng nhạt */
+    box-shadow: 0 5px 15px rgba(193, 140, 93, 0.4);
 }
 
-/* --- Image Composition (Phần ảnh bên phải) --- */
 .image-composition-wrapper {
     position: relative;
     height: 480px;
@@ -102,13 +95,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px; /* Bo góc ảnh */
+    border-radius: 12px;
 }
 
 .image-main,
 .image-secondary {
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(46, 38, 35, 0.15); /* Bóng đổ màu nâu nhẹ, không dùng màu đen sì */
+    box-shadow: 0 15px 40px rgba(46, 38, 35, 0.15);
     border-radius: 12px;
     transition: transform 0.4s ease;
 }
@@ -117,30 +110,28 @@
     position: absolute;
     top: 20px;
     right: 0;
-    width: 75%; /* Ảnh chính to hơn chút */
+    width: 75%;
     height: 90%;
     z-index: 10;
-    border: 1px solid rgba(193, 140, 93, 0.2); /* Viền mỏng màu đồng rất nhạt */
+    border: 1px solid rgba(193, 140, 93, 0.2);
 }
 
-/* --- CẤU TRÚC KHUNG CHỨA ẢNH --- */
 .image-composition-wrapper {
     position: relative;
-    height: auto; /* Để height auto để linh hoạt theo ảnh */
-    min-height: 500px; /* Chiều cao tối thiểu để không bị hụt */
+    height: auto;
+    min-height: 500px;
     max-width: 650px;
     margin-left: auto;
-    padding-top: 40px; /* Chừa khoảng trống phía trên cho cái Card nổi */
+    padding-top: 40px;
 }
 
-/* Ảnh chính */
 .image-composition-wrapper .image-main {
     position: relative;
-    width: 90%; /* Thu nhỏ ảnh lại chút để chừa chỗ cho Card */
-    margin-left: 0; /* Căn trái để Card bên phải không che hết mặt */
+    width: 90%;
+    margin-left: 0;
     z-index: 10;
     border-radius: 12px;
-    box-shadow: 0 15px 40px rgba(46, 38, 35, 0.15); /* Bóng màu nâu nhạt */
+    box-shadow: 0 15px 40px rgba(46, 38, 35, 0.15);
 }
 
 .image-composition-wrapper .img-fluid {
@@ -150,30 +141,23 @@
     display: block;
 }
 
-/* --- STATS CARD (THẺ NỔI GÓC PHẢI) --- */
 .stats-card {
     position: absolute;
-    top: 0;  /* TREO GÓC TRÊN */
-    right: 0; /* TREO GÓC PHẢI */
-    width: 45%; /* Chiếm khoảng gần một nửa chiều ngang */
+    top: 0;
+    right: 0;
+    width: 45%;
     min-width: 250px;
-
-    /* Màu sắc theo Theme Nysa */
-    background-color: var(--surface-color); /* Nền trắng (#ffffff) */
-    border-top: 4px solid var(--accent-color); /* Viền trên màu Đồng tạo điểm nhấn */
-
+    background-color: var(--surface-color);
+    border-top: 4px solid var(--accent-color);
     border-radius: 8px;
     padding: 25px 20px;
     display: flex;
     justify-content: space-around;
     gap: 15px;
-    z-index: 20; /* Nằm đè lên trên ảnh */
-
-    /* Hiệu ứng bóng đổ */
+    z-index: 20;
     box-shadow: 0 10px 30px rgba(46, 38, 35, 0.15);
 }
 
-/* Nội dung bên trong Card */
 .stats-item {
     text-align: center;
 }
@@ -181,7 +165,7 @@
 .stats-item h3 {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--accent-color); /* Số năm/khách hàng màu ĐỒNG */
+    color: var(--accent-color);
     margin-bottom: 5px;
     line-height: 1;
     font-family: var(--heading-font);
@@ -190,44 +174,38 @@
 .stats-item p {
     font-size: 0.8rem;
     margin: 0;
-    color: var(--heading-color); /* Chữ chú thích màu NÂU ĐEN */
+    color: var(--heading-color);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* --- RESPONSIVE (XỬ LÝ TRÊN ĐIỆN THOẠI & MÁY TÍNH BẢNG) --- */
 @media (max-width: 992px) {
-    /* 1. Reset khung chứa */
     .image-composition-wrapper {
         min-height: auto;
-        margin: 40px auto 0 auto; /* Cách đoạn trên ra */
-        padding-top: 0; /* Bỏ padding top vì không cần treo card nữa */
+        margin: 40px auto 0 auto;
+        padding-top: 0;
         max-width: 100%;
     }
 
-    /* 2. Ảnh chính full màn hình */
     .image-composition-wrapper .image-main {
         width: 100%;
         margin-left: 0;
     }
 
-    /* 3. Card rớt xuống dưới ảnh thay vì treo lơ lửng che mất ảnh */
     .stats-card {
-        position: relative; /* Không dùng absolute nữa */
+        position: relative;
         top: auto;
         right: auto;
-
-        width: 100%; /* Full chiều ngang */
-        margin-top: -30px; /* Kéo lên đè nhẹ lên ảnh 1 xíu cho đẹp */
+        width: 100%;
+        margin-top: -30px;
         margin-bottom: 20px;
-
-        flex-direction: row; /* Vẫn giữ hàng ngang */
+        flex-direction: row;
         justify-content: space-around;
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
     .stats-item h3 {
-        font-size: 1.8rem; /* Giảm size chữ số một chút */
+        font-size: 1.8rem;
     }
 }

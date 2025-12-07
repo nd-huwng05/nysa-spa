@@ -1,17 +1,16 @@
 {%block combo%}
+{%for item in menu_nav%}
+    {%if item.name == "combo"%}
 <section id="combo" class="offer-cards py-5 py-md-5">
 
     <div class="container section-title aos-init aos-animate" data-aos="fade-up" >
         <span class="subtitle" translate="no">Combo</span>
         <h2 translate="no">Combo Packages</h2>
-        <p>Explore our comprehensive and most economical treatment
-            packages, designed for the ultimate relaxation experience</p>
+        <p>{{item.description}}</p>
     </div>
 
     <div class="container">
-
         <div class="row g-4 justify-content-center">
-
             <div class="col-lg-6 aos-init " data-aos="fade-up" data-aos-delay="200">
                 <div class="offer-card d-flex flex-md-row">
                     <div class="offer-image-container position-relative w-100 w-md-40 rounded-top rounded-md-start">
@@ -53,7 +52,7 @@
                                 <i class="bi bi-clock me-2"></i>
                                 <span>Valid until End of December</span>
                             </div>
-                            <a href="#" class="btn-reserve btn-sm">Book Package</a>
+                            <a href="#" class="btn-reserve btn-sm">Booking</a>
                         </div>
                     </div>
                 </div>
@@ -99,7 +98,7 @@
                                 <i class="bi bi-clock me-2"></i>
                                 <span>Valid until End of December</span>
                             </div>
-                            <a href="#" class="btn-reserve btn-sm">Book Package</a>
+                            <a href="#" class="btn-reserve btn-sm">Booking</a>
                         </div>
                     </div>
                 </div>
@@ -146,7 +145,7 @@
                                 <i class="bi bi-clock me-2"></i>
                                 <span>Valid until End of December</span>
                             </div>
-                            <a href="#" class="btn-reserve btn-sm">Book Package</a>
+                            <a href="#" class="btn-reserve btn-sm">Booking</a>
                         </div>
                     </div>
                 </div>
@@ -193,7 +192,7 @@
                                 <i class="bi bi-clock me-2"></i>
                                 <span>Valid until End of December</span>
                             </div>
-                            <a href="#" class="btn-reserve btn-sm">Book Package</a>
+                            <a href="#" class="btn-reserve btn-sm">Booking</a>
                         </div>
                     </div>
                 </div>
@@ -249,4 +248,6 @@
     </div>
 
 </section>
+{%endif%}
+{%endfor%}
 {%endblock%}

@@ -1,9 +1,11 @@
 {%block service%}
+{%for item in menu_nav%}
+    {%if item.name == "services"%}
 <section id="services" class="spa-showcase section py-5 light-background">
     <div class="container section-title aos-init aos-animate" data-aos="fade-up">
         <span class="subtitle" translate="no">Services</span>
         <h2 translate="no">My Services</h2>
-        <p>Indulge in our sanctuary of tranquility. We offer a wide range of therapeutic treatments designed to rejuvenate your mind, body, and soul using organic ingredients and expert techniques.</p>
+        <p>{{item.description}}</p>
     </div>
     <div class="container">
         <div class="row gy-4 mb-5 align-items-stretch">
@@ -38,9 +40,8 @@
             </div>
 
             <div class="col-lg-7">
-                <div class="row h-100 gy-4">
-
-                    <div class="col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                <div class="row h-100 gy-4" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="col-md-6">
                         <div class="service-card-small d-flex align-items-center h-100">
                             <div class="img-wrapper-small position-relative">
                                 <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop"
@@ -57,7 +58,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" data-aos="zoom-in" data-aos-delay="150">
+                    <div class="col-md-6">
                         <div class="service-card-small d-flex align-items-center h-100">
                             <div class="img-wrapper-small position-relative">
                                 <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=400&auto=format&fit=crop"
@@ -74,7 +75,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="col-md-6">
                         <div class="service-card-small d-flex align-items-center h-100">
                             <div class="img-wrapper-small position-relative">
                                 <img src="https://images.unsplash.com/photo-1591343395082-e120087004b4?q=80&w=400&auto=format&fit=crop"
@@ -90,7 +91,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" data-aos="zoom-in" data-aos-delay="250">
+                    <div class="col-md-6">
                         <div class="service-card-small d-flex align-items-center h-100">
                             <div class="img-wrapper-small position-relative">
                                 <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=400&auto=format&fit=crop"
@@ -205,4 +206,6 @@
 
     </div>
 </section>
+{%endif%}
+{%endfor%}
 {%endblock%}

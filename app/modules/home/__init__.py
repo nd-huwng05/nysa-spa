@@ -5,8 +5,8 @@ from .routes.controller import Controller
 from .service.service import Service
 from .routes import register_routes
 from app.core.environment import Environment
+from ..event import EventModule
 from ..service import ServiceModule
-
 
 class HomeModule:
     def __init__(self, app, env: Environment):
@@ -15,7 +15,8 @@ class HomeModule:
         self.env = env
         repo = Repository(env)
         self.service = Service(repo=repo, config=self.config)
-        self.service_module = ServiceModule(app=app, env=env)
+        self.env.add_module('event_module', EventModule(app=app, env=env))
+        self.env.add_module('service_module', ServiceModule(app=app, env=env))
 
     def register(self):
         register_routes(self.app, self.service, self.config)

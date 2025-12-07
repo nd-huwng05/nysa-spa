@@ -26,8 +26,12 @@ class Repository:
     def get_user_auth_by_provider_id(provider_id):
         return UserAuthMethod.query.filter_by(provider_id=provider_id, provider=AuthMethodEnum.GOOGLE).first()
 
+    @staticmethod
+    def get_user_role_by_id(user_id: int) -> RoleAccount:
+        return UserAuthMethod.query.filter_by(user_id=user_id).first().role
+
     def update_last_login_at(self, user_id: int):
-        user_auth = UserAuthMethod.query.filter(user_id=user_id)
+        user_auth = UserAuthMethod.query.filter_by(user_id=user_id)
         for auth in user_auth:
             auth.last_login_at = datetime.now()
             self.db.session.commit()

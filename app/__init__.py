@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from rich.console import Console
 from rich.table import Table
 from app.core.environment import Environment
@@ -20,6 +20,7 @@ class Server:
         self.env.init_app(self.app)
 
         self.setup_health_check()
+        self.setup_error_handler()
 
         self.init_modules()
         self.init_models()
@@ -33,6 +34,21 @@ class Server:
                 'message': 'Server is up and running',
                 'timestamp': datetime.utcnow().isoformat()
             })
+
+    def setup_error_handler(self):
+        @self.app.errorhandler(500)
+        def internal_server_error(e):
+            try:
+                self.env.db.session.rollback()
+            except:
+                pass
+
+            return render_template('errors/500.html'),500
+
+        @self.app.errorhandler(404)
+        def not_found(e):
+            return render_template('errors/404.html'),404
+
 
     def print_routes(self):
         console = Console()
@@ -57,6 +73,7 @@ class Server:
         with self.app.app_context():
             import app.modules.user.repository.models
             import app.modules.home.repository.models
+            import app.modules.service.repository.models
 
     def start(self):
         self.print_routes()

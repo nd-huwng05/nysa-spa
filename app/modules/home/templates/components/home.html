@@ -1,5 +1,7 @@
 {% block wellcome %}
-<section id="hero" class="hero section light-background">
+{%for item in menu_nav%}
+    {%if item.name == "home"%}
+<section id="home" class="hero section light-background">
 
     <div class="video-background">
         <video autoplay muted loop playsinline>
@@ -12,25 +14,6 @@
     <div class="hero-content-old container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="swiper init-swiper">
-            <script type="application/json" class="swiper-config">
-                {
-                    "loop": true,
-                    "speed": 1000,
-                    "autoplay": {
-                        "delay": 6000,
-                        "disableOnInteraction": false
-                    },
-                    "effect": "fade",
-                    "fadeEffect": {
-                        "crossFade": true
-                    },
-                    "slidesPerView": 1,
-                    "navigation": {
-                        "nextEl": ".swiper-button-next",
-                        "prevEl": ".swiper-button-prev"
-                    }
-                }
-            </script>
 
             <div class="swiper-wrapper">
 
@@ -116,11 +99,14 @@
                     </div>
                 </div>
 
-            </div> <div class="swiper-button-prev"></div>
+            </div>
+            <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
 
         </div>
     </div>
 
 </section>
+{%endif%}
+{%endfor%}
 {% endblock %}
