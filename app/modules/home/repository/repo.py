@@ -14,11 +14,10 @@ class Repository:
             if role_auth_method is None:
                 return Section.query.filter(Section.role == RoleSection.DEFAULT).all()
             else:
-                role_auth = role_auth_method.value
-                if role_auth == RoleSection.ADMIN.value or role_auth == RoleSection.STAFF.value:
-                    return Section.query.filter(Section.role.value == role_auth).all()
+                if role_auth_method.value in [RoleSection.ADMIN.value, RoleSection.STAFF.value]:
+                    return Section.query.filter(Section.role == role_auth_method.value).all()
                 else:
-                    return Section.query.filter(Section.role == RoleSection.DEFAULT, Section.role == RoleSection.CUSTOMER).all()
+                    return Section.query.filter(Section.role.in_([RoleSection.DEFAULT, RoleSection.CUSTOMER])).all()
         except Exception as e:
             logger.error("Can't get section nav", data=e)
             raise Exception("500 Server Error")

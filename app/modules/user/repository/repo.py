@@ -31,7 +31,7 @@ class Repository:
         return UserAuthMethod.query.filter_by(user_id=user_id).first().role
 
     def update_last_login_at(self, user_id: int):
-        user_auth = UserAuthMethod.query.filter(user_id=user_id)
+        user_auth = UserAuthMethod.query.filter_by(user_id=user_id)
         for auth in user_auth:
             auth.last_login_at = datetime.now()
             self.db.session.commit()
