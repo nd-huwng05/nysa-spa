@@ -10,8 +10,10 @@ class Controller:
     def __init__(self, config:ModuleConfig, service:Service):
         self.handler = Handler(config, service)
 
-    def service_view(self):
-        return render_template('page/service.html')
+    @staticmethod
+    def service_search_view():
+        return render_template('page/service_search.html')
 
-    def service_detail_view(self):
+    @staticmethod
+    def service_detail_view():
         return render_template('page/service_detail.html')

@@ -1,0 +1,23 @@
+{%extends "base.html"%}
+
+{%block css%}
+<link rel="stylesheet" href="static/css/service_search.css">
+{%endblock%}
+
+{%block title%}
+Search Service
+{%endblock%}
+
+{%block content%}
+{%include 'components/head.html'%}
+<section id="search" class="services-section section light-background">
+    <div class="container">
+        {%include 'components/filter.html'%}
+        {%include 'components/service_list.html'%}
+    </div>
+</section>
+{%endblock%}
+
+{% block scripts%}
+<script src="static/js/service_search.js"></script>
+{% endblock %}
