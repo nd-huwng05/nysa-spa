@@ -64,7 +64,7 @@ class Service(BaseModel):
     duration_minutes = Column(Integer, nullable=False)
     img_url = Column(String(255), nullable=False)
     is_active = Column(Boolean, server_default='1')
-    type = Column(Enum(ServiceType), default=ServiceType.SINGLE)
+    type = Column(Enum(ServiceType), server_default=ServiceType.SINGLE.value)
 
     categories = relationship("Category", secondary=service_category, back_populates="services")
     features = relationship("Feature", secondary=service_feature, back_populates="services")
