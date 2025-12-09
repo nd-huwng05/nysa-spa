@@ -26,7 +26,6 @@ class User(BaseModel):
     email = Column(String(255), unique=True)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")
-    # staffs = relationship("Staff",backref="user" ,cascade="all, delete-orphan", lazy="selectin")
 
     def check_password_hash(self, password:str) -> bool:
         if hashlib.md5(password.encode()).hexdigest().__eq__(self.password):
@@ -42,3 +41,5 @@ class UserAuthMethod(BaseModel):
     role = Column(Enum(RoleAccount), server_default=RoleAccount.CUSTOMER.value)
     last_login_at = Column(DateTime, server_default=func.now(), server_onupdate=func.now())
     active = Column(Boolean, server_default=text('1'))
+
+    staff = relationship("Staff", back_populates="user_auth", uselist=False)

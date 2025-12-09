@@ -6,3 +6,5 @@ class Service:
         self.repo = repo
         self.config = config
 
+    def get_info(self):
+        print(1)
