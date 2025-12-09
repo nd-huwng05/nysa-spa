@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadMoreBtn.addEventListener('click', function(e) {
             e.preventDefault(); // Ngăn load lại trang
             const originalText = this.innerText;
-            this.innerText = 'Đang tải...';
+            this.innerText = 'Loading...';
             this.classList.add('disabled');
 
             setTimeout(() => {
