@@ -34,7 +34,7 @@ class Staff(BaseModel):
     user_auth = relationship("UserAuthMethod", back_populates="staff")
     calendars = relationship("StaffCalendar", back_populates="staff", cascade="all, delete-orphan")
     permissions = relationship("StaffPermission", back_populates="staff", cascade="all, delete-orphan")
-    booking_items = relationship("BookingDetail", back_populates="staff", lazy='dynamic')
+    booking_details = relationship("BookingDetail", back_populates="staff", lazy='dynamic')
 
 
 class ShiftType(enum.Enum):

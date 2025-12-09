@@ -3,6 +3,7 @@ from rich.console import Console
 from rich.table import Table
 from app.core.environment import Environment
 from app.core.logger import logger
+from app.modules.booking import BookingModule
 from app.modules.home import HomeModule
 from app.modules.service import ServiceModule
 from app.modules.user import UserModule
@@ -77,6 +78,7 @@ class Server:
             import app.modules.service.repository.models
             import app.modules.staff.repository.models
             import app.modules.customer.repository.models
+            import app.modules.booking.repository.models
 
     def start(self):
         self.print_routes()

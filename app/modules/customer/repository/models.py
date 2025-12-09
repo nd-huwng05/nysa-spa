@@ -1,5 +1,6 @@
 import enum
 from sqlalchemy import Column, Integer, String, Enum, Float
+from sqlalchemy.orm import relationship
 
 from app.core.database import BaseModel
 
@@ -20,3 +21,5 @@ class Customer(BaseModel):
     membership_tier = Column(Enum(MembershipTier), server_default=MembershipTier.STANDARD.value, nullable=False)
     points = Column(Integer, server_default='0')
     total_spent = Column(Float, server_default='0')
+
+    bookings = relationship("Booking", back_populates="customer")

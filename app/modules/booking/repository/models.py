@@ -24,6 +24,7 @@ class Booking(BaseModel):
     total_amount = Column(Float, nullable=False, server_default='0.0')
 
     booking_details = relationship('BookingDetail', back_populates='booking')
+    customer = relationship('Customer', back_populates='bookings')
 
 class BookingDetail(BaseModel):
     __tablename__ = 'booking_detail'
