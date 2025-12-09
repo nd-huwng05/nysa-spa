@@ -69,11 +69,14 @@ class Server:
         HomeModule(self.app, self.env).register()
         ServiceModule(self.app, self.env).register()
 
+
     def init_models(self):
         with self.app.app_context():
             import app.modules.user.repository.models
             import app.modules.home.repository.models
             import app.modules.service.repository.models
+            import app.modules.staff.repository.models
+            import app.modules.customer.repository.models
 
     def start(self):
         self.print_routes()
