@@ -1,6 +1,5 @@
 import enum
-
-from sqlalchemy import Column, Integer, String, ForeignKey, Text, DECIMAL, Boolean, DateTime, Table, Enum
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, DECIMAL, Boolean, DateTime, Table, Enum, JSON
 from sqlalchemy.orm import relationship
 from app.core.database import BaseModel
 
@@ -18,12 +17,21 @@ service_combo = Table(
     Column('service_id', Integer, ForeignKey('service.id'), primary_key=True)
 )
 
-class ServiceCategory(BaseModel):
-    __tablename__ = 'service_category'
+service_category = Table(
+    'service_category',
+    BaseModel.metadata,
+    Column('service_id', Integer, ForeignKey('service.id'), primary_key=True),
+    Column('category_id', Integer, ForeignKey('category.id'), primary_key=True)
+)
+
+
+class Category(BaseModel):
+    __tablename__ = 'category'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
 
-    services = relationship("Service", back_populates="category")
+    services = relationship("Service", secondary=service_category, back_populates="categories")
+
 
 class Feature(BaseModel):
     __tablename__ = 'feature'
@@ -41,33 +49,32 @@ class Badge(BaseModel):
 
     service_badges = relationship("ServiceBadge", back_populates="badge")
 
+
 class ServiceType(enum.Enum):
     SINGLE = "single"
     COMBO = "combo"
 
+
 class Service(BaseModel):
     __tablename__ = 'service'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    category_id = Column(Integer, ForeignKey('service_category.id'), nullable=False)
     name = Column(String(100), nullable=False)
-    description = Column(Text)
+    short_description = Column(Text)
     price = Column(DECIMAL(12, 0), nullable=False)
     duration_minutes = Column(Integer, nullable=False)
     img_url = Column(String(255), nullable=False)
     is_active = Column(Boolean, server_default='1')
-    type = Column(Enum(ServiceType), server_default=ServiceType.SINGLE.value)
+    type = Column(Enum(ServiceType), default=ServiceType.SINGLE)
 
-    category = relationship("ServiceCategory", back_populates="services")
+    categories = relationship("Category", secondary=service_category, back_populates="services")
     features = relationship("Feature", secondary=service_feature, back_populates="services")
     service_badges = relationship("ServiceBadge", back_populates="service", cascade="all, delete-orphan")
+    details = relationship('ServiceDetail', back_populates='service', uselist=False, cascade="all, delete-orphan")
+    included_services = relationship("Service", secondary=service_combo, primaryjoin=id == service_combo.c.combo_id,
+                                     secondaryjoin=id == service_combo.c.service_id, back_populates="parent_combos")
+    parent_combos = relationship("Service", secondary=service_combo, primaryjoin=id == service_combo.c.service_id,
+                                 secondaryjoin=id == service_combo.c.combo_id, back_populates="included_services")
 
-    included_services = relationship(
-        "Service",
-        secondary=service_combo,
-        primaryjoin=id == service_combo.c.combo_id,
-        secondaryjoin=id == service_combo.c.service_id,
-        backref="combos"
-    )
 
 class ServiceBadge(BaseModel):
     __tablename__ = 'service_badge'
@@ -79,3 +86,15 @@ class ServiceBadge(BaseModel):
 
     service = relationship("Service", back_populates="service_badges")
     badge = relationship("Badge", back_populates="service_badges")
+
+
+class ServiceDetail(BaseModel):
+    __tablename__ = 'service_detail'
+    service_id = Column(Integer, ForeignKey('service.id'), primary_key=True)
+    long_description = Column(Text, nullable=True)
+    benefits = Column(Text, nullable=True)
+    process_steps = Column(JSON, nullable=True)
+    notes = Column(Text, nullable=True)
+    contraindication = Column(Text, nullable=True)
+
+    service = relationship("Service", back_populates="details")

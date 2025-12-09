@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         grabCursor: true,
     });
 
-    // 4. Xử lý nút Đặt Lịch
     const bookBtn = document.querySelector('.btn-accent');
     if(bookBtn) {
         bookBtn.addEventListener('click', function(e) {
@@ -56,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Chỉnh ngày mặc định là hôm nay
     const dateInput = document.querySelector('input[type="date"]');
     if(dateInput) {
         const today = new Date().toISOString().split('T')[0];
