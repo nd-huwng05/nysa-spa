@@ -9,9 +9,13 @@ from .handler import Handler
 
 class Controller:
     def __init__(self, config:ModuleConfig, service:Service, env: Environment):
+        self.book_view = None
         self.handler = Handler(env, config, service)
 
-    def index(self):
-        return render_template('page/service.html')
+    @staticmethod
+    def book_view(self):
+        return render_template('page/book_view.html')
 
-
+    @staticmethod
+    def book_confirm(self):
+        return render_template('page/book_confirm.html')

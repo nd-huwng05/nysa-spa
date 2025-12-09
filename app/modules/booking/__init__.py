@@ -16,6 +16,7 @@ class BookingModule:
         repo = Repository(env)
         self.service = Service(repo=repo, config=self.config)
 
+
     def register(self):
         register_routes(self.app, self.service, self.config)
 

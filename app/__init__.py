@@ -69,6 +69,7 @@ class Server:
         UserModule(self.app, self.env).register()
         HomeModule(self.app, self.env).register()
         ServiceModule(self.app, self.env).register()
+        BookingModule(self.app, self.env).register()
 
 
     def init_models(self):

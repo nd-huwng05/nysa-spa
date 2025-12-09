@@ -12,7 +12,7 @@ class Controller:
 
     @staticmethod
     def index():
-        return render_template('page/index.html')
+        return render_template('page/book_view.html')
 
     def push_section_nav(self):
         return self.handler.push_section_nav()
