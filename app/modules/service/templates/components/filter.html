@@ -20,9 +20,9 @@
                     <div class="d-flex gap-2 flex-wrap">
 
                         <select name="category" class="form-select w-auto">
-                            <option value="all">All Categories</option>
+                            <option value="">All Categories</option>
                             {%for c in filter.category%}
-
+                                <option value="{{c.id}}">{{c.name}}</option>
                             {%endfor%}
                         </select>
 
@@ -35,9 +35,9 @@
 
                         <select name="badge" class="form-select w-auto">
                             <option value="">All Tags</option>
-                            <option value="hot">🔥 Hot / Best Seller</option>
-                            <option value="new">✨ New Arrival</option>
-                            <option value="sale">🏷️ On Sale</option>
+                            {%for b in filter.badge%}
+                                <option value="{{b.id}}">{{b.name}}</option>
+                            {%endfor%}
                         </select>
                     </div>
                 </div>
