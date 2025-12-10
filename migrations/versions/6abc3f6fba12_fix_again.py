@@ -1,8 +1,8 @@
-"""struct database
+"""fix again
 
-Revision ID: 05c51a5df905
+Revision ID: 6abc3f6fba12
 Revises: 
-Create Date: 2025-12-10 20:54:37.166674
+Create Date: 2025-12-10 23:39:23.122568
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '05c51a5df905'
+revision = '6abc3f6fba12'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -88,11 +88,31 @@ def upgrade():
     sa.Column('fullname', sa.String(length=255), nullable=True),
     sa.Column('avatar', sa.String(length=255), server_default='https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png', nullable=True),
     sa.Column('email', sa.String(length=255), nullable=True),
+    sa.Column('role', sa.Enum('CUSTOMER', 'STAFF', 'ADMIN', name='roleaccount'), server_default='customer', nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
+    )
+    op.create_table('customer',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('customer_code', sa.String(length=10), nullable=False),
+    sa.Column('fullname', sa.String(length=100), nullable=False),
+    sa.Column('email', sa.String(length=255), nullable=False),
+    sa.Column('phone', sa.String(length=20), nullable=False),
+    sa.Column('address', sa.String(length=255), nullable=False),
+    sa.Column('membership_tier', sa.Enum('STANDARD', 'SILVER', 'GOLD', 'PLATINUM', name='membershiptier'), server_default='standard', nullable=False),
+    sa.Column('points', sa.Integer(), server_default='0', nullable=True),
+    sa.Column('total_spent', sa.DECIMAL(precision=12, scale=0), server_default='0', nullable=True),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('customer_code'),
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('user_id')
     )
     op.create_table('service_badge',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -139,38 +159,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
     sa.PrimaryKeyConstraint('service_id', 'feature_id')
     )
-    op.create_table('user_auth_method',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('provider', sa.Enum('GOOGLE', 'LOCAL', name='authmethodenum'), nullable=False),
-    sa.Column('provider_id', sa.Text(), nullable=False),
-    sa.Column('role', sa.Enum('CUSTOMER', 'STAFF', 'ADMIN', name='roleaccount'), server_default='customer', nullable=True),
-    sa.Column('last_login_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('active', sa.Boolean(), server_default=sa.text('1'), nullable=True),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('customer',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('user_auth_id', sa.Integer(), nullable=True),
-    sa.Column('customer_code', sa.String(length=10), nullable=False),
-    sa.Column('fullname', sa.String(length=100), nullable=False),
-    sa.Column('email', sa.String(length=255), nullable=False),
-    sa.Column('phone', sa.String(length=20), nullable=False),
-    sa.Column('address', sa.String(length=255), nullable=False),
-    sa.Column('membership_tier', sa.Enum('STANDARD', 'SILVER', 'GOLD', 'PLATINUM', name='membershiptier'), server_default='standard', nullable=False),
-    sa.Column('points', sa.Integer(), server_default='0', nullable=True),
-    sa.Column('total_spent', sa.DECIMAL(precision=12, scale=0), server_default='0', nullable=True),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['user_auth_id'], ['user_auth_method.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('customer_code'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('user_auth_id')
-    )
     op.create_table('staff',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('staff_code', sa.String(length=10), nullable=False),
@@ -178,15 +166,27 @@ def upgrade():
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('phone', sa.String(length=20), nullable=False),
     sa.Column('address', sa.Text(), nullable=True),
-    sa.Column('user_auth_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('active', sa.Boolean(), nullable=False),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['user_auth_id'], ['user_auth_method.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('staff_code'),
-    sa.UniqueConstraint('user_auth_id')
+    sa.UniqueConstraint('user_id')
+    )
+    op.create_table('user_auth_method',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('provider', sa.Enum('GOOGLE', 'LOCAL', name='authmethodenum'), nullable=False),
+    sa.Column('provider_id', sa.Text(), nullable=False),
+    sa.Column('last_login_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('active', sa.Boolean(), server_default=sa.text('1'), nullable=True),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('booking',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -328,14 +328,14 @@ def downgrade():
     op.drop_table('staff_calendar')
     op.drop_table('cart')
     op.drop_table('booking')
-    op.drop_table('staff')
-    op.drop_table('customer')
     op.drop_table('user_auth_method')
+    op.drop_table('staff')
     op.drop_table('service_feature')
     op.drop_table('service_detail')
     op.drop_table('service_combo')
     op.drop_table('service_category')
     op.drop_table('service_badge')
+    op.drop_table('customer')
     op.drop_table('user')
     op.drop_table('setting')
     op.drop_table('service')

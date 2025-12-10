@@ -1,25 +1,18 @@
 from flask import request,abort, render_template, redirect, url_for, flash, session, make_response, g
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
-from app.core.environment import Environment
-from app.core.logger import logger
-from ..config.config_module import ModuleConfig
 from ..service.service import Service
 from .handler import Handler
 
 class Controller:
-    def __init__(self, config, service, env):
+    def __init__(self, config, service:Service, env):
         self.handler = Handler(config, service, env)
 
     @staticmethod
     def login():
-        try:
-            identity = getattr(g, 'current_user', None)
-            if identity is None:
-                return render_template('page/login.html')
-            return redirect(url_for('home.index'))
-        except Exception as e:
-            logger.error("Can't render login page", data=e)
-            abort(404)
+        identity = getattr(g, 'current_user', None)
+        if identity is None:
+            return render_template('page/login.html')
+        return redirect(url_for('home.index'))
 
     @staticmethod
     def logout():

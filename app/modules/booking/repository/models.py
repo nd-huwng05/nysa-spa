@@ -8,6 +8,7 @@ class BookingStatus(enum.Enum):
     PENDING = "pending"
     AWAITING_PAYMENT = "awaiting_payment"
     CONFIRMED = "confirmed"
+    IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
     CANCELED = "canceled"
     NO_SHOW = "no_show"

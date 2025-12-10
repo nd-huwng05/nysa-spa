@@ -27,12 +27,13 @@
                     {%endif%}
 
                     <li class="dropdown">
-                        <span class="d-none d-xl-block"
-                              style="color: var(--nav-color); margin-right: 8px; font-size: 14px;">
-                            {{ current_user.fullname }}
-                        </span>
+                        <a>
+                            <span class="d-none d-xl-block"
+                                  style="color: var(--nav-color); margin-right: 8px; font-size: 14px;">
+                                {{current_user.fullname }}
+                            </span>
 
-                            <img src="{{ current_user.avatar }}" alt="Avatar" class="rounded-circle"
+                            <img src="{{current_user.avatar}}" alt="Avatar" class="rounded-circle"
                                  width="35" height="35" style="object-fit: cover;">
 
                             <i class="bi bi-chevron-down toggle-dropdown"></i>

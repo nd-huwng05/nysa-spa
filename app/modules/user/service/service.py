@@ -1,10 +1,11 @@
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import abort
 from app.core.logger import logger
-from ..repository.models import User, RoleAccount
+from ..repository.repo import Repository
+from ..repository.models import User
 
 class Service:
-    def __init__(self, repo, config):
+    def __init__(self, repo:Repository, config):
         self.repo = repo
         self.config = config
 
@@ -15,6 +16,7 @@ class Service:
 
         try:
             self.repo.update_last_login_at(user.id)
+            self.repo.db.session.commit()
         except Exception as e:
             logger.error('Error updating last login at:',data=e)
             abort(500)
@@ -37,14 +39,16 @@ class Service:
                     user_id = self.repo.create_user(email, avatar, name)
                 else:
                     user_id = user_has_email.id
-                self.repo.create_auth_method(user_id, provider_id)
+                self.repo.create_auth_method_google(user_id, provider_id)
             else:
                 user_id = user_auth_google.user_id
         except Exception as e:
+            self.repo.db.session.rollback()
             logger.error("Error google callback", data=e)
             abort(500)
 
         self.repo.update_last_login_at(user_id)
+        self.repo.db.session.commit()
         access_token = create_access_token(identity=str(user_id))
         refresh_token = create_refresh_token(identity=str(user_id))
         return access_token, refresh_token
@@ -52,13 +56,6 @@ class Service:
     def get_user_by_id(self, user_id: int) -> User:
         try:
             return self.repo.get_user_by_id(user_id)
-        except Exception as e:
-            logger.error("Error get user by id", data=e)
-            abort(500)
-
-    def get_user_role_by_id(self, user_id)->RoleAccount:
-        try:
-            return self.repo.get_user_role_by_id(user_id)
         except Exception as e:
             logger.error("Error get user by id", data=e)
             abort(500)

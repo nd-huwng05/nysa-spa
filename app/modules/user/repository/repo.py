@@ -1,5 +1,4 @@
 from datetime import datetime
-from app import logger
 from .models import User, UserAuthMethod, AuthMethodEnum, RoleAccount
 
 
@@ -22,33 +21,18 @@ class Repository:
 
     @staticmethod
     def get_user_auth_by_provider_id(provider_id):
-        return UserAuthMethod.query.filter_by(provider_id=provider_id, provider=AuthMethodEnum.GOOGLE).first()
+        return UserAuthMethod.query.filter_by(provider_id=provider_id).first()
 
     @staticmethod
-    def get_user_role_by_id(user_id: int) -> RoleAccount:
-        return UserAuthMethod.query.filter_by(user_id=user_id).first().role
-
-    def update_last_login_at(self, user_id: int):
-        user_auth = UserAuthMethod.query.filter_by(user_id=user_id)
-        for auth in user_auth:
-            auth.last_login_at = datetime.now()
-            self.db.session.commit()
+    def update_last_login_at(user_id: int):
+        UserAuthMethod.query.filter_by(user_id=user_id).update({'last_login_at': datetime.now()})
 
     def create_user(self, email: str, avatar: str, name: str) -> int:
-        try:
-            new_user = User(email=email, avatar=avatar, fullname=name)
-            self.db.session.add(new_user)
-            self.db.session.commit()
-            return new_user.id
-        except Exception as e:
-            logger.error("Don't create user {}".format(e))
-            raise Exception("505 Server Error")
+        new_user = User(email=email, avatar=avatar, fullname=name, role=RoleAccount.CUSTOMER)
+        self.db.session.add(new_user)
+        self.db.session.flush()
+        return new_user.id
 
-    def create_auth_method(self, user_id: int, provider_id: int):
-        try:
-            new_auth_method = UserAuthMethod(user_id=user_id, provider_id=provider_id, provider=AuthMethodEnum.GOOGLE, role=RoleAccount.CUSTOMER)
-            self.db.session.add(new_auth_method)
-            self.db.session.commit()
-        except Exception as e:
-            logger.error("Don't create auth method {}".format(e))
-            raise Exception("505 Server Error")
+    def create_auth_method_google(self, user_id: int, provider_id: int):
+        new_auth_method = UserAuthMethod(user_id=user_id, provider_id=provider_id, provider=AuthMethodEnum.GOOGLE)
+        self.db.session.add(new_auth_method)

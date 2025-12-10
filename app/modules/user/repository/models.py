@@ -22,9 +22,12 @@ class User(BaseModel):
     password = Column(String(255))
     fullname = Column(String(255))
     avatar = Column(String(255), server_default="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png")
-    email = Column(String(255), unique=True)
+    email = Column(String(255), unique=True, nullable=True)
+    role = Column(Enum(RoleAccount), server_default=RoleAccount.CUSTOMER.value)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")
+    customer = relationship("Customer", back_populates="user", uselist=False)
+    staff = relationship("Staff", back_populates="user", uselist=False)
 
     def check_password_hash(self, password:str) -> bool:
         if hashlib.md5(password.encode()).hexdigest().__eq__(self.password):
@@ -37,9 +40,5 @@ class UserAuthMethod(BaseModel):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     provider = Column(Enum(AuthMethodEnum), nullable=False)
     provider_id = Column(Text, nullable=False)
-    role = Column(Enum(RoleAccount), server_default=RoleAccount.CUSTOMER.value)
     last_login_at = Column(DateTime, server_default=func.now(), server_onupdate=func.now())
     active = Column(Boolean, server_default=text('1'))
-
-    customer = relationship("Customer", back_populates="user_auth", uselist=False)
-    staff = relationship("Staff", back_populates="user_auth", uselist=False)

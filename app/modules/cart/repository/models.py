@@ -9,7 +9,7 @@ class Cart(BaseModel):
     customer_id = Column(Integer, ForeignKey('customer.id'), unique=True, primary_key=True)
 
     customer = relationship("Customer", back_populates="cart")
-    items = relationship('CartItem', backref='cart', lazy=True, cascade="all, delete-orphan")
+    cart_items = relationship('CartItem', backref='cart_items', lazy=True, cascade="all, delete-orphan")
 
 class CartItem(BaseModel):
     __tablename__ = 'cart_item'
@@ -17,5 +17,5 @@ class CartItem(BaseModel):
     cart_id = Column(Integer, ForeignKey('cart.customer_id'), nullable=False)
     service_id = Column(Integer, ForeignKey('service.id'), nullable=False)
 
-    cart = relationship('Cart', back_populates='items')
+    cart = relationship('Cart', back_populates='cart_items')
     service = relationship('Service', lazy='joined')
