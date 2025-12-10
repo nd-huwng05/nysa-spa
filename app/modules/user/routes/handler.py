@@ -1,9 +1,10 @@
 from flask import Request, url_for, g
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+from ..service.service import Service
 
 
 class Handler:
-    def __init__(self, config, service, env):
+    def __init__(self, config, service:Service, env):
         self.config = config
         self.service = service
         self.env = env
@@ -44,7 +45,7 @@ class Handler:
             identity = get_jwt_identity()
             if identity:
                 g.current_user = self.service.get_user_by_id(identity)
-                g.current_role = self.service.get_user_role_by_id(identity)
+                g.current_role = g.current_user.role
 
         except Exception:
             pass
