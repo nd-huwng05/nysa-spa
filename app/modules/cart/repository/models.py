@@ -7,7 +7,7 @@ from app.core.database import BaseModel
 class Cart(BaseModel):
     __tablename__ = 'cart'
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), unique=True)
+    user_id = Column(Integer, ForeignKey('user.id'), unique=True)
 
     items = relationship('CartItem', backref='cart', lazy=True, cascade="all, delete-orphan")
 
