@@ -12,9 +12,9 @@ class Controller:
         self.handler = Handler(config, service, env)
 
     @staticmethod
-    def book_view(self):
+    def book_view():
         return render_template('page/book_view.html')
 
     @staticmethod
-    def book_confirm(self):
+    def book_confirm():
         return render_template('page/book_confirm.html')

@@ -5,12 +5,26 @@
 {%endblock%}
 
 
-{%block booking%}
-Booking View
+{%block title%}
+Booking
 {%endblock%}
 
 {%block content%}
-{%include "components/book_view.html"%}
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <h2 class="fw-bold mb-4" style="color: #0f172a;">Booking</h2>
+            {%include 'components/step_one.html'%}
+            {%include 'components/step_two.html'%}
+            {%include 'components/step_three.html'%}
+        </div>
+
+        <div class="col-lg-4">
+            {%include 'components/summary.html'%}
+        </div>
+    </div>
+</div>
+
 {%endblock%}
 
 {% block scripts%}

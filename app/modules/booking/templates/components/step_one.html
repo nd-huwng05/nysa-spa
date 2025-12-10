@@ -1,0 +1,30 @@
+<div class="section-card" id="step-1">
+    <div class="section-header">
+        <div class="step-num">1</div>
+        <h5 class="step-title">Select Time</h5>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label text-muted">DATE</label>
+            <input type="date" class="form-control" id="inputDate" onchange="checkStep1()">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label text-muted">START TIME</label>
+            <select class="form-select" id="inputTime" onchange="checkStep1()">
+                <option value="" disabled selected>-- Select Time --</option>
+                <option value="09:00">09:00</option>
+                <option value="10:30">10:30</option>
+                <option value="14:00">14:00</option>
+                <option value="16:00">16:00</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <div id="timeEstimate" class="time-estimate-info align-items-center">
+                <i class="fas fa-hourglass-half me-2"></i>
+                <span id="durationText">Total duration: 0 mins</span>
+                <span class="mx-2">|</span>
+                <span class="fw-bold" id="endTimeText">Est. finish: --:--</span>
+            </div>
+        </div>
+    </div>
+</div>
