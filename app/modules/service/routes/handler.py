@@ -11,4 +11,10 @@ class Handler:
         self.service = service
         self.env = env
 
+    def prepare_search_view_data(self):
+        filter_options = self.service.get_filter_master_data()
+        return {
+            'filter': filter_options,
+        }
+
 
