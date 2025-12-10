@@ -3,12 +3,12 @@ from app.core.environment import Environment
 from ..config.config_module import ModuleConfig
 from .controller import Controller
 
-def register_routes(app, service, config:ModuleConfig, env:Environment):
+def register_routes(app, service, config, env):
     c = Controller(service=service, config=config, env=env)
 
-    home_routes = Blueprint('home', __name__, template_folder='../templates', static_folder='../static', url_prefix='/')
+    booking_routes = Blueprint('booking', __name__, template_folder='../templates', static_folder='../static', url_prefix='/booking')
 
 
-    home_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
+    booking_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
 
-    app.register_blueprint(home_routes)
+    app.register_blueprint(booking_routes)

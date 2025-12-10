@@ -1,12 +1,10 @@
 from datetime import datetime
-
 from app import logger
-from app.core.environment import Environment
 from .models import User, UserAuthMethod, AuthMethodEnum, RoleAccount
 
 
 class Repository:
-    def __init__(self, env: Environment):
+    def __init__(self, env):
         self.env = env
         self.db = self.env.db
 

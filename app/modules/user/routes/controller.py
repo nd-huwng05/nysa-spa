@@ -7,7 +7,7 @@ from ..service.service import Service
 from .handler import Handler
 
 class Controller:
-    def __init__(self, config:ModuleConfig, service:Service, env:Environment):
+    def __init__(self, config, service, env):
         self.handler = Handler(config, service, env)
 
     @staticmethod

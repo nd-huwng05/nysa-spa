@@ -1,10 +1,12 @@
-{%block nav%}
 <nav id="navmenu" class="navmenu">
+    {% if current_role.value == "customer" or current_role is not defined or current_role is none %}
     <ul>
-        {%for n in menu_nav%}
-                <li><a href="{{n.url}}"  translate="no">{{n.name}}</a></li>
-        {%endfor%}
+        <li><a href="/#home" class="active">Home</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#combo">Combo</a></li>
+        <li><a href="/service/service-search">Search</a></li>
     </ul>
+    {%endif%}
     <i class=" mobile-nav-toggle d-xl-none bi bi-list list_open"></i>
 </nav>
-{%endblock%}

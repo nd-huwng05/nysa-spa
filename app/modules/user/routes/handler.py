@@ -1,13 +1,9 @@
-from click import option
 from flask import Request, url_for, g
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
-from app.core.environment import Environment
-from ..config.config_module import ModuleConfig
-from ..service.service import Service
 
 
 class Handler:
-    def __init__(self, config: ModuleConfig, service: Service, env: Environment):
+    def __init__(self, config, service, env):
         self.config = config
         self.service = service
         self.env = env
