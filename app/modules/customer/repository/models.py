@@ -23,3 +23,4 @@ class Customer(BaseModel):
     total_spent = Column(Float, server_default='0')
 
     bookings = relationship("Booking", back_populates="customer")
+    vouchers = relationship("Voucher", back_populates="owner")

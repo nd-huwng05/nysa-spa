@@ -7,8 +7,8 @@ from ..service.service import Service
 from .handler import Handler
 
 class Controller:
-    def __init__(self, config:ModuleConfig, service:Service):
-        self.handler = Handler(config, service)
+    def __init__(self, config, service, env):
+        self.handler = Handler(config, service, env)
 
     def index(self):
         return render_template('page/service.html')

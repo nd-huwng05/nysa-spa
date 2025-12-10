@@ -1,12 +1,10 @@
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask import abort
 from app.core.logger import logger
-from ..config.config_module import ModuleConfig
 from ..repository.models import User, RoleAccount
-from ..repository.repo import Repository
 
 class Service:
-    def __init__(self, repo: Repository, config: ModuleConfig):
+    def __init__(self, repo, config):
         self.repo = repo
         self.config = config
 

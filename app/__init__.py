@@ -3,10 +3,19 @@ from rich.console import Console
 from rich.table import Table
 from app.core.environment import Environment
 from app.core.logger import logger
+from app.modules.admin import AdminModule
 from app.modules.booking import BookingModule
+from app.modules.cart import CartModule
+from app.modules.customer import CustomerModule
+from app.modules.customer.config.config_module import CustomerConfig
+from app.modules.event import EventModule
 from app.modules.home import HomeModule
+from app.modules.invoice import InvoiceModule
 from app.modules.service import ServiceModule
+from app.modules.setting import SettingModule
+from app.modules.staff import StaffModule
 from app.modules.user import UserModule
+from app.modules.voucher import VoucherModule
 
 
 class Server:
@@ -22,6 +31,8 @@ class Server:
 
         self.setup_health_check()
         self.setup_error_handler()
+
+        self.setting_module = SettingModule(self.app, self.env)
 
         self.init_modules()
         self.init_models()
@@ -66,10 +77,17 @@ class Server:
         console.print(table)
 
     def init_modules(self):
-        UserModule(self.app, self.env).register()
-        HomeModule(self.app, self.env).register()
-        ServiceModule(self.app, self.env).register()
-
+        UserModule(self.app, self.env).register(setting_module=self.setting_module)
+        HomeModule(self.app, self.env).register(setting_module=self.setting_module)
+        ServiceModule(self.app, self.env).register(setting_module=self.setting_module)
+        StaffModule(self.app, self.env).register(setting_module=self.setting_module)
+        CustomerModule(self.app, self.env).register(setting_module=self.setting_module)
+        CartModule(self.app, self.env).register(setting_module=self.setting_module)
+        BookingModule(self.app, self.env).register(setting_module=self.setting_module)
+        VoucherModule(self.app, self.env).register(setting_module=self.setting_module)
+        InvoiceModule(self.app, self.env).register(setting_module=self.setting_module)
+        EventModule(self.app, self.env).register(setting_module=self.setting_module)
+        AdminModule(self.app, self.env).register(setting_module=self.setting_module)
 
     def init_models(self):
         with self.app.app_context():
@@ -79,6 +97,9 @@ class Server:
             import app.modules.staff.repository.models
             import app.modules.customer.repository.models
             import app.modules.booking.repository.models
+            import app.modules.invoice.repository.models
+            import app.modules.voucher.repository.models
+            import app.modules.cart.repository.models
 
     def start(self):
         self.print_routes()

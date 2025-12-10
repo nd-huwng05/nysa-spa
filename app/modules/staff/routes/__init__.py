@@ -2,12 +2,12 @@ from flask import Blueprint
 from ..config.config_module import ModuleConfig
 from .controller import Controller
 
-def register_routes(app, service, config:ModuleConfig):
-    c = Controller(service=service, config=config)
+def register_routes(app, service, config, env):
+    c = Controller(service=service, config=config, env=env)
 
-    home_routes = Blueprint('home', __name__, template_folder='../templates', static_folder='../static', url_prefix='/')
+    staff_routes = Blueprint('staff', __name__, template_folder='../templates', static_folder='../static', url_prefix='/staff')
 
 
-    home_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
+    staff_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
 
-    app.register_blueprint(home_routes)
+    app.register_blueprint(staff_routes)

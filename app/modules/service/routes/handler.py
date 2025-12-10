@@ -6,8 +6,9 @@ from ..service.service import Service
 
 
 class Handler:
-    def __init__(self, config: ModuleConfig, service: Service):
+    def __init__(self, config, service, env):
         self.config = config
         self.service = service
+        self.env = env
 
 

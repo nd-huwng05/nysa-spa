@@ -2,8 +2,8 @@ from flask import Blueprint
 from ..config.config_module import ModuleConfig
 from .controller import Controller
 
-def register_routes(app, service, config:ModuleConfig):
-    c = Controller(service=service, config=config)
+def register_routes(app, service, config, env):
+    c = Controller(service=service, config=config, env=env)
 
     service_routes = Blueprint('service', __name__, template_folder='../templates', static_folder='../static', url_prefix='/service')
 

@@ -1,8 +1,5 @@
-from app.core.environment import Environment
-
-
 class Repository:
-    def __init__(self, env: Environment):
+    def __init__(self, env):
         self.env = env
         self.db = self.env.db
 

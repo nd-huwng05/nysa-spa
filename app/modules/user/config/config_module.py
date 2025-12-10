@@ -1,11 +1,14 @@
 import os
+from app.core.config import ModuleConfig
 from . import settings
-from flask import Config
 
 
-class ModuleConfig:
+class UserConfig(ModuleConfig):
     def __init__(self, global_config):
-        self.global_config = global_config
         root_path = os.path.dirname(os.path.abspath(__file__))
-        self.private_config = Config(root_path)
-        self.private_config.from_object(settings)
+
+        super(UserConfig, self).__init__(
+            global_config=global_config,
+            setting_module=settings,
+            root_path=root_path,
+        )

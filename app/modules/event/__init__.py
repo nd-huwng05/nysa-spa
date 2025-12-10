@@ -1,20 +1,20 @@
 from .routes.handler import Handler
 from .repository.repo import Repository
-from .config.config_module import ModuleConfig
+from .config.config_module import EventConfig
 from .routes.controller import Controller
 from .service.service import Service
 from .routes import register_routes
 from app.core.environment import Environment
+from ...core.interface import IModule
 
 
-class EventModule:
+class EventModule(IModule):
     def __init__(self, app, env: Environment):
-        self.app = app
-        self.config = ModuleConfig(app.config)
-        self.env = env
+        super().__init__(app, env, module_name="home_module")
+        self.config = EventConfig(app.config)
         repo = Repository(env)
         self.service = Service(repo=repo, config=self.config)
 
-    def register(self):
-        register_routes(self.app, self.service, self.config)
+    def _register_routes(self):
+        register_routes(self.app, self.service, self.config, self.env)
 
