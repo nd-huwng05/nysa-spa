@@ -20,10 +20,10 @@
                     <div class="d-flex gap-2 flex-wrap">
 
                         <select name="category" class="form-select w-auto">
-                            <option value="">All Categories</option>
-                            <option value="body">Body Massage</option>
-                            <option value="face">Facial Care</option>
-                            <option value="therapy">Intensive Therapy</option>
+                            <option value="all">All Categories</option>
+                            {%for c in filter.category%}
+
+                            {%endfor%}
                         </select>
 
                         <select name="duration" class="form-select w-auto">

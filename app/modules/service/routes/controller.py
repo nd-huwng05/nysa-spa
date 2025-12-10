@@ -10,9 +10,9 @@ class Controller:
     def __init__(self, config, service, env):
         self.handler = Handler(config, service, env)
 
-    @staticmethod
-    def service_search_view():
-        return render_template('page/service_search.html')
+    def service_search_view(self):
+        data = self.handler.prepare_search_view_data()
+        return render_template('page/service_search.html', **data)
 
     @staticmethod
     def service_detail_view():
