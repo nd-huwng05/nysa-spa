@@ -6,15 +6,16 @@ from app.core.database import BaseModel
 
 class Cart(BaseModel):
     __tablename__ = 'cart'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), unique=True)
+    customer_id = Column(Integer, ForeignKey('customer.id'), unique=True, primary_key=True)
 
+    customer = relationship("Customer", back_populates="cart")
     items = relationship('CartItem', backref='cart', lazy=True, cascade="all, delete-orphan")
 
 class CartItem(BaseModel):
     __tablename__ = 'cart_item'
-    id = Column(Integer, primary_key=True)
-    cart_id = Column(Integer, ForeignKey('cart.id'), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    cart_id = Column(Integer, ForeignKey('cart.customer_id'), nullable=False)
     service_id = Column(Integer, ForeignKey('service.id'), nullable=False)
 
+    cart = relationship('Cart', back_populates='items')
     service = relationship('Service', lazy='joined')

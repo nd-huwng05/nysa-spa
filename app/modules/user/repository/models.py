@@ -22,7 +22,6 @@ class User(BaseModel):
     password = Column(String(255))
     fullname = Column(String(255))
     avatar = Column(String(255), server_default="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png")
-    phone = Column(String(15), unique=True)
     email = Column(String(255), unique=True)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")
@@ -42,4 +41,5 @@ class UserAuthMethod(BaseModel):
     last_login_at = Column(DateTime, server_default=func.now(), server_onupdate=func.now())
     active = Column(Boolean, server_default=text('1'))
 
+    customer = relationship("Customer", back_populates="user_auth", uselist=False)
     staff = relationship("Staff", back_populates="user_auth", uselist=False)

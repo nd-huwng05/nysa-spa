@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Float, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Float, Text, DECIMAL
 from sqlalchemy.orm import relationship, backref
 from app.core.database import BaseModel
 
@@ -20,7 +20,7 @@ class Booking(BaseModel):
     booking_time = Column(DateTime, nullable=False)
     status = Column(Enum(BookingStatus), nullable=False, server_default=BookingStatus.PENDING.value)
     expires_at = Column(DateTime)
-    total_amount = Column(Float, nullable=False, server_default='0.0')
+    total_amount = Column(DECIMAL(12,0), nullable=False, server_default='0.0')
 
     booking_details = relationship('BookingDetail', back_populates='booking')
     invoices = relationship("Invoice", back_populates="booking", cascade="all, delete-orphan")
@@ -33,7 +33,7 @@ class BookingDetail(BaseModel):
     service_id = Column(Integer, ForeignKey('service.id'), nullable=False)
     staff_id = Column(Integer, ForeignKey('staff.id'), nullable=True)
     duration_minutes = Column(Integer, default=60)
-    price = Column(Float, server_default='0.0')
+    price = Column(DECIMAL(12,0), server_default='0.0')
     parent_id = Column(Integer, ForeignKey('booking_detail.id'), nullable=True)
     notes = Column(Text, nullable=True)
 
