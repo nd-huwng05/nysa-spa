@@ -526,6 +526,44 @@ nav a {
     border: 2px solid #fff;
 }
 
+#header-cart-btn {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+#header-cart-btn:hover {
+    transform: scale(1.1);
+    color: var(--accent-color) !important;
+}
+
+#header-cart-btn:hover i {
+    color: var(--accent-color) !important;
+}
+
+.fly-item {
+    position: fixed;
+    z-index: 99999;
+    width: 30px;
+    height: 30px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes shakeCart {
+    0% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.2) rotate(-15deg); }
+    50% { transform: scale(1.2) rotate(15deg); }
+    75% { transform: scale(1.2) rotate(-15deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.cart-shake-active {
+    animation: shakeCart 0.5s ease-in-out;
+    color: var(--accent-color) !important;
+}
+
 .footer {
     color: var(--default-color);
     background: var(--background-color);

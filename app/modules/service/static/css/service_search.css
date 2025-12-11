@@ -28,6 +28,7 @@
 }
 
 .title-wrapper h1 {
+    font-family: var(--heading-h2-font);
     color: var(--heading-color);
     letter-spacing: 1px;
 }

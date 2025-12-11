@@ -10,18 +10,20 @@
         <div class="header-social-links">
             <div id="google_translate_element" class="me-3"></div>
             {% if not current_user %}
-            <a class="btn-login d-none d-xl-block" href="/user/login">Login</a>
-            <a href="/user/login" class="user-icon d-block d-xl-none fs-4"><i class="bi bi-person"></i></a>
+            <a class="btn-login d-none d-xl-block" href="/user/login?callback_url={{request.full_path}}">Login</a>
+            <a href="/user/login?callback_url={{request.full_path}}" class="user-icon d-block d-xl-none fs-4"><i class="bi bi-person"></i></a>
 
             {% else %}
             <div class="user-menu" style="margin-left: 10px;">
                 <ul>
                     {%if current_role.value=="customer"%}
                     <li>
-                        <a href="/cart" class="cart-icon me-3 position-relative text-reset">
+                        <a href="/cart/cart-view" id="header-cart-btn" class="cart-icon me-3 position-relative text-reset">
                             <i class="bi bi-cart3 fs-4"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                  style="font-size: 10px; padding: 3px 6px;">2</span>
+
+                            <span id="lblCartCount"
+                                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style="font-size: 10px; padding: 3px 6px;">{{count_cart}}</span>
                         </a>
                     </li>
                     {%endif%}
@@ -49,7 +51,7 @@
                             {%if current_role.value =="customer"%}
                             <li><a href="#">Card</a></li>
                             {%endif%}
-                            <li><a href="/user/logout">Logout</a></li>
+                            <li><a href="/user/logout?callback_url={{request.full_path}}">Logout</a></li>
                         </ul>
                     </li>
                 </ul>

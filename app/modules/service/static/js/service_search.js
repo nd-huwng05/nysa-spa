@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 2. Parallax Effect cho Header Text (Bay theo chuột)
     const heroSection = document.getElementById('heroSection');
     const parallaxText = document.getElementById('parallaxText');
 
@@ -11,28 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
             parallaxText.style.transform = `translateX(${x}px) translateY(${y}px)`;
         });
 
-        // Reset vị trí khi chuột rời đi
         heroSection.addEventListener('mouseleave', () => {
             parallaxText.style.transform = 'translate(0,0)';
             parallaxText.style.transition = 'transform 0.5s ease';
-            setTimeout(() => { parallaxText.style.transition = 'none'; }, 500);
+            setTimeout(() => {
+                parallaxText.style.transition = 'none';
+            }, 500);
         });
     }
 
-    // 3. Load More Button Logic
-    const loadMoreBtn = document.querySelector('.btn-outline-accent');
-    if(loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function(e) {
-            e.preventDefault(); // Ngăn load lại trang
-            const originalText = this.innerText;
-            this.innerText = 'Loading...';
-            this.classList.add('disabled');
+    const loadMoreBtn = document.querySelectorAll('.btn-outline-accent');
+    if (loadMoreBtn.length > 0) {
+        loadMoreBtn.forEach(
+            btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const originalText = this.innerText;
+                    this.innerText = 'Loading...';
+                    this.classList.add('disabled');
 
-            setTimeout(() => {
-                alert('Đã tải thêm dịch vụ (Demo)');
-                this.innerText = originalText;
-                this.classList.remove('disabled');
-            }, 1000);
-        });
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.classList.remove('disabled');
+                    }, 1000);
+                });
+            }
+        )
     }
 });
