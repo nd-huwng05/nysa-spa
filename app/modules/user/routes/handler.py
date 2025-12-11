@@ -14,16 +14,16 @@ class Handler:
         password = request.form.get('password')
         if not (username or password):
             raise Exception('Username and password are required')
-
         try:
             access_token, refresh_token = self.service.auth_user_pass(username, password)
             return access_token, refresh_token
         except Exception as e:
             raise e
 
-    def auth_google(self):
+    def auth_google(self, request: Request):
+        callback_url = request.args.get('callback_url')
         redirect_uri = url_for('user.google_callback', _external=True)
-        return self.env.oauth.google.authorize_redirect(redirect_uri)
+        return self.env.oauth.google.authorize_redirect(redirect_uri=redirect_uri, state=callback_url)
 
     def google_callback(self):
         token = self.env.oauth.google.authorize_access_token()

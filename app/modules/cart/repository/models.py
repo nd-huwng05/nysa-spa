@@ -9,7 +9,7 @@ class Cart(BaseModel):
     customer_id = Column(Integer, ForeignKey('customer.id'), unique=True, primary_key=True)
 
     customer = relationship("Customer", back_populates="cart")
-    cart_items = relationship('CartItem', backref='cart_items', lazy=True, cascade="all, delete-orphan")
+    cart_items = relationship('CartItem', back_populates='cart', lazy=True, cascade="all, delete-orphan")
 
 class CartItem(BaseModel):
     __tablename__ = 'cart_item'

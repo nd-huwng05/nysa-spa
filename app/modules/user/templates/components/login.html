@@ -50,6 +50,7 @@
                             <input name="password" type="password" class="form-control form-control-custom rounded-3"
                                    placeholder="••••••••" required>
                         </div>
+                        <input type="hidden" name="callback_url" value="{{callback_url}}">
 
                         <div class="d-flex justify-content-between align-items-center mb-4"></div>
 
@@ -60,7 +61,7 @@
                         <div class="divider">OR LOGIN WITH</div>
 
                         <div class="d-grid gap-2">
-                            <a href="/user/auth_google"
+                            <a href="{{ url_for('user.auth_google', callback_url=callback_url) }}"
                                     class="btn btn-social rounded-3 d-flex align-items-center justify-content-center gap-2">
                                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" alt="Google">
                                 <span class="small">Log in with Google</span>
