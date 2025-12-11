@@ -1,0 +1,50 @@
+<div class="section-card disabled" id="step-3">
+    <div class="section-header justify-content-between">
+        <div class="d-flex align-items-center">
+            <div class="step-num">3</div>
+            <h5 class="step-title">Your Information</h5>
+        </div>
+        <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="toggleEditInfo(this)">
+            <i class="fas fa-pen me-1"></i> Update
+        </button>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="custName" placeholder="Full Name" value="Nguyen Van A"
+                       readonly>
+                <label for="custName">Full Name</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="tel" class="form-control" id="custPhone" placeholder="Phone" value="0912 345 678" readonly>
+                <label for="custPhone">Phone Number</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="email" class="form-control" id="custEmail" placeholder="Email" value="nguyenvanA@gmail.com"
+                       readonly>
+                <label for="custEmail">Email (Read-only)</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <select class="form-select" id="custGender" disabled>
+                    <option value="female" selected>Female</option>
+                    <option value="male">Male</option>
+                </select>
+                <label for="custGender">Gender</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Notes" id="custNotes" style="height: 100px"
+                          readonly></textarea>
+                <label for="custNotes">Notes (Allergies, massage pressure...)</label>
+            </div>
+        </div>
+    </div>
+</div>

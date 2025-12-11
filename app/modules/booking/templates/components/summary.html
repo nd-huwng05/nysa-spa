@@ -1,0 +1,66 @@
+<div class="summary-wrapper">
+    <div class="summary-card">
+        <div class="summary-top">
+            <div class="small text-white-50 mb-1">SELECTED TIME</div>
+            <h2 class="fw-bold m-0 booking_time" id="sumTimeDisplay">--:--</h2>
+            <div class="small mt-1 text-white-50" id="sumEndTimeDisplay"></div>
+            <div class="fw-medium mt-2 pt-2 border-top border-secondary" id="sumDateDisplay">...</div>
+        </div>
+
+        <div class="summary-content">
+            <h6 class="text-uppercase text-muted fw-bold mb-3 small" style="letter-spacing: 1px;">Itinerary</h6>
+
+            <div id="summaryTimeline">
+                <div id="time-placeholder" class="text-center text-muted py-3 small">
+                    <i class="fas fa-clock mb-2 d-block"></i>
+                    Please select a time
+                </div>
+
+                <div class="timeline-node d-none" id="summary-node-101">
+                    <div class="timeline-dot"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="time-label" id="sum-time-101">--:--</span>
+                            <div class="service-label">Hot Stone Body Massage</div>
+                            <span class="staff-label"><i class="fas fa-user-check me-1"></i><span id="sum-staff-101">Lan Anh (Master)</span></span>
+                        </div>
+                        <div class="price-tag">1.200.000đ</div>
+                    </div>
+                </div>
+
+                <div class="timeline-node d-none" id="summary-node-102">
+                    <div class="timeline-dot"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="time-label" id="sum-time-102">--:--</span>
+                            <div class="service-label">Herbal Hair Wash</div>
+                            <span class="staff-label"><i class="fas fa-user-check me-1"></i><span id="sum-staff-102">Lan Anh (Master)</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node d-none" id="summary-node-201">
+                    <div class="timeline-dot"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="time-label" id="sum-time-201">--:--</span>
+                            <div class="service-label">Facial Skincare</div>
+                            <span class="staff-label"><i class="fas fa-user-check me-1"></i><span id="sum-staff-201">Lan Anh (Master)</span></span>
+                        </div>
+                        <div class="price-tag">500.000đ</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="total-block">
+            <span class="text-muted fw-bold">TOTAL</span>
+            <span class="fs-4 fw-bold text-primary" id="sumTotal">1.700.000đ</span>
+        </div>
+    </div>
+
+    <button class="btn-booking" id="btnSubmit" onclick="alert('Booking successful!')" disabled>
+        Confirm Booking <i class="fas fa-arrow-right ms-2"></i>
+    </button>
+</div>

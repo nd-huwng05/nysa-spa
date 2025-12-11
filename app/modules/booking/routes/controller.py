@@ -5,7 +5,10 @@ class Controller:
     def __init__(self, config, service, env):
         self.handler = Handler(config, service, env)
 
-    def index(self):
-        return render_template('page/service.html')
+    @staticmethod
+    def book_view():
+        return render_template('page/book_view.html')
 
-
+    @staticmethod
+    def book_confirm():
+        return render_template('page/book_confirm.html')

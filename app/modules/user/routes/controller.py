@@ -9,10 +9,11 @@ class Controller:
 
     @staticmethod
     def login():
+        callback_url = request.args.get('callback_url', '/')
         identity = getattr(g, 'current_user', None)
-        if identity is None:
-            return render_template('page/login.html')
-        return redirect(url_for('home.index'))
+        if identity:
+            return redirect(callback_url)
+        return render_template('page/login.html', callback_url=callback_url)
 
     @staticmethod
     def logout():
@@ -23,30 +24,32 @@ class Controller:
         return response
 
     def auth_user_pass(self):
+        callback_url = request.form.get('callback_url', '/')
         try:
             access_token, refresh_token = self.handler.auth_user_pass(request)
-            response = make_response(redirect(url_for('home.index')))
+            response = make_response(redirect(url_for('user.login', callback_url=callback_url)))
             set_access_cookies(response, access_token)
             set_refresh_cookies(response, refresh_token)
             return response
 
         except Exception as e:
             flash(str(e), category="error")
-            return redirect(url_for('user.login'))
+            return redirect(url_for('user.login', callback_url=callback_url))
 
     def auth_google(self):
-        return self.handler.auth_google()
+        return self.handler.auth_google(request)
 
     def google_callback(self):
+        callback_url = request.args.get('state')
         try:
             access_token, refresh_token = self.handler.google_callback()
-            response = make_response(redirect(url_for('home.index')))
+            response = make_response(redirect(url_for('user.login',callback_url=callback_url)))
             set_access_cookies(response, access_token)
             set_refresh_cookies(response, refresh_token)
             return response
         except Exception as e:
             flash(str(e), category="error")
-            return redirect(url_for('user.login'))
+            return redirect(url_for('user.login', callback_url=callback_url))
 
     def middleware_load_user(self):
         self.handler.load_user()
