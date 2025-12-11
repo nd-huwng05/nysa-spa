@@ -6,3 +6,8 @@ class Service:
         self.repo = repo
         self.config = config
 
+    def push_count_service(self, customer_id:int):
+        return self.repo.push_count_service(customer_id)
+
+    def get_service_cart(self, customer_id:int):
+        return self.repo.get_service_cart(customer_id)

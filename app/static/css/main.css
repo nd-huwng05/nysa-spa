@@ -1,7 +1,14 @@
 :root {
-    --heading-font: "Playfair Display", serif;
+
     --default-font: "Mulish", sans-serif;
     --nav-font: "Mulish", sans-serif;
+}
+
+:root {
+    --default-font: "Mulish", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Roboto", sans-serif;
+    --heading-h2-font: "Playfair Display", serif;
+    --nav-font: "Inter", sans-serif;
 }
 
 :root {

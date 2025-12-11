@@ -25,4 +25,4 @@ class Customer(BaseModel):
     user = relationship("User", back_populates="customer")
     bookings = relationship("Booking", back_populates="customer")
     vouchers = relationship("Voucher", back_populates="owner")
-    cart = relationship("Cart", back_populates="customer", uselist=False, cascade="all, delete-orphan")
+    cart_items = relationship("CartItem", back_populates="customer", cascade="all, delete-orphan")

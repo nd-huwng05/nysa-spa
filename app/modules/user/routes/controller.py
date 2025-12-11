@@ -17,8 +17,9 @@ class Controller:
 
     @staticmethod
     def logout():
+        callback_url = request.args.get('callback_url', '/')
         session.clear()
-        response = make_response(redirect(url_for('home.index')))
+        response = make_response(redirect(callback_url))
         set_access_cookies(response, "")
         set_refresh_cookies(response, "")
         return response
