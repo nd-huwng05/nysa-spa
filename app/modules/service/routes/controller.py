@@ -1,5 +1,6 @@
 from flask import request, render_template, redirect, url_for, flash, session
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+from sqlalchemy.testing.suite.test_reflection import metadata
 
 from app.extensions import oauth
 from ..config.config_module import ModuleConfig
@@ -17,3 +18,8 @@ class Controller:
     @staticmethod
     def service_detail_view():
         return render_template('page/service_detail.html')
+
+
+    def get_list_service(self):
+        result = self.handler.get_list_service(request)
+        print(result)
