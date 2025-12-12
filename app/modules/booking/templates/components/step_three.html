@@ -4,28 +4,31 @@
             <div class="step-num">3</div>
             <h5 class="step-title">Your Information</h5>
         </div>
+
+
         <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="toggleEditInfo(this)">
             <i class="fas fa-pen me-1"></i> Update
         </button>
+
     </div>
 
     <div class="row g-3">
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control" id="custName" placeholder="Full Name" value="Nguyen Van A"
+                <input type="text" class="form-control" id="custName" placeholder="Full Name" value="{{customer.fullname }}"
                        readonly>
                 <label for="custName">Full Name</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="tel" class="form-control" id="custPhone" placeholder="Phone" value="0912 345 678" readonly>
+                <input type="tel" class="form-control" id="custPhone" placeholder="Phone" value="{{ customer.phone }}" readonly>
                 <label for="custPhone">Phone Number</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="email" class="form-control" id="custEmail" placeholder="Email" value="nguyenvanA@gmail.com"
+                <input type="email" class="form-control" id="custEmail" placeholder="Email" value="{{ customer.phone}}"
                        readonly>
                 <label for="custEmail">Email (Read-only)</label>
             </div>

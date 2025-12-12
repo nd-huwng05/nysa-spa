@@ -16,6 +16,7 @@ class IModule(ISettingObserver,ABC):
         self.service = None
         self.repo = None
 
+
     def register(self, setting_module=None):
         if setting_module:
             setting_module.attach(self)
