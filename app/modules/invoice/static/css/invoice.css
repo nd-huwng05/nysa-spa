@@ -1,0 +1,270 @@
+:root {
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+    --radius-default: 16px;
+}
+
+body {
+    font-family: var(--default-font);
+    background-color: var(--surface-color-hero);
+    color: var(--combo-text-default);
+    line-height: 1.6;
+}
+
+.text-accent {
+    color: var(--combo-accent) !important;
+}
+
+.text-heading {
+    color: var(--combo-text-heading) !important;
+    font-weight: 700;
+}
+
+.heading-font {
+    font-family: var(--heading-font);
+}
+
+.heading-h2-font {
+    font-family: var(--heading-h2-font);
+}
+
+/* ==================================== */
+/* COMPONENTS */
+/* ==================================== */
+
+/* 1. CARD STYLE */
+.payment-card {
+    border: none;
+    border-radius: var(--radius-default);
+    background-color: var(--combo-card-background);
+    box-shadow: var(--shadow-soft);
+    height: auto;
+}
+
+/* 2. STICKY INVOICE (RIGHT COLUMN) */
+.invoice-sticky-card {
+    background-color: var(--combo-card-background);
+    border: 1px solid var(--combo-border-dark);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+}
+
+/* Sticky on Desktop */
+@media (min-width: 992px) {
+    .invoice-sticky-card {
+        position: sticky;
+        top: 20px;
+        z-index: 90;
+    }
+}
+
+/* 3. BUTTONS & INPUTS */
+.btn-outline-combo {
+    color: var(--combo-text-default);
+    border: 1px solid var(--combo-border-dark);
+    background-color: transparent;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-combo:hover {
+    border-color: var(--combo-accent);
+    background-color: var(--surface-color-hero);
+    color: var(--combo-accent);
+}
+
+.btn-check:checked + .btn-outline-combo {
+    border-color: var(--combo-accent);
+    box-shadow: 0 4px 12px rgba(193, 140, 93, 0.3);
+}
+
+.btn-accent-primary {
+    background-color: var(--combo-accent);
+    border: none;
+    color: var(--contrast-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(193, 140, 93, 0.4);
+}
+
+.btn-accent-primary:hover {
+    background-color: #a07248;
+    color: var(--contrast-color);
+    transform: translateY(-2px);
+}
+
+/* 4. CUSTOM RADIO BUTTON */
+.payment-type-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 18px 15px;
+    border-bottom: 1px solid var(--combo-border-dark);
+    transition: background-color 0.2s;
+    border-radius: 8px;
+}
+
+.payment-type-option:hover {
+    background-color: var(--surface-color-hero);
+}
+
+.payment-type-option:last-child {
+    border-bottom: none;
+}
+
+.payment-type-option input.form-check-input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.custom-checkmark {
+    height: 24px;
+    width: 24px;
+    min-width: 24px;
+    background-color: var(--surface-color);
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin-right: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.custom-checkmark:after {
+    content: "";
+    display: none;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
+}
+
+.payment-type-option input:checked + .custom-checkmark {
+    background-color: var(--combo-accent);
+    border-color: var(--combo-accent);
+}
+
+.payment-type-option input:checked + .custom-checkmark:after {
+    display: block;
+}
+
+.payment-type-option .label-text {
+    color: var(--combo-text-default);
+    font-weight: 600;
+}
+
+.payment-type-option .amount-display {
+    margin-left: auto;
+    color: var(--combo-accent);
+    font-weight: 700;
+}
+
+/* 5. TIMER DESIGN */
+#hold-timer-box {
+    background-color: var(--surface-color);
+    border: 2px solid var(--combo-accent);
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow-soft);
+}
+
+/* UPDATED: Flexbox for perfect centering */
+.timer-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--combo-text-default);
+    font-weight: 600;
+    line-height: 1.2;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end; /* Align right */
+    text-align: right;
+    height: 100%;
+}
+
+#hold-countdown {
+    font-family: var(--nav-font);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--combo-accent);
+    line-height: 1;
+}
+
+/* 6. QR SECTION */
+#qr-placeholder-section {
+    background-color: var(--surface-color-hero);
+    border: 2px dashed var(--combo-border-dark);
+    border-radius: var(--radius-default);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+#step-scan-qr {
+    display: none;
+}
+
+/* 7. INFO GROUPS (INVOICE) */
+.info-group {
+    margin-bottom: 1.5rem;
+}
+
+.info-group-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--combo-text-subtle);
+    border-bottom: 1px solid var(--combo-border-dark);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.info-value {
+    color: var(--combo-text-heading);
+    font-weight: 600;
+    text-align: right;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.95rem;
+}
+
+.price-col {
+    font-weight: 600;
+    color: var(--combo-text-heading);
+}
+
+#final-total-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.25rem;
+    color: var(--combo-accent);
+    font-weight: 800;
+}

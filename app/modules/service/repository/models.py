@@ -51,8 +51,8 @@ class Badge(BaseModel):
 
 
 class ServiceType(enum.Enum):
-    SINGLE = "single"
-    COMBO = "combo"
+    SINGLE = "SINGLE"
+    COMBO = "COMBO"
 
 class Service(BaseModel):
     __tablename__ = 'service'
@@ -73,6 +73,7 @@ class Service(BaseModel):
                                      secondaryjoin=id == service_combo.c.service_id, back_populates="parent_combos")
     parent_combos = relationship("Service", secondary=service_combo, primaryjoin=id == service_combo.c.service_id,
                                  secondaryjoin=id == service_combo.c.combo_id, back_populates="included_services")
+    booking_details = relationship("BookingDetail", back_populates="service")
 
 
 class ServiceBadge(BaseModel):

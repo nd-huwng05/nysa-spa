@@ -5,18 +5,18 @@ from sqlalchemy.orm import relationship
 from app.core.database import BaseModel
 
 class InvoiceType(enum.Enum):
-    PAYMENT = 'payment'
-    REFUND = 'refund'
+    PAYMENT = 'PAYMENT'
+    REFUND = 'REFUND'
 
 class PaymentMethod(enum.Enum):
-    CASH = 'cash'
-    BANK_TRANSFER = 'bank_transfer'
+    CASH = 'CASH'
+    BANK_TRANSFER = 'BACK_TRANSFER'
 
 class InvoiceStatus(enum.Enum):
-    PENDING = 'pending'
-    PAID = 'paid'
-    FAILED = 'failed'
-    CANCELED = 'canceled'
+    PENDING = 'PENDING'
+    PAID = 'PAID'
+    FAILED = 'FAILED'
+    CANCELED = 'CANCELED'
 
 class Invoice(BaseModel):
     __tablename__ = 'invoice'

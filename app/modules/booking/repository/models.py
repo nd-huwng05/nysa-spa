@@ -5,13 +5,13 @@ from app.core.database import BaseModel
 
 
 class BookingStatus(enum.Enum):
-    PENDING = "pending"
-    AWAITING_PAYMENT = "awaiting_payment"
-    CONFIRMED = "confirmed"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    CANCELED = "canceled"
-    NO_SHOW = "no_show"
+    PENDING = "PENDING"
+    AWAITING_PAYMENT = "AWAITING PAYMENT"
+    CONFIRMED = "CONFIRMED"
+    IN_PROGRESS = "IN PROGRESS"
+    COMPLETED = "COMPLETED"
+    CANCELED = "CANCELED"
+    NO_SHOW = "NO SHOW"
 
 class Booking(BaseModel):
     __tablename__ = 'booking'
@@ -38,6 +38,7 @@ class BookingDetail(BaseModel):
     parent_id = Column(Integer, ForeignKey('booking_detail.id'), nullable=True)
     notes = Column(Text, nullable=True)
 
+    service = relationship('Service', back_populates='booking_details', uselist=False)
     booking = relationship("Booking", back_populates="booking_details")
     staff = relationship("Staff", back_populates="booking_details")
     children = relationship("BookingDetail", backref=backref('parent', remote_side=[id]),cascade="all, delete-orphan")
