@@ -54,7 +54,6 @@ class ServiceType(enum.Enum):
     SINGLE = "single"
     COMBO = "combo"
 
-
 class Service(BaseModel):
     __tablename__ = 'service'
     id = Column(Integer, primary_key=True, autoincrement=True)

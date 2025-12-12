@@ -11,4 +11,3 @@ class CartItem(BaseModel):
 
     customer = relationship("Customer", back_populates="cart_items")
     service = relationship('Service', lazy='joined')
-

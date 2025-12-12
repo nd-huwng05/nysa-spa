@@ -1,5 +1,6 @@
 from flask import g
 
+from app.core.errors import NewError, NewPackage
 from ..service.service import Service
 
 
@@ -20,3 +21,20 @@ class Handler:
         if g.current_user.customer is None:
             return {}
         return self.service.get_service_cart(g.current_user.customer.id)
+
+    def add_service_item(self, item_id):
+        if g.current_user.customer is None:
+            raise NewError(403, "PERMISSION_DENIED")
+        if item_id is None:
+            raise NewError(400, "SERVICE IS REQUIRED")
+
+        self.service.add_service_item(item_id, g.current_user.customer.id)
+        return NewPackage(message="ADD SERVICE IS SUCCESSFULLY", status_code=201).response()
+
+    def remove_service_item(self, item_id):
+        if g.current_user.customer is None:
+            raise NewError(403, "PERMISSION_DENIED")
+        if item_id is None:
+            raise NewError(400, "SERVICE IS REQUIRED")
+        self.service.remove_service_item(item_id)
+        return NewPackage(message="DELETE SERVICE IS SUCCESSFULLY", status_code=201).response()

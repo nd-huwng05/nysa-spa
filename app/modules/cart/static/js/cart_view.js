@@ -25,7 +25,7 @@ function calculateTotal() {
         itemRow.className = 'summary-item';
         itemRow.innerHTML = `
             <span class="name" title="${name}">${name}</span>
-            <span class="price">(price)</span>
+            <span class="price">${formatCurrency(price)}</span>
         `;
 
         summaryList.appendChild(itemRow);

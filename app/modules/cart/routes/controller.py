@@ -1,4 +1,4 @@
-from flask import abort, render_template, redirect, url_for, flash, session
+from flask import abort, render_template, redirect, url_for, flash, session, jsonify
 from app.core.logger import logger
 from .handler import Handler
 
@@ -17,5 +17,9 @@ class Controller:
             logger.info("Can't push count service: {}".format(e))
             abort(500)
 
+    def add_service_item(self, item_id):
+        return self.handler.add_service_item(item_id)
+
+
     def remove_service_item(self, item_id):
-        pass
+        return self.handler.remove_service_item(item_id)

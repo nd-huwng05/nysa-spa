@@ -39,7 +39,7 @@
                             {{c.service.type.value}}</p>
                         <div class="item-price">{{"{:,.0f}".format(c.service.price)}}VND</div>
                     </div>
-                    <button class="btn-delete ms-3 delete-service-from-cart" onclick="removeItem('item-1')">
+                    <button class="btn-delete ms-3 delete-service-from-cart" data-service-id="{{c.id}}" onclick="removeItem('item-{{loop.index}}')">
                         <i class="bi bi-trash3 fs-5"></i>
                     </button>
                 </div>

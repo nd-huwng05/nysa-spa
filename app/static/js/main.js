@@ -117,21 +117,74 @@
 
         addButtons.forEach(btn => {
             btn.addEventListener('click', function (e) {
-                flyToCart(this);
+                e.preventDefault()
+                const serviceId = this.dataset.serviceId;
+
+                flyToCart(this, () => {
+                    addServiceToCart(serviceId, (success) => {
+                        if (success) {updateCartVisuals(1);}
+                        else {alert('Add service failed')}
+                    })
+                });
             });
         });
+
+        function addServiceToCart(serviceId, callback) {
+            fetch(`/cart/add/${serviceId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                if (response.ok) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            }).catch(error => {
+                console.error('Error adding item:', error);
+                callback(false);
+            });
+        }
 
         deleteButtons.forEach(btn => {
             btn.addEventListener('click', function (e) {
-                setTimeout(() => {
-                    updateCartVisuals(-1);
-                }, 800);
+                e.preventDefault()
+                const serviceId = this.dataset.serviceId;
+
+                removeItemFromCart(serviceId, (success) => {
+                    if(success) {
+                        const itemRow = this.closest('.cart-item-row');
+                        if (itemRow) itemRow.remove();
+                        updateCartVisuals(-1);
+                    } else {
+                        alert("Delete service failed")
+                    }
+                })
             });
         });
 
-        function flyToCart(sourceBtn) {
+        function removeItemFromCart(serviceId, callback) {
+            fetch(`/cart/remove/${serviceId}`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                if(response.ok) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            }).catch(error => {
+                console.error('Error removing item:', error);
+                callback(false);
+            });
+        }
+
+        function flyToCart(sourceBtn, onComplete) {
             const cartBtn = document.getElementById('header-cart-btn');
-            if (!cartBtn) return;
+            if (!cartBtn) return onComplete();
 
             const flyingBall = document.createElement('div');
             flyingBall.classList.add('fly-item');
@@ -151,7 +204,7 @@
 
             setTimeout(() => {
                 flyingBall.remove();
-                updateCartVisuals(1);
+                if (onComplete) onComplete();
             }, 800);
         }
 
