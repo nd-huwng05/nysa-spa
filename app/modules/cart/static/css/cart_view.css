@@ -115,7 +115,7 @@
     border-radius: 16px;
     padding: 30px;
     position: sticky;
-    top: 20px;
+    top: 180px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -169,8 +169,8 @@
 }
 
 .btn-checkout:hover {
-    background-color: var(--accent-hover);
-    color: white;
+    background-color: var(--default-color);
+    color: var(--background-color);
 }
 
 @media (max-width: 768px) {

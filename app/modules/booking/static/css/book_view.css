@@ -92,7 +92,7 @@ body {
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-.summary-wrapper { position: sticky; top: 80px; }
+.summary-wrapper { position: sticky; top: 180px; }
 .summary-card {
     background: var(--surface-color);
     border-radius: 16px; border: none;
