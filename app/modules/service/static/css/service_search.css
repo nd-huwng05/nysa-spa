@@ -210,6 +210,19 @@ section, .section {
     background-size: 16px 12px;
 }
 
+.pagination-scrolling {
+    flex-wrap: nowrap; /* Không cho xuống dòng */
+    overflow-x: auto;  /* Cho phép cuộn ngang */
+    padding-bottom: 5px; /* Khoảng hở cho thanh cuộn */
+
+    /* Ẩn thanh cuộn xấu xí (tuỳ chọn - nếu muốn đẹp thì giữ lại) */
+    -ms-overflow-style: none;  /* IE/Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.pagination-scrolling::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
 .filter-sort-bar .form-select:hover {
     border-color: var(--accent-color);
     background-color: #faf9f6;

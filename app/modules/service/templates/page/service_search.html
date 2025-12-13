@@ -13,7 +13,9 @@ Search Service
 <section id="search" class="services-section section light-background">
     <div class="container">
         {%include 'components/filter.html'%}
-        {%include 'components/service_list.html'%}
+        <div id="serviceListContainer">
+            {%include 'components/service_list.html'%}
+        </div>
     </div>
 </section>
 {%endblock%}
