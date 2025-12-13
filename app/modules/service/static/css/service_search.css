@@ -210,37 +210,6 @@ section, .section {
     background-size: 16px 12px;
 }
 
-/*.pagination-scroll-container {*/
-/*    overflow-x: auto; !* Cho phép cuộn ngang *!*/
-/*    white-space: nowrap;*/
-/*    padding-bottom: 5px; !* Tạo khoảng trống cho thanh cuộn nếu có *!*/
-/*    !* Ẩn thanh cuộn mặc định nếu muốn đẹp hơn (tùy chọn) *!*/
-/*    -ms-overflow-style: none;  !* IE and Edge *!*/
-/*    scrollbar-width: none;  !* Firefox *!*/
-/*}*/
-
-/*!* Ẩn thanh cuộn cho Chrome/Safari/Opera *!*/
-/*.pagination-scroll-container::-webkit-scrollbar {*/
-/*    display: none;*/
-/*}*/
-
-/*.pagination-scroll-container .pagination {*/
-/*    flex-wrap: nowrap; !* Bắt buộc các item nằm trên 1 hàng, không xuống dòng *!*/
-/*}*/
-
-.pagination-scrolling {
-    flex-wrap: nowrap; /* Không cho xuống dòng */
-    overflow-x: auto;  /* Cho phép cuộn ngang */
-    padding-bottom: 5px; /* Khoảng hở cho thanh cuộn */
-
-    /* Ẩn thanh cuộn xấu xí (tuỳ chọn - nếu muốn đẹp thì giữ lại) */
-    -ms-overflow-style: none;  /* IE/Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-.pagination-scrolling::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-}
-
 .filter-sort-bar .form-select:hover {
     border-color: var(--accent-color);
     background-color: #faf9f6;

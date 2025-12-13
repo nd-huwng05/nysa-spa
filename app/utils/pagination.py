@@ -7,8 +7,8 @@ class Pagination:
 
     def __init__(self, page, size, page_size_default=10):
         self.page_size_default = page_size_default
-        self.page = page
-        self.size = size
+        self.page = page if page is not None else 1
+        self.size = size if size is not None else page_size_default
 
     def format(self):
         if self.size == 0:

@@ -1,53 +1,62 @@
 {% block filter %}
-<div class="filter-sort-bar p-4 mb-5 rounded shadow-sm" data-aos="fade-up" data-aos-delay="100">
-    <form action="" method="GET">
-        <div class="row align-items-center g-3">
+<div class="filter-sort-bar p-3 p-lg-4 mb-5 rounded-3 shadow-sm bg-white" data-aos="fade-up" data-aos-delay="100">
+    <form id="filterForm" action="" method="GET">
+        <div class="row g-3 align-items-center">
 
-            <div class="col-lg-9 col-md-12">
-                <div class="d-flex flex-wrap align-items-center gap-3">
+            <div class="col-12 col-lg-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted ps-3">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" name="search" class="form-control border-start-0 ps-2" placeholder="Search services...">
+                </div>
+            </div>
 
-                    <div class="input-group w-auto" style="min-width: 200px;">
-                        <span class="input-group-text bg-white border-end-0 text-muted">
-                            <i class="bi bi-search"></i>
-                        </span>
-                        <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Search services...">
+            <div class="col-12 col-lg-7">
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="d-none d-xl-flex align-items-center fw-bold text-secondary text-uppercase fs-7 text-nowrap">
+                        <i class="bi bi-sliders me-2"></i>Filter
                     </div>
 
-                    <div class="vr d-none d-lg-block mx-1"></div> <span class="fw-bold text-heading text-nowrap">
-                        <i class="bi bi-sliders me-2"></i>Filter:
-                    </span>
+                    <div class="row g-2 flex-grow-1">
+                        <div class="col-4">
+                            <select name="category" class="form-select text-truncate" aria-label="Category">
+                                <option value="">Category</option>
+                                {% for c in category %}
+                                    <option value="{{c.id}}">{{c.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                    <div class="d-flex gap-2 flex-wrap">
+                        <div class="col-4">
+                            <select name="badge" class="form-select text-truncate" aria-label="Badge">
+                                <option value="">Badge</option>
+                                {% for b in badge %}
+                                    <option value="{{b.id}}">{{b.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                        <select name="category" class="form-select w-auto">
-                            <option value="">All Categories</option>
-                            {%for c in category%}
-                                <option value="{{c.id}}">{{c.name}}</option>
-                            {%endfor%}
-                        </select>
+                        <div class="col-4">
+                            <select name="feature" class="form-select text-truncate" aria-label="Feature">
+                                <option value="">Feature</option>
+                                {% for f in features %}
+                                    <option value="{{f.id}}">{{f.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                        <select name="duration" class="form-select w-auto">
-                            <option value="">Any Duration</option>
-                            <option value="60">60 Minutes</option>
-                            <option value="90">90 Minutes</option>
-                            <option value="120">120 Minutes</option>
-                        </select>
-
-                        <select name="badge" class="form-select w-auto">
-                            <option value="">All Tags</option>
-                            {%for b in badge%}
-                                <option value="{{b.id}}">{{b.name}}</option>
-                            {%endfor%}
-                        </select>
+                        <input type="hidden" name="page" id="currentPage" value="1">
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-12 text-lg-end">
-                <div class="d-flex align-items-center justify-content-lg-end gap-2">
-                    <span class="fw-bold text-heading text-nowrap">Sort by:</span>
+            <div class="col-12 col-lg-2">
+                <div class="d-flex justify-content-lg-end align-items-center">
+                    <span class="fw-bold text-muted me-2 d-lg-none">Sort by:</span>
 
-                    <select name="sort" class="form-select w-auto">
+                    <select name="sort" class="form-select text-truncate" aria-label="sort">
                         <option value="newest">Newest</option>
                         <option value="oldest">Oldest</option>
                         <option value="price_asc">Price: Low to High</option>

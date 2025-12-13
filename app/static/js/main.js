@@ -1,7 +1,6 @@
 (function () {
     "use strict";
 
-    /* --- NAVIGATION & LAYOUT --- */
     const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
 
     function mobileNavToggle() {
@@ -39,7 +38,6 @@
         });
     });
 
-    /* --- SCROLLSPY --- */
     let navmenulinks = document.querySelectorAll('.navmenu a');
 
     function navmenuScrollspy() {
@@ -60,10 +58,8 @@
     window.addEventListener('load', navmenuScrollspy);
     document.addEventListener('scroll', navmenuScrollspy);
 
-    /* --- DOM CONTENT LOADED --- */
     document.addEventListener('DOMContentLoaded', function () {
 
-        // Scroll Top Button
         const scrollTop = document.querySelector('.scroll-top');
         if (scrollTop) {
             const togglescrollTop = () => {
@@ -84,10 +80,9 @@
             });
         }
 
-        // Init AOS (Global Animation)
         if (typeof AOS !== 'undefined') {
             AOS.init({
-                duration: 1000,
+                duration: 800,
                 easing: 'ease-in-out',
                 once: true,
                 mirror: false
@@ -95,7 +90,6 @@
         }
     });
 
-    /* --- GLOBAL SWIPER CONFIG --- */
     function initSwiper() {
         document.querySelectorAll(".init-swiper").forEach(function (swiperElement) {
             let config = JSON.parse(

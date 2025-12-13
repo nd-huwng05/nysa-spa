@@ -9,7 +9,7 @@ class Handler:
         self.env = env
 
     def prepare_search_view_data(self):
-        category, badge = self.service.get_filter_master_data()
+        category, badge, features = self.service.get_filter_master_data()
         pagination = Pagination(page=1, size=self.config.private_config.get('PAGE_SIZE_FOR_SEARCH'))
         services, pagination = self.service.get_list_services(pagination)
         return {
@@ -17,34 +17,30 @@ class Handler:
             'badge': badge,
             'services': services,
             'pagination': pagination,
+            'features': features
         }
 
     def get_list_service_filter(self, request):
-        category_id = request.args.get('category_id', None)
-        duration = request.args.get('duration', None)
-        badge_id = request.args.get('badge_id', None)
-        sort_by = request.args.get('sort_by', None)
-        page = request.args.get('page', None)
-        per_page = self.config.private_config.get('PER_PAGE', 9)
+        text_search = request.args.get('search', type=str)
+        category_id = request.args.get('category',None, type=int)
+        badge_id = request.args.get('badge', None, type=int)
+        sort_by = request.args.get('sort', 'newest', type=str)
+        feature_id = request.args.get('feature', None, type=int)
+        page = request.args.get('page', type=int)
+        pagination = Pagination(page=page, size=self.config.private_config.get('PAGE_SIZE_FOR_SEARCH'))
 
-        if page is None or int(page) > 1:
-            page = 1
-        if sort_by is None:
-            sort_by = "newest"
-
-        filter_data = {
+        filter = {
+            'text_search': text_search,
             'category_id': category_id,
-            'duration': duration,
             'badge_id': badge_id,
+            'feature_id': feature_id,
             'sort_by': sort_by,
-            'page': page,
-            'per_page': per_page
         }
 
-        result = self.service.get_list_services(filter_data)
-
+        services, pagination = self.service.get_list_service_filter(filter, pagination)
         return {
-            'result': result,
+            'services': services,
+            'pagination': pagination,
         }
 
 

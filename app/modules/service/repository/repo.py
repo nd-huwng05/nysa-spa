@@ -1,4 +1,6 @@
-from app.modules.service.repository.models import Category, Badge, Service, ServiceBadge
+from sqlalchemy.orm import joinedload
+
+from .models import Category, Badge, Service, Feature, ServiceBadge
 from app.utils.pagination import Pagination
 
 
@@ -19,6 +21,10 @@ class Repository:
         return Service.query.all()
 
     @staticmethod
+    def get_all_features():
+        return Feature.query.all()
+
+    @staticmethod
     def get_service_count():
         return Service.query.count()
 
@@ -26,28 +32,35 @@ class Repository:
     def get_list_services(pag : Pagination):
         return Service.query.offset(pag.offset()).limit(pag.size).all()
 
-    def get_services_by_filter(self, filters):
-        query = Service.query
+    def get_list_services_filter(self, filters, pag: Pagination):
+        query = Service.query.filter(Service.is_active == True)
+        query = query.options(
+            joinedload(Service.service_badges).joinedload(ServiceBadge.badge),
+            joinedload(Service.categories)
+        )
 
+        if filters.get('text_search'):
+            search_text = filters["text_search"].lower().strip()
+            query = query.filter(Service.name.ilike(f'%{search_text}%'))
         if filters.get('category_id'):
-            query = query.filter(Service.categories.id == filters.get('category_id'))
-        if filters.get('duration'):
-            query = query.filter(Service.duration_minutes <= filters.get('duration'))
+            query = query.filter(Service.categories.any(Category.id == filters.get('category_id')))
         if filters.get('badge_id'):
-            query = query.filter(Service.service_badges.id == filters.get('badge_id'))
+            query = query.filter(Service.service_badges.any(ServiceBadge.badge_id == filters.get('badge_id')))
+        if filters.get('feature_id'):
+            query = query.filter(Service.features.any(Feature.id == filters.get('feature_id')))
+
         if filters.get('sort_by')=='price_asc':
             query = query.order_by(Service.price.asc())
         elif filters.get('sort_by')=='price_desc':
             query = query.order_by(Service.price.desc())
         elif filters.get('sort_by')=='newest':
-            query = query.order_by(Service.create_at.desc())
+            query = query.order_by(Service.id.desc())
         else:
-            query = query.order_by(Service.create_at.asc())
+            query = query.order_by(Service.id.asc())
 
-        limit = filters.get('per_page')
-        offset = (filters.get('page') - 1) * limit
-        results = query.offset(offset).limit(limit).all()
-        return results
+        pagination = pag.to_dict(query.count())
+        services = query.offset(pag.offset()).limit(pag.size).all()
+        return services, pagination
 
 
 

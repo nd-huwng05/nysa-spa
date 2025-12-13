@@ -5,7 +5,7 @@
             <div class="service-image position-relative overflow-hidden">
                 <img src="{{s.img_url}}" class="card-img-top" alt="{{s.name}}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';">
                 {%for b in s.service_badges%}
-                <span class="badge bg-accent position-absolute top-0 start-0 m-3 py-2 px-3" style="background-color:{{b.color_code}}">{{b.name}}</span>
+                <span class="badge position-absolute top-0 start-0 m-3 py-2 px-3" style="{{'background-color:' ~b.badge.color_code if b.badge.color_code else 'var(--accent-color)' }}">{{b.badge.name}}</span>
                 {%endfor%}
                 <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
                     {{"{:,.0f}".format(s.price)}} VND<span class="fw-light small">/ {{s.duration_minutes}} min</span>
@@ -23,8 +23,8 @@
                 </div>
 
                 <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill">Add cart</a>
-                    <a href="#" class="btn btn-accent flex-fill text-white">Book Now</a>
+                    <a href="#" class="btn btn-outline-accent flex-fill add-to-cart-btn" data-service-id="{{s.id}}">Add cart</a>
+                    <a href="/booking/appointment?service={{s.id}}" class="btn btn-accent flex-fill text-white">Book Now</a>
                 </div>
             </div>
         </div>
@@ -38,8 +38,7 @@
 
             <li class="page-item {% if pagination.page == 1 %}disabled{% endif %}">
                 <a class="page-link"
-                   href="{{ '/service/list?page=' ~ (pagination.page - 1) if pagination.page > 1 else '#' }}"
-                   tabindex="-1"
+                   href="#" data-page="{{ pagination.page - 1 }}"
                    aria-disabled="{{ 'true' if pagination.page == 1 else 'false' }}">
                     <i class="bi bi-chevron-left"></i> Previous
                 </a>
@@ -47,13 +46,12 @@
 
             {% for i in range(pagination.total_pages) %}
             <li class="page-item {% if pagination.page == i+1 %}active{% endif %}">
-                <a class="page-link" href="/service/list?page={{i+1}}">{{i+1}}</a>
+                <a class="page-link" href="#" data-page="{{ i+1 }}">{{i+1}}</a>
             </li>
             {% endfor %}
 
             <li class="page-item {% if pagination.page == pagination.total_pages %}disabled{% endif %}">
-                <a class="page-link"
-                   href="{{ '/service/list?page=' ~ (pagination.page + 1) if pagination.page < pagination.total_pages else '#' }}">
+                <a class="page-link" href="#" data-page="{{ pagination.page + 1 }}">
                     Next <i class="bi bi-chevron-right"></i>
                 </a>
             </li>

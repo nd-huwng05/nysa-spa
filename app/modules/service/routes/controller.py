@@ -18,4 +18,7 @@ class Controller:
 
     def get_list_service(self):
         result = self.handler.get_list_service_filter(request)
-        print(result)
+        if result is None:
+            flash("500 Internal Server Error", "error")
+            return None
+        return render_template('components/service_list.html', **result)
