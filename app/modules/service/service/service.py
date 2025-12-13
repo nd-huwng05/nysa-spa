@@ -1,26 +1,26 @@
-import math
-
-from flask_migrate import current
-from sqlalchemy.testing.suite.test_reflection import metadata
-
+from app import logger
 from app.utils.pagination import Pagination
-from ..config.config_module import ModuleConfig
+from ..config.config_module import ServiceConfig
 from ..repository.repo import Repository
 
 class Service:
-    def __init__(self, repo, config):
+    def __init__(self, repo: Repository, config: ServiceConfig):
         self.repo = repo
         self.config = config
 
     def get_filter_master_data(self):
-        category = self.repo.get_all_category()
-        badge = self.repo.get_all_badge()
+        try:
+            category = self.repo.get_all_category()
+            badge = self.repo.get_all_badge()
+            return category, badge
+        except Exception as e:
+            logger.error("Can't get filter master data from repository", e)
+            raise Exception("500 Internal Server Error")
 
-        return {
-            "category": category,
-            "badge": badge,
-        }
+    def get_list_services(self, pag: Pagination):
+        services = self.repo.get_list_services(pag)
+        total_items = self.repo.get_service_count()
+        return services, pag.to_dict(total_items)
 
-    def get_list_service(self, filter_data):
-        return self.repo.get_services_by_filter(filter_data)
+
 

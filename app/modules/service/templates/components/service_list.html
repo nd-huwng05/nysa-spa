@@ -1,190 +1,63 @@
-{% block service_list %}
 <div class="row gy-4">
+    {%for s in services%}
     <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
         <div class="card service-card h-100 border-0 shadow-sm">
             <div class="service-image position-relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop" class="card-img-top" alt="Swedish Massage">
-                <span class="badge bg-accent position-absolute top-0 start-0 m-3 py-2 px-3">Best Seller</span>
+                <img src="{{s.img_url}}" class="card-img-top" alt="{{s.name}}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';">
+                {%for b in s.service_badges%}
+                <span class="badge bg-accent position-absolute top-0 start-0 m-3 py-2 px-3" style="background-color:{{b.color_code}}">{{b.name}}</span>
+                {%endfor%}
                 <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
-                    499k <span class="fw-light small">/60 min</span>
+                    {{"{:,.0f}".format(s.price)}} VND<span class="fw-light small">/ {{s.duration_minutes}} min</span>
                 </div>
             </div>
             <div class="card-body p-4 d-flex flex-column">
-                <h4 class="card-title fw-bold mb-2">Swedish Massage</h4>
-                <p class="card-text text-muted mb-4">Gentle massage technique to relax muscles, reduce stress, and improve blood circulation.</p>
+                <h4 class="card-title fw-bold mb-2">{{s.name}}</h4>
+                <p class="card-text text-muted mb-4">{{s.short_description}}</p>
 
                 <div class="service-features d-flex gap-3 mb-4 text-muted small">
-                    <span><i class="bi bi-clock me-1 text-accent"></i> 60 Mins</span>
-                    <span><i class="bi bi-flower1 me-1 text-accent"></i> Essential Oil</span>
-                    <span><i class="bi bi-music-note-beamed me-1 text-accent"></i> Meditation Music</span>
+                    <span><i class="bi bi-clock me-1 text-accent"></i> {{s.duration_minutes}} Mins</span>
+                    {%for f in s.features%}
+                    <span><i class="{{f.icon}} me-1 text-accent"></i> {{f.name}}</span>
+                    {%endfor%}
                 </div>
 
                 <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill add-to-cart-btn" data-service-id="3">Details</a>
+                    <a href="#" class="btn btn-outline-accent flex-fill">Add cart</a>
                     <a href="#" class="btn btn-accent flex-fill text-white">Book Now</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="card service-card h-100 border-0 shadow-sm">
-            <div class="service-image position-relative overflow-hidden">
-                <img src="https://klmarketing.vn/wp-content/uploads/2025/08/dich-vu-chup-anh-tham-my-vien.jpg" class="card-img-top" alt="Hot Stone Therapy">
-                <span class="badge bg-success position-absolute top-0 start-0 m-3 py-2 px-3">New</span>
-                <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
-                    650k <span class="fw-light small">/90 min</span>
-                </div>
-            </div>
-            <div class="card-body p-4 d-flex flex-column">
-                <h4 class="card-title fw-bold mb-2">Hot Stone Therapy</h4>
-                <p class="card-text text-muted mb-4">Uses hot basalt stones combined with acupressure to clear meridians and relieve joint pain.</p>
-
-                <div class="service-features d-flex gap-3 mb-4 text-muted small">
-                    <span><i class="bi bi-clock me-1 text-accent"></i> 90 Mins</span>
-                    <span><i class="bi bi-fire me-1 text-accent"></i> Basalt Stones</span>
-                    <span><i class="bi bi-droplet me-1 text-accent"></i> Detox</span>
-                </div>
-
-                <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill add-to-cart-btn add-to-cart-btn" data-service-id="4">Details</a>
-                    <a href="#" class="btn btn-accent flex-fill text-white">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="400">
-        <div class="card service-card h-100 border-0 shadow-sm">
-            <div class="service-image position-relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop" class="card-img-top" alt="Facial Rejuvenation">
-                <span class="badge bg-info text-dark position-absolute top-0 start-0 m-3 py-2 px-3">Skincare</span>
-                <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
-                    800k <span class="fw-light small">/session</span>
-                </div>
-            </div>
-            <div class="card-body p-4 d-flex flex-column">
-                <h4 class="card-title fw-bold mb-2">Facial Rejuvenation</h4>
-                <p class="card-text text-muted mb-4">Intensive skincare treatment with fresh Collagen, making skin tight, shiny, and smooth.</p>
-
-                <div class="service-features d-flex gap-3 mb-4 text-muted small">
-                    <span><i class="bi bi-stars me-1 text-accent"></i> Lifting</span>
-                    <span><i class="bi bi-moisture me-1 text-accent"></i> Moisturizing</span>
-                    <span><i class="bi bi-mask me-1 text-accent"></i> Mask</span>
-                </div>
-
-                <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill add-to-cart-btn" data-service-id="10">Details</a>
-                    <a href="#" class="btn btn-accent flex-fill text-white">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="card service-card h-100 border-0 shadow-sm">
-            <div class="service-image position-relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop" class="card-img-top" alt="Head Spa">
-                <span class="badge bg-primary position-absolute top-0 start-0 m-3 py-2 px-3">Relax</span>
-                <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
-                    250k <span class="fw-light small">/45 min</span>
-                </div>
-            </div>
-            <div class="card-body p-4 d-flex flex-column">
-                <h4 class="card-title fw-bold mb-2">Nourishing Head Spa</h4>
-                <p class="card-text text-muted mb-4">Herbal shampoo combined with neck and shoulder massage to relieve headaches and relax the mind.</p>
-
-                <div class="service-features d-flex gap-3 mb-4 text-muted small">
-                    <span><i class="bi bi-clock me-1 text-accent"></i> 45 Mins</span>
-                    <span><i class="bi bi-flower3 me-1 text-accent"></i> Locust Fruit</span>
-                    <span><i class="bi bi-magic me-1 text-accent"></i> Acupressure</span>
-                </div>
-
-                <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill add-to-cart-btn" data-service-id="12">Details</a>
-                    <a href="#" class="btn btn-accent flex-fill text-white">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="card service-card h-100 border-0 shadow-sm">
-            <div class="service-image position-relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=2070&auto=format&fit=crop" class="card-img-top" alt="Herbal Sauna">
-                <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3 py-2 px-3">Detox</span>
-                <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
-                    200k <span class="fw-light small">/30 min</span>
-                </div>
-            </div>
-            <div class="card-body p-4 d-flex flex-column">
-                <h4 class="card-title fw-bold mb-2">Herbal Sauna</h4>
-                <p class="card-text text-muted mb-4">Wet/dry sauna with lemongrass essential oil helps eliminate toxins through skin and cleans pores.</p>
-
-                <div class="service-features d-flex gap-3 mb-4 text-muted small">
-                    <span><i class="bi bi-thermometer-high me-1 text-accent"></i> Sauna</span>
-                    <span><i class="bi bi-cup-hot me-1 text-accent"></i> Warm Tea</span>
-                    <span><i class="bi bi-droplet-half me-1 text-accent"></i> Detox</span>
-                </div>
-
-                <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill">Details</a>
-                    <a href="#" class="btn btn-accent flex-fill text-white">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="400">
-        <div class="card service-card h-100 border-0 shadow-sm">
-            <div class="service-image position-relative overflow-hidden">
-                <img src="https://klmarketing.vn/wp-content/uploads/2025/08/dich-vu-chup-anh-tham-my-vien.jpg" class="card-img-top" alt="Full Package">
-                <span class="badge bg-accent position-absolute top-0 start-0 m-3 py-2 px-3">VIP</span>
-                <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
-                    1.500k <span class="fw-light small">/150 min</span>
-                </div>
-            </div>
-            <div class="card-body p-4 d-flex flex-column">
-                <h4 class="card-title fw-bold mb-2">Full Body Renewal Combo</h4>
-                <p class="card-text text-muted mb-4">VIP package includes: Exfoliation + Body Wrap + Body Massage + Facial Care.</p>
-
-                <div class="service-features d-flex gap-3 mb-4 text-muted small">
-                    <span><i class="bi bi-gem me-1 text-accent"></i> Full Course</span>
-                    <span><i class="bi bi-gift me-1 text-accent"></i> Gift</span>
-                    <span><i class="bi bi-cup-straw me-1 text-accent"></i> Snack</span>
-                </div>
-
-                <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill">Details</a>
-                    <a href="#" class="btn btn-accent flex-fill text-white">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    {%endfor%}
 </div>
 
 <div class="mt-5" data-aos="fade-up">
     <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+        <ul id="myPagination" class="pagination pagination-scrolling justify-content-center">
+
+            <li class="page-item {% if pagination.page == 1 %}disabled{% endif %}">
+                <a class="page-link"
+                   href="{{ '/service/list?page=' ~ (pagination.page - 1) if pagination.page > 1 else '#' }}"
+                   tabindex="-1"
+                   aria-disabled="{{ 'true' if pagination.page == 1 else 'false' }}">
                     <i class="bi bi-chevron-left"></i> Previous
                 </a>
             </li>
 
-            <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">1</a>
+            {% for i in range(pagination.total_pages) %}
+            <li class="page-item {% if pagination.page == i+1 %}active{% endif %}">
+                <a class="page-link" href="/service/list?page={{i+1}}">{{i+1}}</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            {% endfor %}
 
-            <li class="page-item">
-                <a class="page-link" href="#">
+            <li class="page-item {% if pagination.page == pagination.total_pages %}disabled{% endif %}">
+                <a class="page-link"
+                   href="{{ '/service/list?page=' ~ (pagination.page + 1) if pagination.page < pagination.total_pages else '#' }}">
                     Next <i class="bi bi-chevron-right"></i>
                 </a>
             </li>
+
         </ul>
     </nav>
 </div>
-{% endblock %}

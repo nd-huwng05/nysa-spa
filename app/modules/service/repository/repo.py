@@ -1,10 +1,5 @@
-import datetime
-
-from requests import session
-from sqlalchemy import func, or_, asc, desc
-
-from app.core.environment import Environment
 from app.modules.service.repository.models import Category, Badge, Service, ServiceBadge
+from app.utils.pagination import Pagination
 
 
 class Repository:
@@ -22,6 +17,14 @@ class Repository:
     @staticmethod
     def get_all_services():
         return Service.query.all()
+
+    @staticmethod
+    def get_service_count():
+        return Service.query.count()
+
+    @staticmethod
+    def get_list_services(pag : Pagination):
+        return Service.query.offset(pag.offset()).limit(pag.size).all()
 
     def get_services_by_filter(self, filters):
         query = Service.query
