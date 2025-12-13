@@ -1,3 +1,4 @@
+from app.utils.pagination import Pagination
 from ..config.config_module import ServiceConfig
 
 
@@ -8,12 +9,17 @@ class Handler:
         self.env = env
 
     def prepare_search_view_data(self):
-        filter_options = self.service.get_filter_master_data()
+        category, badge = self.service.get_filter_master_data()
+        pagination = Pagination(page=1, size=self.config.private_config.get('PAGE_SIZE_FOR_SEARCH'))
+        services, pagination = self.service.get_list_services(pagination)
         return {
-            'filter': filter_options,
+            'category': category,
+            'badge': badge,
+            'services': services,
+            'pagination': pagination,
         }
 
-    def get_list_service(self, request):
+    def get_list_service_filter(self, request):
         category_id = request.args.get('category_id', None)
         duration = request.args.get('duration', None)
         badge_id = request.args.get('badge_id', None)
@@ -35,7 +41,7 @@ class Handler:
             'per_page': per_page
         }
 
-        result = self.service.get_list_service(filter_data)
+        result = self.service.get_list_services(filter_data)
 
         return {
             'result': result,

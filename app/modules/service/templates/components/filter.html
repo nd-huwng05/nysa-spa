@@ -21,7 +21,7 @@
 
                         <select name="category" class="form-select w-auto">
                             <option value="">All Categories</option>
-                            {%for c in filter.category%}
+                            {%for c in category%}
                                 <option value="{{c.id}}">{{c.name}}</option>
                             {%endfor%}
                         </select>
@@ -35,7 +35,7 @@
 
                         <select name="badge" class="form-select w-auto">
                             <option value="">All Tags</option>
-                            {%for b in filter.badge%}
+                            {%for b in badge%}
                                 <option value="{{b.id}}">{{b.name}}</option>
                             {%endfor%}
                         </select>

@@ -16,14 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
         heroSection.addEventListener('mouseleave', () => {
             parallaxText.style.transform = 'translate(0,0)';
             parallaxText.style.transition = 'transform 0.5s ease';
-            setTimeout(() => { parallaxText.style.transition = 'none'; }, 500);
+            setTimeout(() => {
+                parallaxText.style.transition = 'none';
+            }, 500);
         });
     }
 
     // 3. Load More Button Logic
     const loadMoreBtn = document.querySelector('.btn-outline-accent');
-    if(loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function(e) {
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function (e) {
             e.preventDefault(); // Ngăn load lại trang
             const originalText = this.innerText;
             this.innerText = 'Loading...';
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
          */
         function debounce(func, wait) {
             let timeout;
-            return function(...args) {
+            return function (...args) {
                 clearTimeout(timeout);
                 timeout = setTimeout(() => func.apply(this, args), wait);
             };
@@ -126,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // C. Sự kiện click vào Phân trang (Pagination)
         // Dùng Event Delegation vì các nút phân trang được sinh ra động sau mỗi lần Ajax
-        resultContainer.addEventListener('click', function(e) {
+        resultContainer.addEventListener('click', function (e) {
             const pageLink = e.target.closest('.page-link');
 
             // Nếu click vào thẻ a.page-link và không bị disabled
@@ -136,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (url && url !== '#') {
                     fetchAndRender(url); // Gọi Ajax với URL của trang đó
                 }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Tìm phần tử đang active trong pagination
+            var activePage = document.querySelector('#myPagination .page-item.active');
+
+            if (activePage) {
+                // Hàm này sẽ cuộn thanh ngang sao cho nút active nằm giữa màn hình
+                activePage.scrollIntoView({
+                    behavior: 'auto', // Hoặc 'smooth' nếu muốn thấy nó chạy từ từ
+                    block: 'nearest',
+                    inline: 'center'  // Quan trọng: Căn giữa theo chiều ngang
+                });
             }
         });
     }
