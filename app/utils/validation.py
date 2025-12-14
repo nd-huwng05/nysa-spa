@@ -10,7 +10,7 @@ def validate_datetime(date_str:str, time_str:str = None):
         return NewError(400, "TIME IS NOT VALID")
 
     datetime_str = f"{date_str} {time_str if time_str else '00:00:00'}"
-    format_str = "%Y-%m-%dT%H:%M:%S"
+    format_str = "%Y-%m-%d %H:%M:%S"
 
     try:
         day = datetime.strptime(datetime_str,format_str)

@@ -1,4 +1,7 @@
-from .models import Staff
+from datetime import datetime
+from sqlalchemy import and_, or_
+from .models import Staff, StaffCalendar
+
 
 class Repository:
     def __init__(self, env):
@@ -7,3 +10,18 @@ class Repository:
 
     def get_all_active_staff(self):
         return self.db.session.query(Staff).filter(Staff.is_active==True).all()
+
+    @staticmethod
+    def get_staff_ids_calendar(start:datetime, end:datetime):
+        filters = and_(
+            StaffCalendar.start_time <= start,
+            StaffCalendar.end_time >= end,
+        )
+        staff_ids = StaffCalendar.query.filter(filters).with_entities(StaffCalendar.staff_id).distinct().all()
+        staff_ids = [i for (i,) in staff_ids]
+        return staff_ids
+
+
+    @staticmethod
+    def get_list_staff_by_ids(staff_ids):
+        return Staff.query.filter(Staff.id.in_(staff_ids)).all()
