@@ -1,5 +1,4 @@
-from flask import request, g
-
+from flask import g, Request
 from ..service.service import Service
 
 class Handler:
@@ -9,25 +8,19 @@ class Handler:
         self.env = env
 
 
-    def handler_book_view(self):
-        service_id = request.args.get('services','')
+    def handler_book_view(self, request: Request):
+        service_ids = request.args.getlist('service')
+        if not service_ids:
+            return None, "You need choose least one service"
 
-        if not service_id:
-            return None, "Vui lòng chọn ít nhất một dịch vụ hoặc một Combo."
-
-        id_list_services = [int(s_id) for s_id in service_id.split(',') if s_id.isdigit()]
-
-        services = self.env.modules.service_module.service.get_list_services(id_list_services)
-
-
-        if g.current_user.customer is None:
-            return None, "Bạn không có quyền customer"
-
-
+        services = self.env.modules.service_module.service.get_list_services_by_ids(service_ids)
+        customer = None
+        if g.current_user.role.value == "CUSTOMER":
+            customer = g.current_user.customer
 
         return {
             "services": services,
-            "customer": g.current_user.customer
+            "customer": customer
         }, None
 
 

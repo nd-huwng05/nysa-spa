@@ -7,15 +7,10 @@ class Controller:
 
 
     def book_view(self):
-        data,error = self.handler.handler_book_view()
-
+        data ,error = self.handler.handler_book_view(request)
         if error:
-            return redirect('/service/service-search')
-
-        return render_template('page/book_view.html',**data)
-
-
-
+            return redirect(url_for('service.service_search_view', message=str(error)))
+        return render_template('page/book_view.html', **data)
 
     @staticmethod
     def book_confirm():

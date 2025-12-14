@@ -6,6 +6,9 @@ class Controller:
         self.handler = Handler(config, service, env)
 
     def service_search_view(self):
+        if request.args.get('message'):
+            flash(request.args.get('message'), category='error')
+
         data = self.handler.prepare_search_view_data()
         if data is None:
             flash("500 Internal Server Error", "error")

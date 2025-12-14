@@ -1,0 +1,51 @@
+<div class="section-card disabled" id="step-4">
+    <div class="section-header justify-content-between">
+        <div class="d-flex align-items-center">
+            <div class="step-num">4</div>
+            <h5 class="step-title">Select Voucher</h5>
+        </div>
+        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="applyManualVoucher(this)">
+            <i class="fas fa-ticket-alt me-1"></i> Enter Code
+        </button>
+    </div>
+
+    <div class="voucher-list-container">
+
+        <div class="input-group mb-3 d-none" id="voucherCodeInput">
+            <input type="text" class="form-control" placeholder="Enter Voucher Code" id="inputVoucherCode">
+            <button class="btn btn-primary" type="button" onclick="applyVoucherCode()">Apply</button>
+        </div>
+
+        <div class="voucher-item rounded border p-3 mb-2" data-code="SALE20" data-type="percent" data-value="20" data-max-amount="300000" data-min-order="500000">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fw-bold text-dark">SUMMER SALE 20% OFF</div>
+                    <div class="small text-muted mb-1">Code: <span class="fw-bold text-primary">SALE20</span></div>
+                    <div class="small text-danger">Max Discount: 300.000đ</div>
+                    <div class="small text-success">Min order: 500.000đ</div>
+                </div>
+                <button class="btn btn-sm btn-outline-success rounded-pill px-3 apply-voucher-btn" onclick="selectVoucher(this, 'SALE20')">
+                    Apply
+                </button>
+            </div>
+        </div>
+
+        <div class="voucher-item rounded border p-3 mb-2" data-code="FIX50" data-type="fixed" data-value="50000" data-max-amount="" data-min-order="0">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fw-bold text-dark">FIXED 50.000 VND DISCOUNT</div>
+                    <div class="small text-muted mb-1">Code: <span class="fw-bold text-primary">FIX50</span></div>
+                    <div class="small text-success">Min order: No minimum</div>
+                </div>
+                <button class="btn btn-sm btn-outline-success rounded-pill px-3 apply-voucher-btn" onclick="selectVoucher(this, 'FIX50')">
+                    Apply
+                </button>
+            </div>
+        </div>
+
+        <div id="no-voucher-available" class="text-center text-muted py-3 small d-none">
+            <i class="fas fa-sad-tear mb-2 d-block"></i>
+            No valid vouchers found for your selection.
+        </div>
+    </div>
+</div>
