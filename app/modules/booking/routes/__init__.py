@@ -10,7 +10,7 @@ def register_routes(app, service, config:ModuleConfig, env:Environment):
     booking_routes = Blueprint('booking', __name__, template_folder='../templates', static_folder='../static', url_prefix='/booking')
 
 
-    booking_routes.add_url_rule('/booking-view', view_func=jwt_middleware(c.book_view), methods=['GET'])
+    booking_routes.add_url_rule('/appointment', view_func=jwt_middleware(c.book_view), methods=['GET'])
     # booking_routes.add_url_rule('/book-confirm', view_func=c.book_confirm(), methods=['GET'])
 
     app.register_blueprint(booking_routes)

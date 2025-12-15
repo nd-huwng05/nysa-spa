@@ -2,10 +2,11 @@
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
         <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
+            <img src="../../static/img/favicon.ico" alt="logo">
             <h1 class="sitename">Nysa</h1>
         </a>
 
-        {%include 'components/nav.html'%}
+             {%include 'components/nav.html'%}
 
         <div class="header-social-links">
             <div id="google_translate_element" class="me-3"></div>
@@ -30,10 +31,6 @@
 
                     <li class="dropdown">
                         <a>
-                            <span class="d-none d-xl-block"
-                                  style="color: var(--nav-color); margin-right: 8px; font-size: 14px;">
-                                {{current_user.fullname }}
-                            </span>
 
                             <img src="{{current_user.avatar}}" alt="Avatar" class="rounded-circle"
                                  width="35" height="35" style="object-fit: cover;">

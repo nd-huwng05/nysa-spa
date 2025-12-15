@@ -21,25 +21,25 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-8 mb-4">
+            <div class="list-cart-container col-lg-8 mb-4">
                 {%for c in cart_items%}
                 <div class="cart-item" id="item-{{loop.index}}">
                     <label>
-                        <input type="checkbox" class="service-check" data-price="{{c.service.price}}"
+                        <input type="checkbox" class="service-check" value="{{c.id}}" data-price="{{c.service.price}}"
                                onchange="calculateTotal()">
                         <span class="custom-checkbox"></span>
                     </label>
                     <div class="cart-img-wrapper">
-                        <img src="{{c.service.img_url}}"
-                             alt="Massage">
+                        <img src="{{c.service.img_url}}" alt="Massage"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';">
                     </div>
                     <div class="item-info">
                         <h4 class="item-name">{{c.service.name}}</h4>
                         <p class="item-desc"><i class="bi bi-clock"></i> {{c.service.duration_minutes}} mins •
                             {{c.service.type.value}}</p>
-                        <div class="item-price">{{"{:,.0f}".format(c.service.price)}}VND</div>
+                        <div class="item-price">{{"{:,.0f}".format(c.service.price)}} VND</div>
                     </div>
-                    <button class="btn-delete ms-3 delete-service-from-cart" data-service-id="{{c.id}}" onclick="removeItem('item-{{loop.index}}')">
+                    <button class="btn-delete ms-auto delete-service-from-cart" data-service-id="{{c.id}}" onclick="removeItem('item-{{loop.index}}')">
                         <i class="bi bi-trash3 fs-5"></i>
                     </button>
                 </div>
@@ -57,7 +57,7 @@
                         <span class="total-price" id="total-price">0 đ</span>
                     </div>
 
-                    <button class="btn-checkout mt-3 shadow-sm">
+                    <button id="processing-booking-from-cart" class="btn-checkout mt-3 shadow-sm">
                         Processing Booking
                     </button>
 

@@ -43,6 +43,11 @@
     display: none;
 }
 
+.list-cart-container {
+    min-height: 60vh;
+}
+
+
 .cart-item {
     background: var(--surface-color);
     border-radius: 16px;
@@ -173,6 +178,18 @@
     color: var(--background-color);
 }
 
+.cart-item {
+    position: relative;
+    padding-right: 50px;
+}
+
+.cart-item .btn-delete {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 @media (max-width: 768px) {
     .cart-item {
         flex-wrap: wrap;
@@ -191,5 +208,9 @@
 
     .btn-delete {
         margin-left: auto;
+    }
+
+    .list-cart-container {
+        min-height: auto;
     }
 }

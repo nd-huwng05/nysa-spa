@@ -3,9 +3,11 @@
     <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
         <div class="card service-card h-100 border-0 shadow-sm">
             <div class="service-image position-relative overflow-hidden">
-                <img src="{{s.img_url}}" class="card-img-top" alt="{{s.name}}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';">
+                <img src="{{s.img_url}}" class="card-img-top" alt="{{s.name}}"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';">
                 {%for b in s.service_badges%}
-                <span class="badge position-absolute top-0 start-0 m-3 py-2 px-3" style="{{'background-color:' ~b.badge.color_code if b.badge.color_code else 'var(--accent-color)' }}">{{b.badge.name}}</span>
+                <span class="badge position-absolute top-0 start-0 m-3 py-2 px-3"
+                      style="{{'background-color:' ~b.badge.color_code if b.badge.color_code else 'var(--accent-color)' }}">{{b.badge.name}}</span>
                 {%endfor%}
                 <div class="price-tag position-absolute bottom-0 end-0 py-2 px-3 text-white fw-bold">
                     {{"{:,.0f}".format(s.price)}} VND<span class="fw-light small">/ {{s.duration_minutes}} min</span>
@@ -23,8 +25,10 @@
                 </div>
 
                 <div class="mt-auto d-flex gap-2">
-                    <a href="#" class="btn btn-outline-accent flex-fill add-to-cart-btn" data-service-id="{{s.id}}">Add cart</a>
-                    <a href="/booking/appointment?service={{s.id}}" class="btn btn-accent flex-fill text-white">Book Now</a>
+                    <a href="#" class="btn btn-outline-accent flex-fill add-to-cart-btn" data-service-id="{{s.id}}">Add
+                        cart</a>
+                    <a href="/booking/appointment?service={{s.id}}" class="btn btn-accent flex-fill text-white">Book
+                        Now</a>
                 </div>
             </div>
         </div>
@@ -45,9 +49,19 @@
             </li>
 
             {% for i in range(pagination.total_pages) %}
-            <li class="page-item {% if pagination.page == i+1 %}active{% endif %}">
-                <a class="page-link" href="#" data-page="{{ i+1 }}">{{i+1}}</a>
+            {% set p = i + 1 %}
+
+            {% if p == 1 or p == pagination.total_pages or (p >= pagination.page - 2 and p <= pagination.page + 2) %}
+
+            <li class="page-item {% if pagination.page == p %}active{% endif %}">
+                <a class="page-link" href="#" data-page="{{ p }}">{{ p }}</a>
             </li>
+
+            {% elif p == pagination.page - 3 or p == pagination.page + 3 %}
+            <li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>
+            {% endif %}
             {% endfor %}
 
             <li class="page-item {% if pagination.page == pagination.total_pages %}disabled{% endif %}">

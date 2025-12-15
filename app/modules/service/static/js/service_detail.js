@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Khởi tạo Slider Ảnh (Swiper)
     const swiper = new Swiper('.portfolio-details-slider', {
         loop: true,
         speed: 800,

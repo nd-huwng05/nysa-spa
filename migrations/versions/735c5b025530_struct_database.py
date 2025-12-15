@@ -1,8 +1,8 @@
-"""database
+"""struct database
 
-Revision ID: 904d158b918b
+Revision ID: 735c5b025530
 Revises: 
-Create Date: 2025-12-10 22:16:19.391002
+Create Date: 2025-12-15 14:30:20.058005
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '904d158b918b'
+revision = '735c5b025530'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -33,22 +33,6 @@ def upgrade():
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('customer',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('customer_code', sa.String(length=10), nullable=False),
-    sa.Column('fullname', sa.String(length=100), nullable=False),
-    sa.Column('email', sa.String(length=255), nullable=False),
-    sa.Column('phone', sa.String(length=20), nullable=False),
-    sa.Column('address', sa.String(length=255), nullable=False),
-    sa.Column('membership_tier', sa.Enum('STANDARD', 'SILVER', 'GOLD', 'PLATINUM', name='membershiptier'), server_default='standard', nullable=False),
-    sa.Column('points', sa.Integer(), server_default='0', nullable=True),
-    sa.Column('total_spent', sa.Float(), server_default='0', nullable=True),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('customer_code'),
-    sa.UniqueConstraint('email')
-    )
     op.create_table('feature',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
@@ -60,16 +44,6 @@ def upgrade():
     op.create_table('permissions',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=255), nullable=False),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('section',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('name', sa.String(length=150), nullable=False),
-    sa.Column('url', sa.String(length=150), nullable=True),
-    sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('role', sa.Enum('DEFAULT', 'CUSTOMER', 'STAFF', 'ADMIN', name='rolesection'), server_default='default', nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -103,36 +77,29 @@ def upgrade():
     sa.Column('password', sa.String(length=255), nullable=True),
     sa.Column('fullname', sa.String(length=255), nullable=True),
     sa.Column('avatar', sa.String(length=255), server_default='https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png', nullable=True),
-    sa.Column('phone', sa.String(length=15), nullable=True),
     sa.Column('email', sa.String(length=255), nullable=True),
+    sa.Column('role', sa.Enum('CUSTOMER', 'STAFF', 'ADMIN', name='roleaccount'), server_default='customer', nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('phone'),
     sa.UniqueConstraint('username')
     )
-    op.create_table('booking',
+    op.create_table('customer',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('booking_code', sa.String(length=20), nullable=False),
-    sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.Column('booking_time', sa.DateTime(), nullable=False),
-    sa.Column('status', sa.Enum('PENDING', 'AWAITING_PAYMENT', 'CONFIRMED', 'COMPLETED', 'CANCELED', 'NO_SHOW', name='bookingstatus'), server_default='pending', nullable=False),
-    sa.Column('expires_at', sa.DateTime(), nullable=True),
-    sa.Column('total_amount', sa.Float(), server_default='0.0', nullable=False),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('booking_code')
-    )
-    op.create_table('cart',
-    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('customer_code', sa.String(length=10), nullable=False),
+    sa.Column('fullname', sa.String(length=100), nullable=False),
+    sa.Column('phone', sa.String(length=20), nullable=False),
+    sa.Column('address', sa.String(length=255), nullable=False),
+    sa.Column('membership_tier', sa.Enum('STANDARD', 'SILVER', 'GOLD', 'PLATINUM', name='membershiptier'), server_default='standard', nullable=False),
+    sa.Column('points', sa.Integer(), server_default='0', nullable=True),
+    sa.Column('total_spent', sa.DECIMAL(precision=12, scale=0), server_default='0', nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('customer_code'),
     sa.UniqueConstraint('user_id')
     )
     op.create_table('service_badge',
@@ -180,18 +147,77 @@ def upgrade():
     sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
     sa.PrimaryKeyConstraint('service_id', 'feature_id')
     )
+    op.create_table('staff',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('staff_code', sa.String(length=10), nullable=False),
+    sa.Column('fullname', sa.String(length=255), nullable=False),
+    sa.Column('phone', sa.String(length=20), nullable=False),
+    sa.Column('address', sa.Text(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('active', sa.Boolean(), nullable=False),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('staff_code'),
+    sa.UniqueConstraint('user_id')
+    )
     op.create_table('user_auth_method',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('provider', sa.Enum('GOOGLE', 'LOCAL', name='authmethodenum'), nullable=False),
     sa.Column('provider_id', sa.Text(), nullable=False),
-    sa.Column('role', sa.Enum('CUSTOMER', 'STAFF', 'ADMIN', name='roleaccount'), server_default='customer', nullable=True),
     sa.Column('last_login_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('active', sa.Boolean(), server_default=sa.text('1'), nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('booking',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('booking_code', sa.String(length=20), nullable=False),
+    sa.Column('customer_id', sa.Integer(), nullable=True),
+    sa.Column('booking_time', sa.DateTime(), nullable=False),
+    sa.Column('status', sa.Enum('PENDING', 'AWAITING_PAYMENT', 'CONFIRMED', 'IN_PROGRESS', 'COMPLETED', 'CANCELED', 'NO_SHOW', name='bookingstatus'), server_default='pending', nullable=False),
+    sa.Column('expires_at', sa.DateTime(), nullable=True),
+    sa.Column('total_amount', sa.DECIMAL(precision=12, scale=0), server_default='0.0', nullable=False),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('booking_code')
+    )
+    op.create_table('cart_item',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('customer_id', sa.Integer(), nullable=False),
+    sa.Column('service_id', sa.Integer(), nullable=False),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
+    sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('staff_calendar',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('staff_id', sa.Integer(), nullable=False),
+    sa.Column('shift_type', sa.Enum('MORNING', 'AFTERNOON', 'EVENING', 'FULL', 'OFF', name='shifttype'), nullable=False),
+    sa.Column('start_time', sa.DateTime(), nullable=False),
+    sa.Column('end_time', sa.DateTime(), nullable=False),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['staff_id'], ['staff.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('staff_permissions',
+    sa.Column('staff_id', sa.Integer(), nullable=False),
+    sa.Column('permission_id', sa.Integer(), nullable=False),
+    sa.Column('active', sa.Boolean(), nullable=False),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['permission_id'], ['permissions.id'], ),
+    sa.ForeignKeyConstraint(['staff_id'], ['staff.id'], ),
+    sa.PrimaryKeyConstraint('staff_id', 'permission_id')
     )
     op.create_table('voucher',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -218,55 +244,13 @@ def upgrade():
     with op.batch_alter_table('voucher', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_voucher_code'), ['code'], unique=True)
 
-    op.create_table('cart_item',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('cart_id', sa.Integer(), nullable=False),
-    sa.Column('service_id', sa.Integer(), nullable=False),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['cart_id'], ['cart.id'], ),
-    sa.ForeignKeyConstraint(['service_id'], ['service.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('invoice',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('invoice_code', sa.String(length=50), nullable=False),
-    sa.Column('booking_id', sa.Integer(), nullable=False),
-    sa.Column('type', sa.Enum('PAYMENT', 'REFUND', name='invoicetype'), server_default='payment', nullable=False),
-    sa.Column('amount', sa.Float(), nullable=False),
-    sa.Column('payment_method', sa.Enum('CASH', 'BANK_TRANSFER', name='paymentmethod'), server_default='cash', nullable=False),
-    sa.Column('status', sa.Enum('PENDING', 'PAID', 'FAILED', 'CANCELED', name='invoicestatus'), server_default='pending', nullable=True),
-    sa.Column('note', sa.Text(), nullable=True),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['booking_id'], ['booking.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('invoice_code')
-    )
-    op.create_table('staff',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('staff_code', sa.String(length=10), nullable=False),
-    sa.Column('fullname', sa.String(length=255), nullable=False),
-    sa.Column('email', sa.String(length=255), nullable=False),
-    sa.Column('phone', sa.String(length=20), nullable=False),
-    sa.Column('address', sa.Text(), nullable=True),
-    sa.Column('user_auth_id', sa.Integer(), nullable=True),
-    sa.Column('active', sa.Boolean(), nullable=False),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['user_auth_id'], ['user_auth_method.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('staff_code'),
-    sa.UniqueConstraint('user_auth_id')
-    )
     op.create_table('booking_detail',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('booking_id', sa.Integer(), nullable=False),
     sa.Column('service_id', sa.Integer(), nullable=False),
     sa.Column('staff_id', sa.Integer(), nullable=True),
     sa.Column('duration_minutes', sa.Integer(), nullable=True),
-    sa.Column('price', sa.Float(), server_default='0.0', nullable=True),
+    sa.Column('price', sa.DECIMAL(precision=12, scale=0), server_default='0.0', nullable=True),
     sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('notes', sa.Text(), nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
@@ -277,26 +261,20 @@ def upgrade():
     sa.ForeignKeyConstraint(['staff_id'], ['staff.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('staff_calendar',
+    op.create_table('invoice',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('staff_id', sa.Integer(), nullable=False),
-    sa.Column('shift_type', sa.Enum('MORNING', 'AFTERNOON', 'EVENING', 'FULL', 'OFF', name='shifttype'), nullable=False),
-    sa.Column('start_time', sa.DateTime(), nullable=False),
-    sa.Column('end_time', sa.DateTime(), nullable=False),
+    sa.Column('invoice_code', sa.String(length=50), nullable=False),
+    sa.Column('booking_id', sa.Integer(), nullable=False),
+    sa.Column('type', sa.Enum('PAYMENT', 'REFUND', name='invoicetype'), server_default='payment', nullable=False),
+    sa.Column('amount', sa.DECIMAL(precision=12, scale=0), nullable=False),
+    sa.Column('payment_method', sa.Enum('CASH', 'BANK_TRANSFER', name='paymentmethod'), server_default='cash', nullable=False),
+    sa.Column('status', sa.Enum('PENDING', 'PAID', 'FAILED', 'CANCELED', name='invoicestatus'), server_default='pending', nullable=True),
+    sa.Column('note', sa.Text(), nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['staff_id'], ['staff.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('staff_permissions',
-    sa.Column('staff_id', sa.Integer(), nullable=False),
-    sa.Column('permission_id', sa.Integer(), nullable=False),
-    sa.Column('active', sa.Boolean(), nullable=False),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['permission_id'], ['permissions.id'], ),
-    sa.ForeignKeyConstraint(['staff_id'], ['staff.id'], ),
-    sa.PrimaryKeyConstraint('staff_id', 'permission_id')
+    sa.ForeignKeyConstraint(['booking_id'], ['booking.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('invoice_code')
     )
     op.create_table('voucher_usage',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -317,31 +295,29 @@ def upgrade():
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('voucher_usage')
-    op.drop_table('staff_permissions')
-    op.drop_table('staff_calendar')
-    op.drop_table('booking_detail')
-    op.drop_table('staff')
     op.drop_table('invoice')
-    op.drop_table('cart_item')
+    op.drop_table('booking_detail')
     with op.batch_alter_table('voucher', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_voucher_code'))
 
     op.drop_table('voucher')
+    op.drop_table('staff_permissions')
+    op.drop_table('staff_calendar')
+    op.drop_table('cart_item')
+    op.drop_table('booking')
     op.drop_table('user_auth_method')
+    op.drop_table('staff')
     op.drop_table('service_feature')
     op.drop_table('service_detail')
     op.drop_table('service_combo')
     op.drop_table('service_category')
     op.drop_table('service_badge')
-    op.drop_table('cart')
-    op.drop_table('booking')
+    op.drop_table('customer')
     op.drop_table('user')
     op.drop_table('setting')
     op.drop_table('service')
-    op.drop_table('section')
     op.drop_table('permissions')
     op.drop_table('feature')
-    op.drop_table('customer')
     op.drop_table('category')
     op.drop_table('badge')
     # ### end Alembic commands ###
