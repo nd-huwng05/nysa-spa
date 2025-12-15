@@ -1,11 +1,12 @@
-<nav id="navmenu" class="navmenu">
+<nav id="navmenu" class="navmenu menu-center-absolute">
     {% if current_role.value == "customer" or current_role is not defined or current_role is none %}
     <ul>
-        <li><a href="/#home" class="active">Home</a></li>
+        <li><a href="/#home">Home</a></li>
         <li><a href="/#about">About</a></li>
         <li><a href="/#services">Services</a></li>
         <li><a href="/#combo">Combo</a></li>
-        <li><a href="/service/service-search">Search</a></li>
+        <li><a href="/#testimonials">Testimonials</a></li>
+        <li><a href="/service/service-search" class="{{ 'active' if request.path == '/service/service-search' else '' }}">Search</a></li>
     </ul>
     {%endif%}
     <i class=" mobile-nav-toggle d-xl-none bi bi-list list_open"></i>

@@ -5,10 +5,10 @@
 
             <div class="col-12 col-lg-3">
                 <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted ps-3">
+                    <span class="input-group-text bg-light border-0 text-muted ps-3 rounded-start-3">
                         <i class="bi bi-search"></i>
                     </span>
-                    <input type="text" name="search" class="form-control border-start-0 ps-2" placeholder="Search services...">
+                    <input type="text" name="search" class="form-control bg-light border-0 ps-2 rounded-end-3 shadow-sm" placeholder="Search services...">
                 </div>
             </div>
 
@@ -20,31 +20,53 @@
                     </div>
 
                     <div class="row g-2 flex-grow-1">
+
                         <div class="col-4">
-                            <select name="category" class="form-select text-truncate" aria-label="Category">
-                                <option value="">Category</option>
-                                {% for c in category %}
-                                    <option value="{{c.id}}">{{c.name}}</option>
-                                {% endfor %}
-                            </select>
+                            <input type="hidden" name="category" class="filter-input-hidden">
+
+                            <div class="dropdown">
+                                <button class="btn custom-select-btn dropdown-toggle text-truncate" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="selected-text">Any Category</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-custom w-100">
+                                    <li><a class="dropdown-item" href="#" data-value="">Any Category</a></li>
+                                    {% for c in category %}
+                                    <li><a class="dropdown-item" href="#" data-value="{{c.id}}">{{c.name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
 
                         <div class="col-4">
-                            <select name="badge" class="form-select text-truncate" aria-label="Badge">
-                                <option value="">Badge</option>
-                                {% for b in badge %}
-                                    <option value="{{b.id}}">{{b.name}}</option>
-                                {% endfor %}
-                            </select>
+                            <input type="hidden" name="badge" class="filter-input-hidden">
+
+                            <div class="dropdown">
+                                <button class="btn custom-select-btn dropdown-toggle text-truncate" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                     <span class="selected-text">Any Badge</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-custom w-100">
+                                    <li><a class="dropdown-item" href="#" data-value="">Any Badge</a></li>
+                                    {% for b in badge %}
+                                    <li><a class="dropdown-item" href="#" data-value="{{b.id}}">{{b.name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
 
                         <div class="col-4">
-                            <select name="feature" class="form-select text-truncate" aria-label="Feature">
-                                <option value="">Feature</option>
-                                {% for f in features %}
-                                    <option value="{{f.id}}">{{f.name}}</option>
-                                {% endfor %}
-                            </select>
+                            <input type="hidden" name="feature" class="filter-input-hidden">
+
+                            <div class="dropdown">
+                                <button class="btn custom-select-btn dropdown-toggle text-truncate" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="selected-text">Any Feature</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-custom w-100">
+                                    <li><a class="dropdown-item" href="#" data-value="">Any Feature</a></li>
+                                    {% for f in features %}
+                                    <li><a class="dropdown-item" href="#" data-value="{{f.id}}">{{f.name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
 
                         <input type="hidden" name="page" id="currentPage" value="1">
@@ -56,12 +78,18 @@
                 <div class="d-flex justify-content-lg-end align-items-center">
                     <span class="fw-bold text-muted me-2 d-lg-none">Sort by:</span>
 
-                    <select name="sort" class="form-select text-truncate" aria-label="sort">
-                        <option value="newest">Newest</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                    </select>
+                    <div class="dropdown w-100 w-lg-auto">
+                        <input type="hidden" name="sort" class="filter-input-hidden" value="newest">
+                        <button class="btn custom-select-btn dropdown-toggle text-truncate" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="selected-text">Newest</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" data-value="newest">Newest</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="oldest">Oldest</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="price_asc">Price: Low to High</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="price_desc">Price: High to Low</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 

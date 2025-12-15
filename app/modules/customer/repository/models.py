@@ -5,10 +5,10 @@ from sqlalchemy.orm import relationship
 from app.core.database import BaseModel
 
 class MembershipTier(enum.Enum):
-    STANDARD = 'standard'
-    SILVER = 'silver'
-    GOLD = 'gold'
-    PLATINUM = 'platinum'
+    STANDARD = 'STANDARD'
+    SILVER = 'SILVER'
+    GOLD = 'GOLD'
+    PLATINUM = 'PLATINUM'
 
 class Customer(BaseModel):
     __tablename__ = 'customer'
