@@ -17,7 +17,7 @@
             {% else %}
             <div class="user-menu" style="margin-left: 10px;">
                 <ul>
-                    {%if current_role.value=="customer"%}
+                    {%if current_role.value=="CUSTOMER"%}
                     <li>
                         <a href="/cart/cart-view" id="header-cart-btn" class="cart-icon me-3 position-relative text-reset">
                             <i class="bi bi-cart3 fs-4"></i>
@@ -39,13 +39,13 @@
                         </a>
 
                         <ul style="left: auto; right: 0; min-width: 150px;">
-                            {%if current_role.value != "admin"%}
+                            {%if current_role.value != "ADMIN"%}
                             <li><a href="/user/profile">Profile</a></li>
                             <li><a href="#">Setting</a></li>
                             <li><a href="#">Booking</a></li>
                             {%endif%}
 
-                            {%if current_role.value =="customer"%}
+                            {%if current_role.value =="CUSTOMER"%}
                             <li><a href="#">Card</a></li>
                             {%endif%}
                             <li><a href="/user/logout?callback_url={{request.full_path}}">Logout</a></li>

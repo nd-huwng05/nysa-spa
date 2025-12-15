@@ -1,5 +1,5 @@
-<nav id="navmenu" class="navmenu menu-center-absolute">
-    {% if current_role.value == "customer" or current_role is not defined or current_role is none %}
+<nav id="navmenu" class="navmenu">
+    {% if current_role.value == "CUSTOMER" or current_role is not defined or current_role is none %}
     <ul>
         <li><a href="/#home">Home</a></li>
         <li><a href="/#about">About</a></li>

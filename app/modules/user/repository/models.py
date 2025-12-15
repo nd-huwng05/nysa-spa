@@ -7,13 +7,13 @@ import enum
 import hashlib
 
 class RoleAccount(enum.Enum):
-    CUSTOMER = "customer"
-    STAFF = "staff"
-    ADMIN = "admin"
+    CUSTOMER = "CUSTOMER"
+    STAFF = "STAFF"
+    ADMIN = "ADMIN"
 
 class AuthMethodEnum(enum.Enum):
-    GOOGLE = "google"
-    LOCAL = "local"
+    GOOGLE = "GOOGLE"
+    LOCAL = "LOCAL"
 
 class User(BaseModel):
     __tablename__ = 'user'

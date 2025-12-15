@@ -146,6 +146,29 @@ body {
 }
 #custEmail:read-only { background-color: #e2e8f0; }
 
+.voucher-list-container {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px;
+    background: var(--surface-color-hero);
+}
+
+.voucher-item {
+    border-radius: 8px !important;
+    background: var(--surface-color);
+    transition: all 0.2s;
+    border-left: 5px solid var(--primary-color) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.voucher-item:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.apply-voucher-btn:focus {
+    box-shadow: none;
+}
+
 @media (max-width: 768px) {
     .service-row, .combo-header { flex-direction: column; align-items: flex-start; gap: 10px; }
     .custom-select-staff { width: 100%; }

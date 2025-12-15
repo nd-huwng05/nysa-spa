@@ -16,29 +16,6 @@
                     Please select a time
                 </div>
 
-                <div class="timeline-node d-none" id="summary-node-101">
-                    <div class="timeline-dot"></div>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <span class="time-label" id="sum-time-101">--:--</span>
-                            <div class="service-label">Hot Stone Body Massage</div>
-                            <span class="staff-label"><i class="fas fa-user-check me-1"></i><span id="sum-staff-101">Lan Anh (Master)</span></span>
-                        </div>
-                        <div class="price-tag">1.200.000đ</div>
-                    </div>
-                </div>
-
-                <div class="timeline-node d-none" id="summary-node-102">
-                    <div class="timeline-dot"></div>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <span class="time-label" id="sum-time-102">--:--</span>
-                            <div class="service-label">Herbal Hair Wash</div>
-                            <span class="staff-label"><i class="fas fa-user-check me-1"></i><span id="sum-staff-102">Lan Anh (Master)</span></span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="timeline-node d-none" id="summary-node-201">
                     <div class="timeline-dot"></div>
                     <div class="d-flex justify-content-between align-items-start">
@@ -47,17 +24,26 @@
                             <div class="service-label">Facial Skincare</div>
                             <span class="staff-label"><i class="fas fa-user-check me-1"></i><span id="sum-staff-201">Lan Anh (Master)</span></span>
                         </div>
-                        <div class="price-tag">500.000đ</div>
+                        <div class="price-tag service-price" data-price="500000">500.000đ</div>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <div class="total-block">
-            <span class="text-muted fw-bold">TOTAL</span>
-            <span class="fs-4 fw-bold text-primary" id="sumTotal">1.700.000đ</span>
+        <div class="summary-content py-3 border-top border-secondary">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small fw-medium">Subtotal:</span>
+                <span class="fw-bold text-dark" id="sumSubTotal">1.700.000đ</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-2" id="discount-display-row">
+                <span class="text-muted small fw-medium">Voucher (<span id="appliedVoucherCode">SALE20</span>):</span>
+                <span class="fw-bold text-danger" id="discountAmount">0đ</span>
+            </div>
         </div>
+        <div class="total-block">
+            <span class="text-muted fw-bold">FINAL TOTAL</span> <span class="fs-4 fw-bold text-primary" id="sumTotal">1.360.000đ</span> </div>
     </div>
 
     <button class="btn-booking" id="btnSubmit" onclick="alert('Booking successful!')" disabled>

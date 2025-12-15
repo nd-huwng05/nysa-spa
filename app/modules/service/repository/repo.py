@@ -32,7 +32,8 @@ class Repository:
     def get_list_services(pag : Pagination):
         return Service.query.offset(pag.offset()).limit(pag.size).all()
 
-    def get_list_services_filter(self, filters, pag: Pagination):
+    @staticmethod
+    def get_list_services_filter(filters, pag: Pagination):
         query = Service.query.filter(Service.is_active == True)
         query = query.options(
             joinedload(Service.service_badges).joinedload(ServiceBadge.badge),
@@ -62,8 +63,6 @@ class Repository:
         services = query.offset(pag.offset()).limit(pag.size).all()
         return services, pagination
 
-
-
-
-
-
+    @staticmethod
+    def get_list_services_by_ids(ids:int):
+        return Service.query.filter(Service.id.in_(ids)).all()

@@ -4,8 +4,10 @@
         <h5 class="step-title">Staff Allocation</h5>
     </div>
 
-    <div id="staffContainer">
 
+    <div id="staffContainer">
+        {%for s in services%}
+        {%if s.type.value == "combo"%}
         <div class="combo-box" data-id="cb1">
             <div class="combo-header">
                 <div class="d-flex align-items-center">
@@ -15,22 +17,21 @@
                 <select class="custom-select-staff fw-bold text-primary"
                         style="border-color: var(--border-color);"
                         onchange="updateComboMaster('cb1', this.value)">
-                    <option value="1">Lan Anh (Master)</option>
-                    <option value="2">Minh Tuan (Senior)</option>
-                    <option value="3">Hong Ngoc</option>
-                    <option value="4">Thanh Ha</option>
-                    <option value="split">-- Split (Optional) --</option>
+                    <option value="">--Optional--</option>
+                    <option value="split">--Split--</option>
                 </select>
             </div>
 
+
+            {%for child in s.included_services%}
             <div>
                 <div class="service-row service-item" data-id="101" data-duration="60">
                     <div class="d-flex align-items-center">
-                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=100&h=100&fit=crop"
+                        <img src="{{child.img_url}}" alt="{{s.name}}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';"
                              class="service-img">
                         <div>
-                            <div class="fw-bold text-dark small">Hot Stone Body Massage</div>
-                            <div class="text-muted" style="font-size:11px;">60 mins</div>
+                            <div class="fw-bold text-dark small">{{child.name}}</div>
+                            <div class="text-muted" style="font-size:11px;">{{child.duration_minutes}} mins</div>
                         </div>
                     </div>
                     <select class="custom-select-staff child-select"
@@ -43,36 +44,17 @@
                         <option value="4">Thanh Ha</option>
                     </select>
                 </div>
-
-                <div class="service-row service-item" data-id="102" data-duration="30">
-                    <div class="d-flex align-items-center">
-                        <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=100&h=100&fit=crop"
-                             class="service-img">
-                        <div>
-                            <div class="fw-bold text-dark small">Herbal Hair Wash</div>
-                            <div class="text-muted" style="font-size:11px;">30 mins</div>
-                        </div>
-                    </div>
-                    <select class="custom-select-staff child-select"
-                            id="staff-select-102"
-                            disabled
-                            onchange="updateAllocation('102')">
-                        <option value="1">Lan Anh (Master)</option>
-                        <option value="2">Minh Tuan (Senior)</option>
-                        <option value="3">Hong Ngoc</option>
-                        <option value="4">Thanh Ha</option>
-                    </select>
-                </div>
             </div>
+            {%endfor%}
         </div>
-
+        {%else%}
         <div class="service-row rounded border mb-3 service-item" data-id="201" data-duration="45">
             <div class="d-flex align-items-center">
-                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=100&h=100&fit=crop"
-                     class="service-img">
+                <img src="{{s.img_url}}" alt="{{s.name}}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';"
+                             class="service-img">
                 <div>
-                    <div class="fw-bold text-dark">Facial Skincare</div>
-                    <div class="text-muted small">45 mins</div>
+                    <div class="fw-bold text-dark">{{s.name}}</div>
+                    <div class="text-muted small">{{s.duration_minutes}} mins</div>
                 </div>
             </div>
             <select class="custom-select-staff"
@@ -84,6 +66,8 @@
                 <option value="4">Thanh Ha</option>
             </select>
         </div>
+        {%endif%}
+        {%endfor%}
 
     </div>
 </div>

@@ -26,12 +26,17 @@ class Service:
         except Exception as e:
             logger.error("Can't get list services from repository", e)
 
-    def get_list_service_filter(self, filter, pag: Pagination):
+    def get_list_service_filter(self, filters, pag: Pagination):
         try:
-            return self.repo.get_list_services_filter(filter, pag)
+            return self.repo.get_list_services_filter(filters, pag)
         except Exception as e:
             logger.error("Can't get list service filter from repository", e)
             raise Exception("500 Internal Server Error")
 
-
+    def get_list_services_by_ids(self, ids:int):
+        try:
+            return self.repo.get_list_services_by_ids(ids)
+        except Exception as e:
+            logger.error("Can't get list services from repository", e)
+            raise Exception("500 Internal Server Error")
 
