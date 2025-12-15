@@ -1,6 +1,7 @@
+const STORAGE_KEY = 'cart_selected_items'
 
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    return new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(amount);
 }
 
 function calculateTotal() {
@@ -46,4 +47,62 @@ function removeItem(itemId) {
         }, 300);
     }
 }
+
 document.addEventListener('DOMContentLoaded', calculateTotal);
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadCheckedState();
+
+    const checkboxes = document.querySelectorAll('.service-check');
+    checkboxes.forEach(box => {
+        box.addEventListener('change', function () {
+            saveCheckedState();
+        });
+    });
+})
+
+function saveCheckedState() {
+    let selectedIds = [];
+    document.querySelectorAll('.service-check:checked').forEach(box => {
+        selectedIds.push(box.value);
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedIds));
+}
+
+function loadCheckedState() {
+    const storedIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    if (storedIds.length > 0) {
+        storedIds.forEach(id => {
+            let checkbox = document.querySelector(`.service-check[value="${id}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        });
+        if (typeof calculateTotal === "function") {
+            calculateTotal();
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const btnProcessingBook = document.getElementById('processing-booking-from-cart')
+    btnProcessingBook.addEventListener('click', function () {
+        const checkedBoxes = document.querySelectorAll('.service-check:checked');
+        if (!btnProcessingBook) {
+            console.log("NOT FOUND PROCESSING BOOKING BTN")
+        }
+
+        if (checkedBoxes.length == 0) {
+            alert("You need choose least one service")
+            return;
+        }
+
+        const params = new URLSearchParams();
+        checkedBoxes.forEach(box => {
+            params.append('service', box.value);
+        });
+
+        const queryString = params.toString()
+        window.location.href = `/booking/appointment?${queryString}`;
+    })
+})

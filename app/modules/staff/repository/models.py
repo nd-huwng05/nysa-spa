@@ -40,7 +40,7 @@ class StaffCalendar(BaseModel):
     __tablename__ = 'staff_calendar'
     id = Column(Integer, primary_key=True, autoincrement=True)
     staff_id = Column(Integer, ForeignKey('staff.id'), nullable=False)
-    start_time = Column(DateTime, nullable=False)
-    end_time = Column(DateTime, nullable=False)
+    start = Column(DateTime, nullable=False)
+    end = Column(DateTime, nullable=False)
 
     staff = relationship("Staff", back_populates="calendars")

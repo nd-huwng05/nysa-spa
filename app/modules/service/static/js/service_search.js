@@ -1,4 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
+    function getValueInCategory() {
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const value = this.getAttribute('data-value');
+                const text = this.textContent;
+                const dropdown = this.closest('.dropdown');
+                const inputHidden = dropdown.previousElementSibling;
+                const btnDisplay = dropdown.querySelector('button');
+                btnDisplay.innerHTML = `<span class="selected-text">${text}</span> <i class="bi bi-chevron-down small opacity-50"></i>`;
+                dropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active-selected'));
+                this.classList.add('active-selected');
+                if (inputHidden) {
+                    inputHidden.value = value;
+                    inputHidden.dispatchEvent(new Event('change', {bubbles: true}));
+                }
+            });
+        });
+    }
+    getValueInCategory()
 
     const heroSection = document.getElementById('heroSection');
     const parallaxText = document.getElementById('parallaxText');
@@ -46,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.style.opacity = '0.5';
 
         const formFilter = new FormData(form)
-        console.log(formFilter)
         const params = new URLSearchParams(formFilter)
 
         fetch(`/service/list?${params.toString()}`)
@@ -61,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const inputs = form.querySelectorAll('select, input');
     inputs.forEach(input => {
-        if(input.name === 'search') {
+        if (input.name === 'search') {
             let timeOut = null;
             input.addEventListener('keyup', () => {
                 clearTimeout()
@@ -70,8 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     getDataServicesFilter();
                 }, 500);
             });
-        }
-        else if (input.name !== 'page') {
+        } else if (input.name !== 'page') {
             input.addEventListener('change', () => {
                 pageInput.value = 1;
                 getDataServicesFilter();
@@ -85,10 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', function (e) {
                 e.preventDefault()
                 const page = this.getAttribute('data-page');
-                if(page) {
+                if (page) {
                     pageInput.value = page
                     getDataServicesFilter();
-                    document.querySelector('.filter-sort-bar').scrollIntoView({ behavior: 'smooth' });
+                    document.querySelector('.filter-sort-bar').scrollIntoView({behavior: 'smooth'});
                 }
             })
         })
