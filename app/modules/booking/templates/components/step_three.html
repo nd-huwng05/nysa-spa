@@ -1,3 +1,4 @@
+<input type="hidden" id="custId" value="{{ customer.id }}">
 <div class="section-card disabled" id="step-3">
     <div class="section-header justify-content-between">
         <div class="d-flex align-items-center">
@@ -6,8 +7,10 @@
         </div>
 
 
-        <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="toggleEditInfo(this)">
-            <i class="fas fa-pen me-1"></i> Update
+        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 d-flex align-items-center"
+                onclick="toggleEditInfo(this)">
+            <i class="fas fa-pen me-2"></i>
+            <span class="d-none d-xl-block">Update</span>
         </button>
 
     </div>
@@ -15,37 +18,43 @@
     <div class="row g-3">
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control" id="custName" placeholder="Full Name" value="{{customer.fullname }}"
+                <input type="hidden" class="form-control" id="cusId"
+                       value="{{customer.id}}"
+                       readonly>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="custName" placeholder="Full Name"
+                       value="{{customer.fullname }}"
                        readonly>
                 <label for="custName">Full Name</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="tel" class="form-control" id="custPhone" placeholder="Phone" value="{{ customer.phone }}" readonly>
+                <input type="tel" class="form-control" id="custPhone" placeholder="Phone" value="{{ customer.phone }}"
+                       readonly>
                 <label for="custPhone">Phone Number</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="email" class="form-control" id="custEmail" placeholder="Email" value="{{ customer.phone}}"
+                <input type="email" class="form-control" id="custEmail" placeholder="Email" value="{{ customer.user.email}}"
                        readonly>
-                <label for="custEmail">Email (Read-only)</label>
+                <label for="custEmail">Email</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <select class="form-select" id="custGender" disabled>
-                    <option value="female" selected>Female</option>
-                    <option value="male">Male</option>
-                </select>
-                <label for="custGender">Gender</label>
+                <input type="email" class="form-control" id="custAddress" placeholder="Address" value="{{ customer.address}}"
+                       readonly>
+                <label for="custAddress">Address</label>
             </div>
         </div>
         <div class="col-12">
             <div class="form-floating">
-                <textarea class="form-control" placeholder="Notes" id="custNotes" style="height: 100px"
-                          readonly></textarea>
+                <textarea class="form-control" placeholder="Notes" id="custNotes" style="height: 100px"></textarea>
                 <label for="custNotes">Notes (Allergies, massage pressure...)</label>
             </div>
         </div>

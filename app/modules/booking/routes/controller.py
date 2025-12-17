@@ -13,7 +13,9 @@ class Controller:
         return render_template('page/book_view.html', **data)
 
     def staff_appointment(self):
-        return self.handler.handler_staff_appointment(request)
+        staff_appointment = self.handler.handler_staff_appointment(request)
+        staff_list = staff_appointment.get('staff_appointment', [])
+        return render_template('components/staff_dropdown.html', staffs=staff_list)
 
     @staticmethod
     def book_confirm():

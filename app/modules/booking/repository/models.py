@@ -19,6 +19,7 @@ class Booking(BaseModel):
     customer_id = Column(Integer, ForeignKey('customer.id'), nullable=True)
     booking_time = Column(DateTime, nullable=False)
     status = Column(Enum(BookingStatus), nullable=False, server_default=BookingStatus.PENDING.value)
+    notes = Column(Text, nullable=True)
     expires_at = Column(DateTime)
     total_amount = Column(DECIMAL(12,0), nullable=False, server_default='0.0')
 

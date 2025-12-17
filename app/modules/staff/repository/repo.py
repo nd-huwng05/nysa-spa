@@ -14,8 +14,8 @@ class Repository:
     @staticmethod
     def get_staff_ids_calendar(start:datetime, end:datetime):
         filters = and_(
-            StaffCalendar.start_time <= start,
-            StaffCalendar.end_time >= end,
+            StaffCalendar.start <= start,
+            StaffCalendar.end >= end,
         )
         staff_ids = StaffCalendar.query.filter(filters).with_entities(StaffCalendar.staff_id).distinct().all()
         staff_ids = [i for (i,) in staff_ids]

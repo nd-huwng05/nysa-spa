@@ -1,27 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    function getValueInCategory() {
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                const value = this.getAttribute('data-value');
-                const text = this.textContent;
-                const dropdown = this.closest('.dropdown');
-                const inputHidden = dropdown.previousElementSibling;
-                const btnDisplay = dropdown.querySelector('button');
-                btnDisplay.innerHTML = `<span class="selected-text">${text}</span> <i class="bi bi-chevron-down small opacity-50"></i>`;
-                dropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active-selected'));
-                this.classList.add('active-selected');
-                if (inputHidden) {
-                    inputHidden.value = value;
-                    inputHidden.dispatchEvent(new Event('change', {bubbles: true}));
-                }
-            });
-        });
-    }
-    getValueInCategory()
-
     const heroSection = document.getElementById('heroSection');
     const parallaxText = document.getElementById('parallaxText');
 

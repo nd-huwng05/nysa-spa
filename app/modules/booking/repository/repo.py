@@ -13,8 +13,8 @@ class Repository:
     def get_staff_appointment(staff_ids, start:datetime, end:datetime):
         filters = and_(
             BookingDetail.staff_id.in_(staff_ids),
-            BookingDetail.start_time <= end,
-            BookingDetail.end_time >= start,
+            BookingDetail.start <= end,
+            BookingDetail.end >= start,
         )
         appointments = BookingDetail.query.filter(filters)
         staff_ids = appointments.with_entities(BookingDetail.staff_id).distinct().all()
