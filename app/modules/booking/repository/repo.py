@@ -73,4 +73,7 @@ class Repository:
 
                     self.db.session.add(child)
 
+    @staticmethod
+    def get_booking_by_id(id:int):
+        return Booking.query.get(id)
 

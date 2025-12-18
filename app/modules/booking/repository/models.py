@@ -17,7 +17,6 @@ class Booking(BaseModel):
     id = Column(Integer, primary_key=True, autoincrement=True)
     booking_code = Column(String(20), unique=True, nullable=False)
     customer_id = Column(Integer, ForeignKey('customer.id'), nullable=True)
-    voucher_id = Column(Integer, ForeignKey('voucher.id'), nullable=True)
     booking_time = Column(DateTime, nullable=False)
     status = Column(Enum(BookingStatus), nullable=False, server_default=BookingStatus.PENDING.value)
     notes = Column(Text, nullable=True)
@@ -27,7 +26,7 @@ class Booking(BaseModel):
     booking_details = relationship('BookingDetail', back_populates='booking', cascade='all, delete-orphan')
     invoices = relationship("Invoice", back_populates="booking", cascade="all, delete-orphan")
     customer = relationship('Customer', back_populates='bookings')
-    voucher_usage = relationship("VoucherUsage", back_populates="booking")
+    voucher_usage = relationship("VoucherUsage", back_populates="booking", uselist=False, cascade="all, delete-orphan")
 
 class BookingDetailStatus(enum.Enum):
     WAITING = "WAITING"

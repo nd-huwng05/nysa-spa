@@ -16,7 +16,7 @@ class BookingModule(IModule):
         super().__init__(app, env, module_name="home_module")
         self.config = BookingConfig(app.config)
         repo = Repository(env)
-        self.service = Service(repo=repo, config=self.config)
+        self.service = Service(repo=repo, config=self.config, env=env)
         self.env.add_module(key="service_module",module=ServiceModule(self.app,self.env))
         self.env.add_module(key="staff_module", module=StaffModule(self.app, self.env))
         self.env.add_module(key="voucher_module", module=VoucherModule(self.app, self.env))

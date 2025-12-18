@@ -625,6 +625,8 @@ async function submitBooking() {
 
     const totalAmountStr = document.getElementById('sumTotal').innerText;
     const totalAmount = parseInt(totalAmountStr.replace(/\D/g, ''));
+    const subAmountStr = document.getElementById('sumSubTotal').innerText;
+    const subAmount = parseInt(subAmountStr.replace(/\D/g, ''));
     const details = [];
     const topLevelNodes = document.querySelectorAll('#staffContainer > .combo-box, #staffContainer > .service-item:not(.combo-box .service-item)');
 
@@ -691,6 +693,7 @@ async function submitBooking() {
     const payload = {
         customer_id: customerId,
         booking_time: `${bookingDate} ${bookingTime}`,
+        total_sub_amount: subAmount,
         total_amount: totalAmount,
         voucher_id: selectedVoucher ? selectedVoucher.id : null,
         notes: notes,

@@ -5,6 +5,7 @@ from .routes.controller import Controller
 from .service.service import Service
 from .routes import register_routes
 from app.core.environment import Environment
+from ... import BookingModule
 from ...core.interface import IModule
 
 
@@ -14,6 +15,7 @@ class InvoiceModule(IModule):
         self.config = InvoiceConfig(app.config)
         repo = Repository(env)
         self.service = Service(repo=repo, config=self.config)
+        self.env.add_module('booking_module',BookingModule(app, env))
 
     def _register_routes(self):
         register_routes(self.app, self.service, self.config, self.env)

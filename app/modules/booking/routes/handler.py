@@ -78,9 +78,9 @@ class Handler:
         notes = data.get('notes')
         booking_code = f"BK{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
 
-        total_amount = data.get('total_amount')
-        if not total_amount:
-            raise NewError(400, "TOTAL_AMOUNT IS REQUIRED")
+        total_sub_amount = data.get('total_sub_amount')
+        if not total_sub_amount:
+            raise NewError(400, "TOTAL_SUB_AMOUNT IS REQUIRED")
 
         expires = booking_time + timedelta(minutes=self.config.private_config.get('EXPIRES_PENDING'))
 
@@ -88,15 +88,10 @@ class Handler:
             booking_code=booking_code,
             customer_id=customer_id,
             booking_time=booking_time,
-            total_amount=total_amount,
+            total_amount=total_sub_amount,
             expires_at=expires,
             notes=notes
         )
-
-        voucher_id = data.get('voucher_id', None)
-        if voucher_id and voucher_id != '':
-            self.env.modules.voucher_module.service.check_voucher(voucher_id)
-            booking.voucher_id = int(voucher_id)
 
         details = data.get('details')
         if not details:
@@ -121,5 +116,22 @@ class Handler:
         self.env.modules.staff_module.service.check_staff_calendar(extracted_details)
         self.service.check_staff_appointment(extracted_details)
 
-        result = self.service.add_booking(booking, details)
+        total_amount = data.get('total_amount')
+        if not total_amount:
+            raise NewError(400, "TOTAL_AMOUNT IS REQUIRED")
+
+        voucher = None
+        voucher_id = data.get('voucher_id', None)
+        if voucher_id and voucher_id != '':
+            self.env.modules.voucher_module.service.check_voucher(voucher_id, customer_id, total_sub_amount)
+            discount_amount = Decimal(total_sub_amount) - Decimal(total_amount)
+            voucher = {
+                "customer_id": customer_id,
+                "voucher_id": voucher_id,
+                "discount_amount": discount_amount,
+                "booking_id": None
+            }
+
+        result = self.service.add_booking(booking, details, voucher)
+
         return NewPackage(result).response()

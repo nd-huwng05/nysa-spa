@@ -1,0 +1,97 @@
+<div class="col-lg-7">
+    <div class="payment-card p-4 p-md-5">
+
+        <div id="payment-selection-section">
+            <h2 class="heading-font fs-4 text-heading mb-4"><i
+                    class="bi bi-wallet2 me-2 text-accent"></i>1. Payment Method</h2>
+
+            <div class="mb-5">
+                <label class="fw-bold mb-3 small text-uppercase"
+                       style="color: var(--combo-text-subtle)">Transaction Type</label>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="radio" class="btn-check" name="payment_method" id="cash-option"
+                               value="CASH">
+                        <label class="btn btn-outline-combo w-100 py-3" for="cash-option">
+                            <i class="bi bi-cash-stack me-2"></i> Cash
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="radio" class="btn-check" name="payment_method"
+                               id="bank-transfer-option" value="BANK_TRANSFER" checked>
+                        <label class="btn btn-outline-combo w-100 py-3" for="bank-transfer-option">
+                            <i class="bi bi-bank me-2"></i> Bank Transfer
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <label class="fw-bold mb-3 small text-uppercase" style="color: var(--combo-text-subtle)">Payment
+                Option</label>
+            <div class="mb-5">
+                <label class="payment-type-option" for="full-payment">
+                    <input class="form-check-input" type="radio" name="payment_type" id="full-payment"
+                           value="FULL" checked>
+                    <span class="custom-checkmark"></span>
+                    <span class="label-text">Pay Full Amount</span>
+                    <span class="amount-display" id="full-amount-display">2.750.000 VND</span>
+                </label>
+
+                <label class="payment-type-option" for="deposit-payment">
+                    <input class="form-check-input" type="radio" name="payment_type"
+                           id="deposit-payment" value="DEPOSIT">
+                    <span class="custom-checkmark"></span>
+                    <span class="label-text">Deposit (20%)</span>
+                    <span class="amount-display" id="deposit-amount-display">550.000 VND</span>
+                </label>
+            </div>
+
+            <button id="confirm-payment-btn" class="btn btn-accent-primary btn-lg w-100 py-3"
+                    type="button">
+                PAY NOW (2.750.000 VND)
+            </button>
+        </div>
+
+        <div id="step-scan-qr">
+            <h2 class="heading-font fs-4 text-accent mb-4"><i class="bi bi-qr-code-scan me-2"></i>2.
+                Scan VietQR Code</h2>
+            <div id="qr-placeholder-section">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="p-3 shadow-sm rounded mb-3" style="background: var(--surface-color)">
+                        <div id="qr-code-display"></div>
+                    </div>
+
+                    <p class="fw-bold mb-1 mt-2 small text-uppercase"
+                       style="color: var(--combo-text-subtle)">Payment Deadline</p>
+                    <h3 id="countdown" class="heading-font fw-bold display-6 text-danger">15:00</h3>
+
+                    <p class="small mt-2" style="color: var(--combo-text-subtle)"
+                       id="qr-expiry-message">
+                        Please do not close the browser while paying.</p>
+
+                    <button id="refresh-qr-btn" class="btn btn-outline-combo mt-3"
+                            style="display:none;">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Regenerate QR Code
+                    </button>
+
+                    <div class="mt-4 p-3 rounded w-100 text-center"
+                         style="background: var(--surface-color-hero)">
+                        <p class="fw-bold mb-0" id="payment-status-message" style="color: #28a745">
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"
+                                              aria-hidden="true"></span>
+                            Waiting for bank confirmation...
+                        </p>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning small mt-4 mb-0 text-start border-0"
+                     style="background-color: #fff3cd; color: #664d03;">
+                    <i class="bi bi-info-circle-fill me-2"></i>Memo/Content: <span
+                        id="bank-transfer-content"
+                        class="fw-bold font-monospace">TT INV-20251212-001</span><br>
+                    <span class="ms-4 opacity-75">The system will automatically confirm upon receiving the correct content.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
