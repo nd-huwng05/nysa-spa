@@ -14,3 +14,9 @@ class Service:
             return self.repo.get_list_staff_by_ids(staff_ids)
         except Exception as e:
             raise NewError(500, "ERROR GET STAFF CALENDAR")
+
+    def check_staff_calendar(self, data):
+        for d in data:
+            ok = self.repo.check_staff_calendar(d)
+            if not ok:
+                raise NewError(400, "ERROR CHOOSE STAFF, YOU NEED RELOAD PAGE")

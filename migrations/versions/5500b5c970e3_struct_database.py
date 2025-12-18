@@ -1,8 +1,8 @@
 """struct database
 
-Revision ID: a235c5da1792
+Revision ID: 5500b5c970e3
 Revises: 
-Create Date: 2025-12-17 10:29:33.174077
+Create Date: 2025-12-18 08:14:28.688690
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a235c5da1792'
+revision = '5500b5c970e3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -85,6 +85,29 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    op.create_table('voucher',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('code', sa.String(length=50), nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('description', sa.String(length=255), nullable=True),
+    sa.Column('scope', sa.Enum('GLOBAL', 'HIDDEN', name='voucherscope'), server_default='HIDDEN', nullable=True),
+    sa.Column('discount_type', sa.Enum('PERCENT', 'FIXED', name='discounttype'), nullable=False),
+    sa.Column('discount_value', sa.DECIMAL(precision=12, scale=0), nullable=False),
+    sa.Column('max_discount_amount', sa.DECIMAL(precision=12, scale=0), nullable=True),
+    sa.Column('min_order_value', sa.DECIMAL(precision=12, scale=0), server_default='0', nullable=True),
+    sa.Column('start_at', sa.DateTime(), nullable=False),
+    sa.Column('end_at', sa.DateTime(), nullable=False),
+    sa.Column('usage_limit', sa.Integer(), server_default='0', nullable=True),
+    sa.Column('usage_count', sa.Integer(), server_default='0', nullable=True),
+    sa.Column('limit_per_user', sa.Integer(), server_default='1', nullable=True),
+    sa.Column('active', sa.Boolean(), server_default='1', nullable=True),
+    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    with op.batch_alter_table('voucher', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_voucher_code'), ['code'], unique=True)
+
     op.create_table('customer',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
@@ -176,8 +199,9 @@ def upgrade():
     )
     op.create_table('booking',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('booking_code', sa.String(length=20), nullable=False),
+    sa.Column('booking_code', sa.String(length=12), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
+    sa.Column('voucher_id', sa.Integer(), nullable=True),
     sa.Column('booking_time', sa.DateTime(), nullable=False),
     sa.Column('status', sa.Enum('PENDING', 'PAYING', 'PAID', 'PROCESSING', 'COMPLETED', 'CANCELED', name='bookingstatus'), server_default='PENDING', nullable=False),
     sa.Column('notes', sa.Text(), nullable=True),
@@ -186,6 +210,7 @@ def upgrade():
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
+    sa.ForeignKeyConstraint(['voucher_id'], ['voucher.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('booking_code')
     )
@@ -219,31 +244,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['staff_id'], ['staff.id'], ),
     sa.PrimaryKeyConstraint('staff_id', 'permission_id')
     )
-    op.create_table('voucher',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('code', sa.String(length=50), nullable=False),
-    sa.Column('name', sa.String(length=100), nullable=False),
-    sa.Column('description', sa.String(length=255), nullable=True),
-    sa.Column('scope', sa.Enum('GLOBAL', 'SERVICE', 'HIDDEN', name='voucherscope'), server_default='hidden', nullable=True),
-    sa.Column('owner_id', sa.Integer(), nullable=True),
-    sa.Column('discount_type', sa.Enum('PERCENT', 'FIXED', name='discounttype'), nullable=False),
-    sa.Column('discount_value', sa.DECIMAL(precision=12, scale=0), nullable=False),
-    sa.Column('max_discount_amount', sa.DECIMAL(precision=12, scale=0), nullable=True),
-    sa.Column('min_order_value', sa.DECIMAL(precision=12, scale=0), nullable=True),
-    sa.Column('start_at', sa.DateTime(), nullable=False),
-    sa.Column('end_at', sa.DateTime(), nullable=False),
-    sa.Column('usage_limit', sa.Integer(), server_default='0', nullable=True),
-    sa.Column('usage_count', sa.Integer(), server_default='0', nullable=True),
-    sa.Column('limit_per_user', sa.Integer(), server_default='1', nullable=True),
-    sa.Column('active', sa.Boolean(), server_default='1', nullable=True),
-    sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
-    sa.ForeignKeyConstraint(['owner_id'], ['customer.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    with op.batch_alter_table('voucher', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_voucher_code'), ['code'], unique=True)
-
     op.create_table('booking_detail',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('booking_id', sa.Integer(), nullable=False),
@@ -282,12 +282,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('voucher_id', sa.Integer(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=False),
-    sa.Column('invoice_id', sa.Integer(), nullable=False),
+    sa.Column('booking_id', sa.Integer(), nullable=False),
     sa.Column('discount_amount', sa.DECIMAL(precision=12, scale=0), nullable=False),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['booking_id'], ['booking.id'], ),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
-    sa.ForeignKeyConstraint(['invoice_id'], ['invoice.id'], ),
     sa.ForeignKeyConstraint(['voucher_id'], ['voucher.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -299,10 +299,6 @@ def downgrade():
     op.drop_table('voucher_usage')
     op.drop_table('invoice')
     op.drop_table('booking_detail')
-    with op.batch_alter_table('voucher', schema=None) as batch_op:
-        batch_op.drop_index(batch_op.f('ix_voucher_code'))
-
-    op.drop_table('voucher')
     op.drop_table('staff_permissions')
     op.drop_table('staff_calendar')
     op.drop_table('cart_item')
@@ -315,6 +311,10 @@ def downgrade():
     op.drop_table('service_category')
     op.drop_table('service_badge')
     op.drop_table('customer')
+    with op.batch_alter_table('voucher', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_voucher_code'))
+
+    op.drop_table('voucher')
     op.drop_table('user')
     op.drop_table('setting')
     op.drop_table('service')

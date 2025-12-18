@@ -8,7 +8,7 @@
         {% for s in services %}
 
         {% if s.type.value == "combo" %}
-        <div class="combo-box" data-id="{{s.id}}">
+        <div class="combo-box" data-id="{{s.id}}" data-price="{{s.price}}">
             <div class="combo-header d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <span class="combo-tag">Combo</span>

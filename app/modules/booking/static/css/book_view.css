@@ -97,7 +97,6 @@ body {
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-.summary-wrapper { position: sticky; top: 180px; }
 .summary-card {
     background: var(--surface-color);
     border-radius: 16px; border: none;
@@ -248,4 +247,35 @@ span.flatpickr-weekday {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.voucher-scroll {
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.voucher-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.voucher-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.voucher-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.voucher-scroll::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.btn-apply {
+    background: transparent;
+    color: var(--accent-color);
+    border-color: #146c43;
 }
