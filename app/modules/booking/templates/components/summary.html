@@ -16,37 +16,81 @@
                     Please select a time
                 </div>
 
-                <div class="timeline-node d-none" id="summary-node-201">
+                {% for item in services %}
+                {% if item.type.value == "combo" %}
+                <div class="timeline-node d-none" id="summary-node-{{ item.id }}">
                     <div class="timeline-dot"></div>
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <span class="time-label" id="sum-time-201">--:--</span>
-                            <div class="service-label">Facial Skincare</div>
-                            <span class="staff-label"><i class="fas fa-user-check me-1"></i><span id="sum-staff-201">Lan Anh (Master)</span></span>
+                            <span class="time-label fw-bold" id="sum-time-{{ item.id }}">--:--</span>
+                            <div class="service-label fw-bold">{{ item.name }}</div>
+                            <span class="staff-label">
+                            <i class="fas fa-user-check me-1"></i>
+                            <span id="sum-staff-master-{{ item.id }}">Assigning...</span>
+                        </span>
                         </div>
-                        <div class="price-tag service-price" data-price="500000">500.000đ</div>
+                        <div class="price-tag service-price" data-price="{{ item.price }}">
+                            {{ "{:,.0f}".format(item.price) }}đ
+                        </div>
                     </div>
                 </div>
 
+                {% for child in item.included_services %}
+                <div class="timeline-node d-none ms-4" id="summary-node-{{ child.id }}"
+                     style="border-left: 2px dashed #dee2e6;">
+                    <div class="timeline-dot" style="width: 8px; height: 8px; left: -4px; background: #adb5bd;"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="time-label small" id="sum-time-{{ child.id }}">--:--</span>
+                            <div class="service-label small text-muted">{{ child.name }}</div>
+                            <span class="staff-label small">
+                            <i class="fas fa-user me-1"></i>
+                            <span id="sum-staff-{{ child.id }}">...</span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% else %}
+                <div class="timeline-node d-none" id="summary-node-{{ item.id }}">
+                    <div class="timeline-dot"></div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="time-label" id="sum-time-{{ item.id }}">--:--</span>
+                            <div class="service-label">{{ item.name }}</div>
+                            <span class="staff-label">
+                            <i class="fas fa-user-check me-1"></i>
+                            <span id="sum-staff-{{ item.id }}">Assigning...</span>
+                        </span>
+                        </div>
+                        <div class="price-tag service-price" data-price="{{ item.price }}">
+                            {{ "{:,.0f}".format(item.price) }}đ
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
 
         <div class="summary-content py-3 border-top border-secondary">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="text-muted small fw-medium">Subtotal:</span>
-                <span class="fw-bold text-dark" id="sumSubTotal">1.700.000đ</span>
+                <span class="fw-bold text-dark" id="sumSubTotal">0đ</span>
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-2" id="discount-display-row">
-                <span class="text-muted small fw-medium">Voucher (<span id="appliedVoucherCode">SALE20</span>):</span>
+                <span class="text-muted small fw-medium">Voucher (<span id="appliedVoucherCode"></span>):</span>
                 <span class="fw-bold text-danger" id="discountAmount">0đ</span>
             </div>
         </div>
         <div class="total-block">
-            <span class="text-muted fw-bold">FINAL TOTAL</span> <span class="fs-4 fw-bold text-primary" id="sumTotal">1.360.000đ</span> </div>
+            <span class="text-muted fw-bold">FINAL TOTAL</span> <span class="fs-4 fw-bold text-primary" id="sumTotal">0đ</span>
+        </div>
     </div>
 
-    <button class="btn-booking" id="btnSubmit" onclick="alert('Booking successful!')" disabled>
+    <button class="btn-booking" id="btnSubmit" onclick="submitBooking()">
         Confirm Booking <i class="fas fa-arrow-right ms-2"></i>
     </button>
 </div>

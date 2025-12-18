@@ -43,6 +43,11 @@ body {
 #step-1 .form-control, #step-1 .form-select {
     font-size: 0.9rem; padding: 8px 12px; height: auto;
 }
+
+.custom-time-btn {
+    border-radius: 5px;
+}
+
 .time-estimate-info {
     background: var(--surface-color-hero);
     border: 1px solid var(--border-color);
@@ -92,7 +97,6 @@ body {
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-.summary-wrapper { position: sticky; top: 180px; }
 .summary-card {
     background: var(--surface-color);
     border-radius: 16px; border: none;
@@ -172,4 +176,106 @@ body {
 @media (max-width: 768px) {
     .service-row, .combo-header { flex-direction: column; align-items: flex-start; gap: 10px; }
     .custom-select-staff { width: 100%; }
+}
+
+.flatpickr-month {
+    background: var(--primary-color) !important;
+    color: #fff !important;
+    fill: #fff !important;
+}
+
+.flatpickr-weekdays {
+    background: var(--primary-color) !important;
+}
+span.flatpickr-weekday {
+    background: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+.flatpickr-prev-month, .flatpickr-next-month {
+    fill: #fff !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected:hover {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Đổi màu ngày hôm nay (Today) */
+.flatpickr-day.today {
+    border-color: var(--primary-color) !important;
+}
+.flatpickr-day.today:hover {
+    background: #f1f5f9 !important;
+    color: #000 !important;
+}
+
+.flatpickr-current-month input.cur-year {
+    color: #fff !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    background: var(--primary-color);
+}
+
+#inputDate {
+    height: 42px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+#inputDate:focus {
+    border-color: #0f172a;
+    box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.1);
+}
+
+.flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after {
+    border-bottom-color: var(--primary-color);
+}
+
+.custom-dropdown-btn.dropdown-toggle::after {
+    display: none !important;
+    content: none !important;
+}
+
+.custom-dropdown-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.voucher-scroll {
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.voucher-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.voucher-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.voucher-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.voucher-scroll::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.btn-apply {
+    background: transparent;
+    color: var(--accent-color);
+    border-color: #146c43;
 }

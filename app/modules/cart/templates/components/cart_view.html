@@ -6,7 +6,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/dich-vu">Service</a></li>
+                        <li class="breadcrumb-item"><a href="/service/service-search">Service</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Cart</li>
                     </ol>
                 </nav>
@@ -25,7 +25,7 @@
                 {%for c in cart_items%}
                 <div class="cart-item" id="item-{{loop.index}}">
                     <label>
-                        <input type="checkbox" class="service-check" value="{{c.id}}" data-price="{{c.service.price}}"
+                        <input type="checkbox" class="service-check" value="{{c.service.id}}" data-price="{{c.service.price}}"
                                onchange="calculateTotal()">
                         <span class="custom-checkbox"></span>
                     </label>

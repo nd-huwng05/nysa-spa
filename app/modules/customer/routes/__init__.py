@@ -9,5 +9,6 @@ def register_routes(app, service, config, env):
 
 
     customer_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
+    customer_routes.add_url_rule('/update-info', view_func=c.update_info, methods=['POST'])
 
     app.register_blueprint(customer_routes)

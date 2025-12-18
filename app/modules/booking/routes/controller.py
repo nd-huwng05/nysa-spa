@@ -13,9 +13,16 @@ class Controller:
         return render_template('page/book_view.html', **data)
 
     def staff_appointment(self):
-        return self.handler.handler_staff_appointment(request)
+        staff_appointment = self.handler.handler_staff_appointment(request)
+        staff_list = staff_appointment.get('staff_appointment', [])
+        return render_template('components/staff_dropdown.html', staffs=staff_list)
 
-    @staticmethod
-    def book_confirm():
-        return render_template('page/book_confirm.html')
+    def booking_voucher(self):
+        vouchers = self.handler.handler_booking_voucher(request)
+        return render_template('components/vouchers.html', vouchers=vouchers)
+
+
+
+    def add_booking(self):
+        return self.handler.handler_add_booking(request)
 

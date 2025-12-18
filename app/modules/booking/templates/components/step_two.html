@@ -4,70 +4,63 @@
         <h5 class="step-title">Staff Allocation</h5>
     </div>
 
-
     <div id="staffContainer">
-        {%for s in services%}
-        {%if s.type.value == "combo"%}
-        <div class="combo-box" data-id="cb1">
-            <div class="combo-header">
+        {% for s in services %}
+
+        {% if s.type.value == "combo" %}
+        <div class="combo-box" data-id="{{s.id}}" data-price="{{s.price}}">
+            <div class="combo-header d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <span class="combo-tag">Combo</span>
-                    <span class="fw-bold text-dark">Deep Relaxation Combo</span>
+                    <span class="fw-bold text-dark">{{s.name}}</span>
                 </div>
-                <select class="custom-select-staff fw-bold text-primary"
-                        style="border-color: var(--border-color);"
-                        onchange="updateComboMaster('cb1', this.value)">
-                    <option value="">--Optional--</option>
-                    <option value="split">--Split--</option>
-                </select>
+
+                {% with input_id='staff-select-combo-'~s.id, initial_label='Optional', width='140px', btn_class='btn-outline-primary', is_combo_master=True, custom_style='height: 40px; border-color: var(--border-color);', staffs=staff_appointment %}
+                    {% include 'components/staff_dropdown.html' %}
+                {% endwith %}
             </div>
 
-
-            {%for child in s.included_services%}
+            {% for child in s.included_services %}
             <div>
-                <div class="service-row service-item" data-id="101" data-duration="60">
+                <div class="service-row service-item" data-id="{{child.id}}" data-duration="{{child.duration_minutes}}"
+                     data-price="{{child.price}}">
                     <div class="d-flex align-items-center">
-                        <img src="{{child.img_url}}" alt="{{s.name}}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';"
-                             class="service-img">
+                        <img src="{{child.img_url}}" alt="{{s.name}}" class="service-img"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';">
                         <div>
-                            <div class="fw-bold text-dark small">{{child.name}}</div>
+                            <div class="fw-bold text-dark small text-limit">{{child.name}}</div>
                             <div class="text-muted" style="font-size:11px;">{{child.duration_minutes}} mins</div>
                         </div>
                     </div>
-                    <select class="custom-select-staff child-select"
-                            id="staff-select-101"
-                            disabled
-                            onchange="updateAllocation('101')">
-                        <option value="1">Lan Anh (Master)</option>
-                        <option value="2">Minh Tuan (Senior)</option>
-                        <option value="3">Hong Ngoc</option>
-                        <option value="4">Thanh Ha</option>
-                    </select>
+
+                    {% with input_id='staff-select-'~child.id, input_class='child-select', width='200px',
+                    btn_class='btn-secondary', initial_label='Optional', is_disabled=True, is_hidden=True,
+                    staffs=staff_appointment %}
+                    {% include 'components/staff_dropdown.html' %}
+                    {% endwith %}
                 </div>
             </div>
-            {%endfor%}
+            {% endfor %}
         </div>
-        {%else%}
-        <div class="service-row rounded border mb-3 service-item" data-id="201" data-duration="45">
+
+        {% else %}
+        <div class="service-row rounded border mb-3 service-item" data-id="{{s.id}}"
+             data-duration="{{s.duration_minutes}}" data-price="{{s.price}}">
             <div class="d-flex align-items-center">
-                <img src="{{s.img_url}}" alt="{{s.name}}" onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';"
-                             class="service-img">
+                <img src="{{s.img_url}}" alt="{{s.name}}" class="service-img"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Nysa+Spa';">
                 <div>
-                    <div class="fw-bold text-dark">{{s.name}}</div>
+                    <div class="fw-bold text-dark text-limit">{{s.name}}</div>
                     <div class="text-muted small">{{s.duration_minutes}} mins</div>
                 </div>
             </div>
-            <select class="custom-select-staff"
-                    id="staff-select-201"
-                    onchange="updateAllocation('201')">
-                <option value="1">Lan Anh (Master)</option>
-                <option value="2">Minh Tuan (Senior)</option>
-                <option value="3">Hong Ngoc</option>
-                <option value="4">Thanh Ha</option>
-            </select>
-        </div>
-        {%endif%}
-        {%endfor%}
 
+            {% with input_id='staff-select-'~s.id, onchange_func="updateAllocation('"~s.id~"')",
+            initial_label='Optional', width='200px', staffs=staff_appointment %}
+            {% include 'components/staff_dropdown.html' %}
+            {% endwith %}
+        </div>
+        {% endif %}
+        {% endfor %}
     </div>
 </div>

@@ -1,8 +1,8 @@
 """struct database
 
-Revision ID: dfacefa9ba6a
-Revises: 735c5b025530
-Create Date: 2025-12-15 16:36:33.950898
+Revision ID: 2abd4692145c
+Revises: 5500b5c970e3
+Create Date: 2025-12-18 09:23:31.517872
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = 'dfacefa9ba6a'
-down_revision = '735c5b025530'
+revision = '2abd4692145c'
+down_revision = '5500b5c970e3'
 branch_labels = None
 depends_on = None
 
@@ -29,9 +29,9 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('booking', schema=None) as batch_op:
-        batch_op.alter_column('status',
-               existing_type=mysql.ENUM('PENDING', 'AWAITING_PAYMENT', 'CONFIRMED', 'IN_PROGRESS', 'COMPLETED', 'CANCELED', 'NO_SHOW'),
-               server_default='pending',
+        batch_op.alter_column('booking_code',
+               existing_type=mysql.VARCHAR(length=12),
+               type_=sa.String(length=20),
                existing_nullable=False)
         batch_op.alter_column('total_amount',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
@@ -47,8 +47,6 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('booking_detail', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('start', sa.DateTime(), nullable=False))
-        batch_op.add_column(sa.Column('end', sa.DateTime(), nullable=False))
         batch_op.alter_column('price',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
                server_default='0.0',
@@ -61,7 +59,6 @@ def upgrade():
                existing_type=mysql.DATETIME(),
                server_default=sa.text('now()'),
                existing_nullable=True)
-        batch_op.drop_column('duration_minutes')
 
     with op.batch_alter_table('cart_item', schema=None) as batch_op:
         batch_op.alter_column('create_at',
@@ -84,10 +81,6 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('customer', schema=None) as batch_op:
-        batch_op.alter_column('membership_tier',
-               existing_type=mysql.ENUM('STANDARD', 'SILVER', 'GOLD', 'PLATINUM'),
-               server_default='standard',
-               existing_nullable=False)
         batch_op.alter_column('total_spent',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
                server_default='0',
@@ -112,18 +105,6 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('invoice', schema=None) as batch_op:
-        batch_op.alter_column('type',
-               existing_type=mysql.ENUM('PAYMENT', 'REFUND'),
-               server_default='payment',
-               existing_nullable=False)
-        batch_op.alter_column('payment_method',
-               existing_type=mysql.ENUM('CASH', 'BANK_TRANSFER'),
-               server_default='cash',
-               existing_nullable=False)
-        batch_op.alter_column('status',
-               existing_type=mysql.ENUM('PENDING', 'PAID', 'FAILED', 'CANCELED'),
-               server_default='pending',
-               existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
                server_default=sa.text('now()'),
@@ -198,8 +179,6 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('staff_calendar', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('start', sa.DateTime(), nullable=False))
-        batch_op.add_column(sa.Column('end', sa.DateTime(), nullable=False))
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
                server_default=sa.text('now()'),
@@ -208,9 +187,6 @@ def upgrade():
                existing_type=mysql.DATETIME(),
                server_default=sa.text('now()'),
                existing_nullable=True)
-        batch_op.drop_column('end_time')
-        batch_op.drop_column('shift_type')
-        batch_op.drop_column('start_time')
 
     with op.batch_alter_table('staff_permissions', schema=None) as batch_op:
         batch_op.alter_column('create_at',
@@ -223,10 +199,6 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('user', schema=None) as batch_op:
-        batch_op.alter_column('role',
-               existing_type=mysql.ENUM('CUSTOMER', 'STAFF', 'ADMIN'),
-               server_default='customer',
-               existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
                server_default=sa.text('now()'),
@@ -251,9 +223,9 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('voucher', schema=None) as batch_op:
-        batch_op.alter_column('scope',
-               existing_type=mysql.ENUM('GLOBAL', 'SERVICE', 'HIDDEN'),
-               server_default='hidden',
+        batch_op.alter_column('min_order_value',
+               existing_type=mysql.DECIMAL(precision=12, scale=0),
+               server_default='0',
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
@@ -298,9 +270,9 @@ def downgrade():
                existing_type=mysql.DATETIME(),
                server_default=sa.text('(now())'),
                existing_nullable=True)
-        batch_op.alter_column('scope',
-               existing_type=mysql.ENUM('GLOBAL', 'SERVICE', 'HIDDEN'),
-               server_default=sa.text("'HIDDEN'"),
+        batch_op.alter_column('min_order_value',
+               existing_type=mysql.DECIMAL(precision=12, scale=0),
+               server_default=sa.text("'0'"),
                existing_nullable=True)
 
     with op.batch_alter_table('user_auth_method', schema=None) as batch_op:
@@ -326,10 +298,6 @@ def downgrade():
                existing_type=mysql.DATETIME(),
                server_default=sa.text('(now())'),
                existing_nullable=True)
-        batch_op.alter_column('role',
-               existing_type=mysql.ENUM('CUSTOMER', 'STAFF', 'ADMIN'),
-               server_default=sa.text("'CUSTOMER'"),
-               existing_nullable=True)
 
     with op.batch_alter_table('staff_permissions', schema=None) as batch_op:
         batch_op.alter_column('update_at',
@@ -342,9 +310,6 @@ def downgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('staff_calendar', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('start_time', mysql.DATETIME(), nullable=False))
-        batch_op.add_column(sa.Column('shift_type', mysql.ENUM('MORNING', 'AFTERNOON', 'EVENING', 'FULL', 'OFF'), nullable=False))
-        batch_op.add_column(sa.Column('end_time', mysql.DATETIME(), nullable=False))
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
                server_default=sa.text('(now())'),
@@ -353,8 +318,6 @@ def downgrade():
                existing_type=mysql.DATETIME(),
                server_default=sa.text('(now())'),
                existing_nullable=True)
-        batch_op.drop_column('end')
-        batch_op.drop_column('start')
 
     with op.batch_alter_table('staff', schema=None) as batch_op:
         batch_op.alter_column('update_at',
@@ -429,18 +392,6 @@ def downgrade():
                existing_type=mysql.DATETIME(),
                server_default=sa.text('(now())'),
                existing_nullable=True)
-        batch_op.alter_column('status',
-               existing_type=mysql.ENUM('PENDING', 'PAID', 'FAILED', 'CANCELED'),
-               server_default=sa.text("'PENDING'"),
-               existing_nullable=True)
-        batch_op.alter_column('payment_method',
-               existing_type=mysql.ENUM('CASH', 'BANK_TRANSFER'),
-               server_default=sa.text("'CASH'"),
-               existing_nullable=False)
-        batch_op.alter_column('type',
-               existing_type=mysql.ENUM('PAYMENT', 'REFUND'),
-               server_default=sa.text("'PAYMENT'"),
-               existing_nullable=False)
 
     with op.batch_alter_table('feature', schema=None) as batch_op:
         batch_op.alter_column('update_at',
@@ -465,10 +416,6 @@ def downgrade():
                existing_type=mysql.DECIMAL(precision=12, scale=0),
                server_default=sa.text("'0'"),
                existing_nullable=True)
-        batch_op.alter_column('membership_tier',
-               existing_type=mysql.ENUM('STANDARD', 'SILVER', 'GOLD', 'PLATINUM'),
-               server_default=sa.text("'STANDARD'"),
-               existing_nullable=False)
 
     with op.batch_alter_table('category', schema=None) as batch_op:
         batch_op.alter_column('update_at',
@@ -491,7 +438,6 @@ def downgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('booking_detail', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('duration_minutes', mysql.INTEGER(), autoincrement=False, nullable=True))
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
                server_default=sa.text('(now())'),
@@ -504,8 +450,6 @@ def downgrade():
                existing_type=mysql.DECIMAL(precision=12, scale=0),
                server_default=sa.text("'0'"),
                existing_nullable=True)
-        batch_op.drop_column('end')
-        batch_op.drop_column('start')
 
     with op.batch_alter_table('booking', schema=None) as batch_op:
         batch_op.alter_column('update_at',
@@ -520,9 +464,9 @@ def downgrade():
                existing_type=mysql.DECIMAL(precision=12, scale=0),
                server_default=sa.text("'0'"),
                existing_nullable=False)
-        batch_op.alter_column('status',
-               existing_type=mysql.ENUM('PENDING', 'AWAITING_PAYMENT', 'CONFIRMED', 'IN_PROGRESS', 'COMPLETED', 'CANCELED', 'NO_SHOW'),
-               server_default=sa.text("'PENDING'"),
+        batch_op.alter_column('booking_code',
+               existing_type=sa.String(length=20),
+               type_=mysql.VARCHAR(length=12),
                existing_nullable=False)
 
     with op.batch_alter_table('badge', schema=None) as batch_op:

@@ -64,5 +64,6 @@ class Repository:
         return services, pagination
 
     @staticmethod
-    def get_list_services_by_ids(ids:int):
-        return Service.query.filter(Service.id.in_(ids)).all()
+    def get_list_services_by_ids(ids):
+        service = Service.query.filter(Service.id.in_(ids)).all()
+        return service

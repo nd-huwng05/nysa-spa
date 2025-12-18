@@ -13,4 +13,5 @@ class Controller:
     def index(self):
         return render_template('page/service.html')
 
-
+    def update_info(self):
+        return self.handler.update_info(request)

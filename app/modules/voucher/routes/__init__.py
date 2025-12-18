@@ -1,4 +1,6 @@
 from flask import Blueprint
+
+from app.core.middleware import jwt_middleware
 from .controller import Controller
 
 def register_routes(app, service, config, env):

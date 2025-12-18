@@ -29,4 +29,3 @@ class Invoice(BaseModel):
     note = Column(Text, nullable=True)
 
     booking = relationship("Booking", back_populates="invoices")
-    voucher_usage = relationship("VoucherUsage", back_populates="invoice")
