@@ -12,6 +12,10 @@ class PaymentMethod(enum.Enum):
     CASH = 'CASH'
     BANK_TRANSFER = 'BANK_TRANSFER'
 
+class PaymentType(enum.Enum):
+    FULL = 'FULL'
+    DEPOSIT = 'DEPOSIT'
+
 class InvoiceStatus(enum.Enum):
     PENDING = 'PENDING'
     PAID = 'PAID'
@@ -25,6 +29,7 @@ class Invoice(BaseModel):
     type = Column(Enum(InvoiceType), nullable=False, server_default=InvoiceType.PAYMENT.value)
     amount = Column(DECIMAL(12,0), nullable=False)
     payment_method = Column(Enum(PaymentMethod),server_default=PaymentMethod.CASH.value ,nullable=False)
+    payment_type = Column(Enum(PaymentType), server_default=PaymentType.FULL.value ,nullable=False)
     status = Column(Enum(InvoiceStatus), server_default=InvoiceStatus.PENDING.value)
     note = Column(Text, nullable=True)
 

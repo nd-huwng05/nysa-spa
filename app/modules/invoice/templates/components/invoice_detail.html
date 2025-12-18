@@ -7,7 +7,7 @@
             <div class="info-group-title">ID & Status</div>
             <div class="info-row">
                 <span class="info-label" style="color: var(--combo-text-default)">Invoice ID:</span>
-                <span class="info-value font-monospace">#INV-20251212</span>
+                <span class="info-value font-monospace" id="invoice-code" data-id="{{variable['code']}}">{{variable['code']}}</span>
             </div>
             <div class="info-row">
                 <span class="info-label" style="color: var(--combo-text-default)">Booking Code:</span>
@@ -42,26 +42,30 @@
         <div class="info-group">
             <div class="info-group-title">Services</div>
             {%for bd in booking_detail%}
-            <div class="price-row"><span class="price-col-label"
-                                         style="color: var(--combo-text-default)">{{bd.service.name}}</span><span
-                    class="price-col">{{"{:,.0f}".format(bd.service.price)}} ₫</span></div>
+            {%if bd.parent_id is none%}
+                <div class="price-row"><span class="price-col-label"
+                                             style="color: var(--combo-text-default)">{{bd.service.name}}</span><span
+                        class="price-col">{{"{:,.0f}".format(bd.service.price)}} ₫</span>
+                </div>
+            {%endif%}
             {%endfor%}
         </div>
         <h5 class="heading-font fs-6 text-heading mb-3 pt-3 border-top"
             style="border-color: var(--combo-border-dark) !important;">Price Breakdown</h5>
         <div class="mb-4">
-            <div class="price-row"><span class="price-col-label text-success">Voucher</span><span
-                    class="price-col text-success">- 500.000 ₫</span></div>
-            <div class="price-row"><span class="price-col-label"
-                                         style="color: var(--combo-text-default)">VAT (10%)</span><span
-                    class="price-col">+ 250.000 ₫</span></div>
+            <div class="price-row"><span class="price-col-label ">SubTotal</span><span
+                    class="price-col">{{"{:,.0f}".format(booking.total_amount)}} VND</span></div>
+            <div class="price-row"><span class="price-col-label ">Voucher</span><span
+                    class="price-col text-danger" >- {{"{:,.0f}".format(variable['discount_total'])}} VND</span></div>
+            <div class="price-row"><span class="price-col-label ">VAT ({{variable['vat']}}%)</span><span
+                    class="price-col text-success" >+ {{"{:,.0f}".format(variable['vat_value'])}} VND</span></div>
         </div>
 
         <div class="alert p-3 mb-4 border-0" style="background-color: var(--surface-color-hero);">
             <div id="final-total-display">
                                 <span class="small text-uppercase fw-bold"
                                       style="color: var(--combo-text-subtle)">Total</span>
-                <span id="summary-total-actual">2.750.000 VND</span>
+                <span id="summary-total-actual">{{"{:,.0f}".format(variable['total'])}} VND</span>
             </div>
         </div>
 
@@ -72,8 +76,7 @@
             <h5 id="summary-method" class="text-accent fw-bold mb-2">Bank Transfer (Full)</h5>
             <p class="mb-1 small text-uppercase fw-bold mt-3" style="color: var(--combo-text-subtle)">
                 Amount:</p>
-            <h3 id="summary-payment-amount" class="text-heading fw-bold mb-0">2.750.000
-                VND</h3>
+            <h3 id="summary-payment-amount" class="text-heading fw-bold mb-0">{{"{:,.0f}".format(variable['total'])}} VND</h3>
         </div>
     </div>
 </div>

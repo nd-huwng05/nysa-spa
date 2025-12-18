@@ -44,3 +44,10 @@ class Service:
 
     def get_booking_by_id(self, booking_id):
         return self.repo.get_booking_by_id(booking_id)
+
+    def update_payment_booking(self, booking_id, payment_type):
+        try:
+            self.repo.update_payment_booking(booking_id, payment_type)
+            self.repo.db.session.commit()
+        except Exception as e:
+            return NewError(500,"ERROR CAN'T UPDATE PAYMENT BOOKING")

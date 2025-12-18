@@ -5,7 +5,7 @@ from .routes.controller import Controller
 from .service.service import Service
 from .routes import register_routes
 from app.core.environment import Environment
-from ... import BookingModule
+from app.modules.booking import BookingModule
 from ...core.interface import IModule
 
 

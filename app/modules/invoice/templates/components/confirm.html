@@ -1,0 +1,30 @@
+<h2 class="heading-font fs-4 text-accent mb-4">
+    <i class="bi bi-cash me-2"></i>2. Cash Payment
+</h2>
+
+<div class="d-flex flex-column align-items-center">
+    <div class="mb-4">
+        <i class="bi bi-person-badge text-accent" style="font-size: 3rem;"></i>
+    </div>
+
+    <h3 class="text-heading heading-font mb-2">Staff Confirmation Required</h3>
+    <p class="small mb-4 text-center" style="color: var(--combo-text-subtle)">
+        Please receive the cash from the customer and click the button below to complete the transaction.
+    </p>
+
+    <div class="alert p-3 w-100 mb-4 text-start border-0"
+         style="background-color: var(--surface-color); border: 1px solid var(--combo-border-dark) !important;">
+        <div class="d-flex justify-content-between align-items-center">
+            <span class="small text-uppercase fw-bold" style="color: var(--combo-text-subtle)">Amount to Collect:</span>
+            <span class="text-accent fw-bold fs-4" id="cash-amount-collect">0 VND</span>
+        </div>
+    </div>
+
+    <button id="complete-cash-btn" class="btn btn-accent-primary btn-lg w-100 py-3">
+        <i class="bi bi-check-circle me-2"></i>Complete Transaction
+    </button>
+
+    <p class="small mt-3" style="color: var(--combo-text-subtle)">
+        Invoice ID: <span class="font-monospace fw-bold">{{variable['code']}}</span>
+    </p>
+</div>

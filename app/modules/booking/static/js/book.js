@@ -709,7 +709,6 @@ async function submitBooking() {
         });
 
         const result = await response.json();
-        console.log(result)
         if (response.ok) {
             Swal.fire({
                 icon: 'success',
@@ -718,7 +717,7 @@ async function submitBooking() {
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
-                // window.location.href = "/booking/invoice/" + result.id;
+                window.location.href = "/invoice/payment?booking_id=" + result.data.booking_id;
             });
         } else {
             Swal.fire("Error", result.message || "Failed to create booking", "error");

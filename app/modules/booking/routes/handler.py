@@ -82,7 +82,7 @@ class Handler:
         if not total_sub_amount:
             raise NewError(400, "TOTAL_SUB_AMOUNT IS REQUIRED")
 
-        expires = booking_time + timedelta(minutes=self.config.private_config.get('EXPIRES_PENDING'))
+        expires = datetime.now() + timedelta(minutes=self.config.private_config.get('EXPIRES_PENDING'))
 
         booking = Booking(
             booking_code=booking_code,

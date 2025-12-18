@@ -13,4 +13,11 @@ class Controller:
 
         return render_template('page/invoice.html', **data)
 
+    def create_invoice(self):
+       return self.handler.handle_create_invoice(request)
 
+    def sepay_webhook(self):
+        return self.handler.sepay_webhook(request)
+
+    def check_status(self, invoice_code):
+        return self.handler.check_status(invoice_code)
