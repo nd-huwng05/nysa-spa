@@ -1,8 +1,8 @@
 """struct database
 
-Revision ID: 2abd4692145c
-Revises: 5500b5c970e3
-Create Date: 2025-12-18 09:23:31.517872
+Revision ID: 46aad5594823
+Revises: 0b71cd92f9ba
+Create Date: 2025-12-19 00:53:08.163942
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = '2abd4692145c'
-down_revision = '5500b5c970e3'
+revision = '46aad5594823'
+down_revision = '0b71cd92f9ba'
 branch_labels = None
 depends_on = None
 
@@ -29,10 +29,6 @@ def upgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('booking', schema=None) as batch_op:
-        batch_op.alter_column('booking_code',
-               existing_type=mysql.VARCHAR(length=12),
-               type_=sa.String(length=20),
-               existing_nullable=False)
         batch_op.alter_column('total_amount',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
                server_default='0.0',
@@ -254,21 +250,21 @@ def downgrade():
     with op.batch_alter_table('voucher_usage', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('voucher', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('min_order_value',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
@@ -278,95 +274,95 @@ def downgrade():
     with op.batch_alter_table('user_auth_method', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('last_login_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('user', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('staff_permissions', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('staff_calendar', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('staff', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('setting', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('service_detail', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('service_badge', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('service', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('type',
                existing_type=mysql.ENUM('SINGLE', 'COMBO'),
@@ -376,41 +372,41 @@ def downgrade():
     with op.batch_alter_table('permissions', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('invoice', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('feature', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('customer', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('total_spent',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
@@ -420,31 +416,31 @@ def downgrade():
     with op.batch_alter_table('category', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('cart_item', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     with op.batch_alter_table('booking_detail', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('price',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
@@ -454,29 +450,25 @@ def downgrade():
     with op.batch_alter_table('booking', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('total_amount',
                existing_type=mysql.DECIMAL(precision=12, scale=0),
                server_default=sa.text("'0'"),
                existing_nullable=False)
-        batch_op.alter_column('booking_code',
-               existing_type=sa.String(length=20),
-               type_=mysql.VARCHAR(length=12),
-               existing_nullable=False)
 
     with op.batch_alter_table('badge', schema=None) as batch_op:
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
         batch_op.alter_column('create_at',
                existing_type=mysql.DATETIME(),
-               server_default=sa.text('(now())'),
+               server_default=sa.text('CURRENT_TIMESTAMP'),
                existing_nullable=True)
 
     # ### end Alembic commands ###

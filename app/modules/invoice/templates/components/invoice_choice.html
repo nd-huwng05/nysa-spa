@@ -1,0 +1,70 @@
+<div class="col-lg-7">
+    <div class="payment-card p-4 p-md-5">
+        <div id="payment-selection-section">
+            <h2 class="heading-font fs-4 text-heading mb-4"><i
+                    class="bi bi-wallet2 me-2 text-accent"></i>1. Payment Method</h2>
+
+            <div class="mb-5">
+                <label class="fw-bold mb-3 small text-uppercase"
+                       style="color: var(--combo-text-subtle)">Transaction Type</label>
+                <div class="row g-3">
+                    <div class="col-md-6 {%if current_role == 'CUSTOMER'%}disabled{%endif%}">
+                        <input type="radio" class="btn-check " name="payment_method" id="cash-option"
+                               value="CASH" {% if current_role.value == "ABC" %}disabled{% endif %}>
+                        <label class="btn btn-outline-combo w-100 py-3 {% if current_role == 'ABC' %}opacity-50{% endif %}"
+                               for="cash-option">
+                            <i class="bi bi-cash-stack me-2"></i> Cash
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="radio" class="btn-check" name="payment_method"
+                               id="bank-transfer-option" value="BANK_TRANSFER" checked>
+                        <label class="btn btn-outline-combo w-100 py-3" for="bank-transfer-option">
+                            <i class="bi bi-bank me-2"></i> Bank
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <label class="fw-bold mb-3 small text-uppercase" style="color: var(--combo-text-subtle)">Payment
+                Option</label>
+            <div class="mb-5">
+                <label class="payment-type-option" for="full-payment">
+                    <input class="form-check-input" type="radio" name="payment_type" id="full-payment"
+                           value="FULL" checked>
+                    <span class="custom-checkmark"></span>
+                    <span class="label-text">Pay Full Amount</span>
+                    <span class="amount-display"
+                          id="full-amount-display">{{"{:,.0f}".format(variable['total'])}} VND</span>
+                </label>
+
+                <label class="payment-type-option" for="deposit-payment">
+                    <input class="form-check-input" type="radio" name="payment_type"
+                           id="deposit-payment" value="DEPOSIT">
+                    <span class="custom-checkmark"></span>
+                    <span class="label-text">Deposit ({{variable['deposit_percent']}}%)</span>
+                    <span class="amount-display" id="deposit-amount-display">{{"{:,.0f}".format(variable['deposit'])}} VND</span>
+                </label>
+            </div>
+
+            <button id="confirm-payment-btn" class="btn btn-accent-primary btn-lg w-100 py-3"
+                    type="button">
+                PAY NOW ({{"{:,.0f}".format(variable['total'])}} VND)
+            </button>
+        </div>
+
+        <div id="step-scan-qr" style="display: none;">
+            <button type="button" id="back-to-step1" class="btn btn-sm btn-outline-secondary border-0">
+                <i class="bi bi-arrow-left me-1"></i> Back
+            </button>
+
+            <div id="qr-method-container">
+                {% include 'components/qrcode.html' %}
+            </div>
+
+            <div id="cash-method-container" style="display: none;">
+                {% include 'components/confirm.html' %}
+            </div>
+        </div>
+    </div>
+</div>

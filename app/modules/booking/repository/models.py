@@ -6,20 +6,25 @@ from app.core.database import BaseModel
 
 class BookingStatus(enum.Enum):
     PENDING = "PENDING"
-    PAYING = "PAYING"
-    PAID = "PAID"
+    SUCCESS = "SUCCESS"
+    FAILURE = "FAILURE"
     PROCESSING = "PROGRESSING"
     COMPLETED = "COMPLETED"
     CANCELED = "CANCELED"
+
+class PaymentStatus(enum.Enum):
+    NONE = "NONE"
+    PARTIAL = "PARTIAL"
+    COMPLETE = "COMPLETE"
 
 class Booking(BaseModel):
     __tablename__ = 'booking'
     id = Column(Integer, primary_key=True, autoincrement=True)
     booking_code = Column(String(20), unique=True, nullable=False)
     customer_id = Column(Integer, ForeignKey('customer.id'), nullable=True)
-    voucher_id = Column(Integer, ForeignKey('voucher.id'), nullable=True)
     booking_time = Column(DateTime, nullable=False)
     status = Column(Enum(BookingStatus), nullable=False, server_default=BookingStatus.PENDING.value)
+    payment = Column(Enum(PaymentStatus), nullable=False, server_default=PaymentStatus.NONE.value)
     notes = Column(Text, nullable=True)
     expires_at = Column(DateTime)
     total_amount = Column(DECIMAL(12,0), nullable=False, server_default='0.0')
@@ -27,7 +32,7 @@ class Booking(BaseModel):
     booking_details = relationship('BookingDetail', back_populates='booking', cascade='all, delete-orphan')
     invoices = relationship("Invoice", back_populates="booking", cascade="all, delete-orphan")
     customer = relationship('Customer', back_populates='bookings')
-    voucher_usage = relationship("VoucherUsage", back_populates="booking")
+    voucher_usage = relationship("VoucherUsage", back_populates="booking", uselist=False, cascade="all, delete-orphan")
 
 class BookingDetailStatus(enum.Enum):
     WAITING = "WAITING"
@@ -51,3 +56,4 @@ class BookingDetail(BaseModel):
     booking = relationship("Booking", back_populates="booking_details")
     staff = relationship("Staff", back_populates="booking_details")
     children = relationship("BookingDetail", backref=backref('parent', remote_side=[id]),cascade="all, delete-orphan")
+    service = relationship("Service", backref="service")

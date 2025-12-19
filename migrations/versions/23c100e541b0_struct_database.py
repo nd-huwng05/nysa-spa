@@ -1,8 +1,8 @@
 """struct database
 
-Revision ID: 5500b5c970e3
+Revision ID: 23c100e541b0
 Revises: 
-Create Date: 2025-12-18 08:14:28.688690
+Create Date: 2025-12-18 12:58:38.595542
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5500b5c970e3'
+revision = '23c100e541b0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -199,9 +199,8 @@ def upgrade():
     )
     op.create_table('booking',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('booking_code', sa.String(length=12), nullable=False),
+    sa.Column('booking_code', sa.String(length=20), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.Column('voucher_id', sa.Integer(), nullable=True),
     sa.Column('booking_time', sa.DateTime(), nullable=False),
     sa.Column('status', sa.Enum('PENDING', 'PAYING', 'PAID', 'PROCESSING', 'COMPLETED', 'CANCELED', name='bookingstatus'), server_default='PENDING', nullable=False),
     sa.Column('notes', sa.Text(), nullable=True),
@@ -210,7 +209,6 @@ def upgrade():
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
-    sa.ForeignKeyConstraint(['voucher_id'], ['voucher.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('booking_code')
     )
@@ -281,13 +279,11 @@ def upgrade():
     op.create_table('voucher_usage',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('voucher_id', sa.Integer(), nullable=False),
-    sa.Column('customer_id', sa.Integer(), nullable=False),
     sa.Column('booking_id', sa.Integer(), nullable=False),
     sa.Column('discount_amount', sa.DECIMAL(precision=12, scale=0), nullable=False),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['booking_id'], ['booking.id'], ),
-    sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
     sa.ForeignKeyConstraint(['voucher_id'], ['voucher.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

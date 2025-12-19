@@ -625,6 +625,8 @@ async function submitBooking() {
 
     const totalAmountStr = document.getElementById('sumTotal').innerText;
     const totalAmount = parseInt(totalAmountStr.replace(/\D/g, ''));
+    const subAmountStr = document.getElementById('sumSubTotal').innerText;
+    const subAmount = parseInt(subAmountStr.replace(/\D/g, ''));
     const details = [];
     const topLevelNodes = document.querySelectorAll('#staffContainer > .combo-box, #staffContainer > .service-item:not(.combo-box .service-item)');
 
@@ -691,6 +693,7 @@ async function submitBooking() {
     const payload = {
         customer_id: customerId,
         booking_time: `${bookingDate} ${bookingTime}`,
+        total_sub_amount: subAmount,
         total_amount: totalAmount,
         voucher_id: selectedVoucher ? selectedVoucher.id : null,
         notes: notes,
@@ -706,7 +709,6 @@ async function submitBooking() {
         });
 
         const result = await response.json();
-        console.log(result)
         if (response.ok) {
             Swal.fire({
                 icon: 'success',
@@ -715,7 +717,7 @@ async function submitBooking() {
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
-                // window.location.href = "/booking/invoice/" + result.id;
+                window.location.href = "/invoice/payment?booking_id=" + result.data.booking_id;
             });
         } else {
             Swal.fire("Error", result.message || "Failed to create booking", "error");

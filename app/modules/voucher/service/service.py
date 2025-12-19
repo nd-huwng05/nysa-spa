@@ -11,9 +11,11 @@ class Service:
         voucher = self.repo.get_voucher_global_for_customer(customer_id, total_price)
         return voucher
 
-    def check_voucher(self, voucher_id):
+    def check_voucher(self, voucher_id, customer_id, total_price):
         limit_per_user = self.repo.get_limit_per_user_by_voucher(voucher_id)
-        ok = self.repo.check_voucher_by_id(voucher_id, limit_per_user)
+        ok = self.repo.check_voucher_by_id(voucher_id, customer_id, total_price, limit_per_user)
         if not ok:
             raise NewError(400,"VOUCHER NOT FOUND, YOU NEED RELOAD PAGE")
 
+    def create_voucher_usage(self, voucher):
+        self.repo.create_voucher_usage(voucher)

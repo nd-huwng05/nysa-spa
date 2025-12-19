@@ -1,0 +1,82 @@
+<div class="col-lg-5">
+    <div class="invoice-sticky-card p-4">
+        <h2 class="heading-font fs-4 text-heading mb-4"><i class="bi bi-file-text me-2 text-accent"></i>Order
+            Details</h2>
+
+        <div class="info-group">
+            <div class="info-group-title">ID & Status</div>
+            <div class="info-row">
+                <span class="info-label" style="color: var(--combo-text-default)">Invoice ID:</span>
+                <span class="info-value font-monospace" id="invoice-code" data-id="{{invoice.invoice_code}}">{{invoice.invoice_code}}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label" style="color: var(--combo-text-default)">Booking Code:</span>
+                <span class="info-value text-accent font-monospace">{{booking.booking_code}}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label" style="color: var(--combo-text-default)">Created Date:</span>
+                <span class="info-value">{{ booking.create_at.strftime('%d/%m/%Y %H:%M')}}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label" style="color: var(--combo-text-default)">Status:</span>
+                <span class="badge bg-warning text-dark border border-warning">{{booking.status.value}}</span>
+            </div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-group-title">Customer</div>
+            <div class="info-row">
+                <span class="info-label" style="color: var(--combo-text-default)">Full Name:</span>
+                <span class="info-value">{{booking.customer.fullname}}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label" style="color: var(--combo-text-default)">Email:</span>
+                <span class="info-value">{{booking.customer.user.email}}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label" style="color: var(--combo-text-default)">Phone:</span>
+                <span class="info-value">{{booking.customer.phone}}</span>
+            </div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-group-title">Services</div>
+            {%for bd in booking_detail%}
+            {%if bd.parent_id is none%}
+                <div class="price-row"><span class="price-col-label"
+                                             style="color: var(--combo-text-default)">{{bd.service.name}}</span><span
+                        class="price-col">{{"{:,.0f}".format(bd.service.price)}} ₫</span>
+                </div>
+            {%endif%}
+            {%endfor%}
+        </div>
+        <h5 class="heading-font fs-6 text-heading mb-3 pt-3 border-top"
+            style="border-color: var(--combo-border-dark) !important;">Price Breakdown</h5>
+        <div class="mb-4">
+            <div class="price-row"><span class="price-col-label ">SubTotal</span><span
+                    class="price-col">{{"{:,.0f}".format(booking.total_amount)}} VND</span></div>
+            <div class="price-row"><span class="price-col-label ">Voucher</span><span
+                    class="price-col text-danger" >- {{"{:,.0f}".format(variable['discount_total'])}} VND</span></div>
+            <div class="price-row"><span class="price-col-label ">VAT ({{variable['vat']}}%)</span><span
+                    class="price-col text-success" >+ {{"{:,.0f}".format(variable['vat_value'])}} VND</span></div>
+        </div>
+
+        <div class="alert p-3 mb-4 border-0" style="background-color: var(--surface-color-hero);">
+            <div id="final-total-display">
+                                <span class="small text-uppercase fw-bold"
+                                      style="color: var(--combo-text-subtle)">Total</span>
+                <span id="summary-total-actual">{{"{:,.0f}".format(variable['total'])}} VND</span>
+            </div>
+        </div>
+
+        <div class="p-3 border rounded"
+             style="background-color: var(--surface-color); border-color: var(--combo-border-dark) !important;">
+            <p class="mb-1 small text-uppercase fw-bold" style="color: var(--combo-text-subtle)">Payment
+                Method:</p>
+            <h5 id="summary-method" class="text-accent fw-bold mb-2">Bank Transfer (Full)</h5>
+            <p class="mb-1 small text-uppercase fw-bold mt-3" style="color: var(--combo-text-subtle)">
+                Amount:</p>
+            <h3 id="summary-payment-amount" class="text-heading fw-bold mb-0">{{"{:,.0f}".format(variable['total'])}} VND</h3>
+        </div>
+    </div>
+</div>
