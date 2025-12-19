@@ -11,7 +11,7 @@
                     <div class="col-md-6 {%if current_role == 'CUSTOMER'%}disabled{%endif%}">
                         <input type="radio" class="btn-check " name="payment_method" id="cash-option"
                                value="CASH" {% if current_role.value == "ABC" %}disabled{% endif %}>
-                        <label class="btn btn-outline-combo w-100 py-3 {% if current_role == 'CUSTOMER' %}opacity-50{% endif %}"
+                        <label class="btn btn-outline-combo w-100 py-3 {% if current_role == 'ABC' %}opacity-50{% endif %}"
                                for="cash-option">
                             <i class="bi bi-cash-stack me-2"></i> Cash
                         </label>

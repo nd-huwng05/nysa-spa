@@ -1,8 +1,7 @@
-import uuid
-from datetime import datetime
+
 from decimal import Decimal, InvalidOperation
 
-from flask import Request, g, jsonify
+from flask import Request
 
 from app.core.logger import logger
 from app.core.errors import NewError, NewPackage
@@ -17,32 +16,24 @@ class Handler:
 
     def get_data_for_view(self, request: Request):
         booking_id = request.args.get('booking_id', None)
-
         if booking_id is None:
-            return None, 'BOOKING_ID is required'
-        booking = self.env.modules.booking_module.service.get_booking_by_id(booking_id)
+            return None, 'BOOKING_ID IS REQUIRED'
 
-        if booking is None:
-            return None, 'NOT FOUND BOOKING'
+        invoice, errors = self.service.search_invoice(booking_id)
+        if errors:
+            return None, errors
 
-        if booking.status.value != 'PENDING':
-            return None, 'Booking is paid or awaiting payment or cancelled'
-
-        invoice_data = self.service.get_invoice_data(booking)
+        data = self.service.get_invoice_data(invoice.booking)
 
         return {
-            'variable': invoice_data,
-            'booking': booking,
-            'booking_detail': booking.booking_details,
+            'variable': data,
+            'invoice': invoice,
+            'booking': invoice.booking,
+            'booking_detail': invoice.booking.booking_details,
         }, None
 
-    def handle_create_invoice(self, request: Request):
+    def handle_update_invoice(self, request: Request):
         data = request.json
-
-        booking_id = data.get('booking_id', None)
-
-        if booking_id is None:
-            raise NewError(400,'BOOKING_ID is required')
 
         invoice_code = data.get('invoice_code', None)
         if invoice_code is None:
@@ -66,21 +57,13 @@ class Handler:
 
         invoice = {
             'invoice_code': invoice_code,
-            'booking_id': booking_id,
             'amount': amount,
             'payment_type': payment_type,
             'payment_method': payment_methods,
             'type': type,
         }
 
-        invoice = self.service.create_invoice(invoice)
-
-        if payment_type == 'DEPOSIT':
-            self.env.modules.booking_module.service.update_payment_booking(booking_id, 'PARTIAL')
-
-        if payment_type == 'FULL':
-            self.env.modules.booking_module.service.update_payment_booking(booking_id, 'COMPLETE')
-
+        invoice = self.service.update_invoice(invoice)
 
         if payment_methods == "BANK_TRANSFER":
             bank_id = self.config.private_config.get('BANK_ID')
@@ -98,6 +81,7 @@ class Handler:
             data = {
                 'qr_link':qr_link,
                 'invoice_code':invoice.invoice_code,
+                'expires_at': invoice.expires_at.strftime("%Y-%m-%d %H:%M:%S"),
             }
             return NewPackage(data).response()
 

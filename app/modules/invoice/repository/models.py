@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum, Float, Text, DECIMAL
+from sqlalchemy import Column, Integer, String, ForeignKey, Enum, Float, Text, DECIMAL, DateTime
 from sqlalchemy.orm import relationship
 
 from app.core.database import BaseModel
@@ -26,11 +26,12 @@ class Invoice(BaseModel):
     id = Column(Integer, primary_key=True, autoincrement=True)
     invoice_code = Column(String(50), unique=True, nullable=False)
     booking_id = Column(Integer, ForeignKey('booking.id'), nullable=False)
-    type = Column(Enum(InvoiceType), nullable=False, server_default=InvoiceType.PAYMENT.value)
-    amount = Column(DECIMAL(12,0), nullable=False)
-    payment_method = Column(Enum(PaymentMethod),server_default=PaymentMethod.CASH.value ,nullable=False)
-    payment_type = Column(Enum(PaymentType), server_default=PaymentType.FULL.value ,nullable=False)
+    type = Column(Enum(InvoiceType), nullable=True)
+    amount = Column(DECIMAL(12,0), nullable=True)
+    payment_method = Column(Enum(PaymentMethod), nullable=True)
+    payment_type = Column(Enum(PaymentType), nullable=True)
     status = Column(Enum(InvoiceStatus), server_default=InvoiceStatus.PENDING.value)
     note = Column(Text, nullable=True)
+    expires_at = Column(DateTime)
 
     booking = relationship("Booking", back_populates="invoices")

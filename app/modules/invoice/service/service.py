@@ -1,5 +1,9 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from sqlalchemy.exc import IntegrityError
+
+from app.core.logger import logger
 from app.core.errors import NewPackage, NewError
 from ..repository.models import Invoice
 from ..repository.repo import Repository
@@ -11,8 +15,7 @@ class Service:
         self.repo = repo
         self.config = config
 
-    def get_invoice_data(self,booking):
-        code = f"IV{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
+    def get_invoice_data(self, booking):
         sub_total = booking.total_amount
 
         discount_total = 0
@@ -21,9 +24,8 @@ class Service:
 
         total = sub_total - discount_total
         total_final = total + total*self.config.private_config.get("VAT")/100
-        deposit = total*self.config.private_config.get("DEPOSIT_PERCENT")/100
+        deposit = total_final*self.config.private_config.get("DEPOSIT_PERCENT")/100
         return {
-            "code": code,
             "total": total_final,
             "vat": self.config.private_config["VAT"],
             "vat_value": total*self.config.private_config.get("VAT")/100,
@@ -32,27 +34,40 @@ class Service:
             "discount_total": discount_total,
         }
 
-    def create_invoice(self, invoice):
+
+    def search_invoice(self, booking_id):
         try:
-            old_invoice = self.repo.get_invoice_by_booking_id(invoice.get("booking_id"))
-            if old_invoice:
-                old_invoice.payment_method = invoice.get("payment_method")
-                old_invoice.payment_type = invoice.get("payment_type")
-                old_invoice.amount = invoice.get("amount")
-                self.repo.db.session.commit()
-                return old_invoice
-            else:
-                new_invoice = Invoice(
-                    invoice_code=invoice.get("invoice_code"),
-                    booking_id=invoice.get("booking_id"),
-                    type=invoice.get("type"),
-                    amount=invoice.get("amount"),
-                    payment_method=invoice.get("payment_method"),
-                    payment_type=invoice.get("payment_type"),
-                )
-                self.repo.create_new_invoice(new_invoice)
-                self.repo.db.session.commit()
-                return new_invoice
+            invoice = self.repo.get_invoices_old(booking_id)
+            if invoice:
+                return invoice, None
+
+            invoices_code = f"IV{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
+            invoice_tmp = self.repo.create_invoice_tmp(invoices_code, booking_id)
+            return invoice_tmp, None
+        except IntegrityError as e:
+            self.repo.db.session.rollback()
+            return 500, "BOOKING NOT FOUND"
+
+        except Exception as e:
+            self.repo.db.session.rollback()
+            logger.error("ERROR CREATING INVOICE", data=str(e))
+            return 500, "INTERNAL SERVER ERROR"
+
+
+
+    def update_invoice(self, invoices):
+        try:
+            invoice = self.repo.get_invoice_by_code(invoices.get("invoice_code"))
+            if not invoice:
+                raise NewError(400,"INVOICE NOT FOUND")
+
+            invoice.payment_method = invoices.get("payment_method")
+            invoice.payment_type = invoices.get("payment_type")
+            invoice.type = invoices.get("type")
+            invoice.amount = invoices.get("amount")
+            invoice.expires_at = datetime.now() + timedelta(minutes=self.config.private_config.get("INVOICE_EXPIRATION_TIME"))
+            self.repo.db.session.commit()
+            return invoice
         except Exception as e:
             self.repo.db.session.rollback()
             print(e)

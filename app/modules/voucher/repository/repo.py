@@ -44,7 +44,7 @@ class Repository:
             Voucher.end_at >= datetime.now(),
             Voucher.usage_count < Voucher.usage_limit,
             Voucher.scope == VoucherScope.GLOBAL,
-            VoucherUsage.voucher_id == Voucher.id,
+            VoucherUsage.voucher_id == voucher_id,
             VoucherUsage.customer_id == customer_id
         )
         usage = VoucherUsage.query.filter(base_conditions).count()

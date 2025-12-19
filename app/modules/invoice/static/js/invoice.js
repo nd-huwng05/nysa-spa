@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const holdCountdownEl = document.getElementById('hold-countdown');
-    const qrCountdownEl = document.getElementById('countdown');
+    const qrCountdownEl = document.getElementById('expiry-time-display');
     const confirmBtn = document.getElementById('confirm-payment-btn');
     const backBtn = document.getElementById('back-to-step1');
     const paymentSelection = document.getElementById('payment-selection-section');
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             Swal.showLoading();
-            const response = await fetch('/invoice/create', {
+            const response = await fetch('/invoice/update', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
@@ -71,9 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 const response = await fetch(`/invoice/check-status/${invoiceCode}`);
                 const result = await response.json();
-                console.log(result)
                 if (result.data.status === 'PAID') {
-                    console.log("PAYMENT SUCCESSFULLY");
                     clearInterval(paymentCheckInterval);
                     showSuccessModal();
                 }
@@ -95,17 +93,24 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!element || !expiryTime) return;
         if (type === 'QR' && qrInterval) clearInterval(qrInterval);
         if (type === 'HOLD' && holdInterval) clearInterval(holdInterval);
+
         const expiryDate = new Date(expiryTime.replace(/-/g, "/")).getTime();
+
         const interval = setInterval(() => {
             const now = new Date().getTime();
             const diff = expiryDate - now;
+
             element.textContent = formatTime(diff);
+
             if (diff <= 0) {
                 clearInterval(interval);
                 if (type === 'QR') {
+                    element.textContent = "EXPIRED";
                     if (qrDisplay) qrDisplay.style.filter = "grayscale(1) opacity(0.3)";
                     if (refreshBtn) refreshBtn.style.display = "block";
-                    if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+                    if (paymentCheckInterval) {
+                        clearInterval(paymentCheckInterval);
+                    }
                 } else {
                     element.style.opacity = "0.5";
                     confirmBtn.disabled = true;
@@ -113,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }, 1000);
+
         if (type === 'QR') qrInterval = interval;
         else holdInterval = interval;
     }
@@ -129,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (backBtn) {
         backBtn.addEventListener('click', function () {
             if (qrInterval) clearInterval(qrInterval);
-            if (paymentCheckInterval) clearInterval(paymentCheckInterval); // Ngừng polling khi quay lại
+            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
             step2.style.opacity = "0";
             setTimeout(() => {
                 step2.style.display = 'none';
@@ -180,29 +186,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (cashMethodContainer) cashMethodContainer.style.display = 'none';
                     if (qrMethodContainer) qrMethodContainer.style.display = 'block';
 
-                    // Hiển thị ảnh QR từ SePay
                     if (qrDisplay && result.data.qr_link) {
                         qrDisplay.innerHTML = `<img src="${result.data.qr_link}" class="img-fluid" style="max-width:250px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="Payment QR">`;
                     }
 
-                    // Hiển thị mốc thời gian hết hạn cụ thể
                     const expiryDisplay = document.getElementById('expiry-time-display');
-                    const rawExpiry = holdCountdownEl ? holdCountdownEl.getAttribute('data-expiry') : null;
+                    const rawExpiry = result.data.expires_at;
 
                     if (expiryDisplay && rawExpiry) {
-                        const dateObj = new Date(rawExpiry.replace(/-/g, "/"));
-                        const hh = dateObj.getHours().toString().padStart(2, '0');
-                        const mm = dateObj.getMinutes().toString().padStart(2, '0');
-                        const dd = dateObj.getDate().toString().padStart(2, '0');
-                        const MM = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-                        const yyyy = dateObj.getFullYear();
-
-                        expiryDisplay.textContent = `${hh}:${mm} ngày ${dd}/${MM}/${yyyy}`;
-
-                        if (qrCountdownEl) startTimer(qrCountdownEl, rawExpiry, 'QR');
+                        startTimer(expiryDisplay, rawExpiry, 'QR');
                     }
 
-                    // KÍCH HOẠT POLLING: Theo dõi trạng thái hóa đơn tự động
                     startPaymentPolling(result.data.invoice_code);
                 }
 
@@ -218,6 +212,12 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmBtn.textContent = `PAY NOW (${selectedAmount})`;
         }
     });
+
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function() {
+            window.location.reload();
+        });
+    }
 
     if (completeCashBtn) {
         completeCashBtn.addEventListener('click', function () {
