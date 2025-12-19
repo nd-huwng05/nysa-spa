@@ -111,7 +111,7 @@ class Handler:
         if not data:
             raise NewError(400, 'NO DATA RECEIVED')
         transaction_content = data.get('content', None)
-        raw_amount = data.get('amount', 0)
+        raw_amount = data.get('transferAmount', 0)
 
         try:
             amount_received = Decimal(str(raw_amount))

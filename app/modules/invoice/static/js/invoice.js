@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let qrInterval;
     let holdInterval;
-    let paymentCheckInterval; // Biến quản lý vòng lặp kiểm tra thanh toán (Polling)
+    let paymentCheckInterval;
 
     async function createInvoice(method) {
         const amountRaw = summaryAmount.textContent.replace(/[^0-9]/g, '');
@@ -64,29 +64,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    /**
-     * HÀM MỚI: Bắt đầu kiểm tra trạng thái thanh toán từ Server
-     */
     function startPaymentPolling(invoiceCode) {
         if (paymentCheckInterval) clearInterval(paymentCheckInterval);
 
-        console.log("Bắt đầu kiểm tra thanh toán cho đơn:", invoiceCode);
-
         paymentCheckInterval = setInterval(async () => {
             try {
-                // Gọi API kiểm tra trạng thái (Server sẽ check status PAID trong DB do Webhook cập nhật)
                 const response = await fetch(`/invoice/check-status/${invoiceCode}`);
                 const result = await response.json();
-
-                if (result.status === 'PAID') {
-                    console.log("Hệ thống xác nhận đã nhận tiền!");
+                console.log(result)
+                if (result.data.status === 'PAID') {
+                    console.log("PAYMENT SUCCESSFULLY");
                     clearInterval(paymentCheckInterval);
                     showSuccessModal();
                 }
             } catch (error) {
-                console.error("Lỗi khi kiểm tra trạng thái thanh toán:", error);
+
             }
-        }, 3000); // 3 giây kiểm tra một lần
+        }, 3000);
     }
 
     function formatTime(ms) {
@@ -111,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (type === 'QR') {
                     if (qrDisplay) qrDisplay.style.filter = "grayscale(1) opacity(0.3)";
                     if (refreshBtn) refreshBtn.style.display = "block";
-                    if (paymentCheckInterval) clearInterval(paymentCheckInterval); // Ngừng polling khi hết hạn
+                    if (paymentCheckInterval) clearInterval(paymentCheckInterval);
                 } else {
                     element.style.opacity = "0.5";
                     confirmBtn.disabled = true;

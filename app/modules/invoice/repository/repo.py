@@ -26,9 +26,8 @@ class Repository:
                                       amount_received >= Invoice.amount,
                                       func.lower(transaction_content).contains(func.lower(Invoice.invoice_code))
                                       ).first()
-        print(invoice)
         if invoice:
-            invoice.status = InvoiceStatus.PAID
+            invoice.status = InvoiceStatus.PAID.value
 
     @staticmethod
     def check_invoice_status(invoice_code):
