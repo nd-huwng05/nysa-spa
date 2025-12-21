@@ -10,5 +10,6 @@ def register_routes(app, service, config, env):
 
 
     voucher_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
+    voucher_routes.add_url_rule('load', view_func=c.voucher_suitable, methods=['GET'])
 
     app.register_blueprint(voucher_routes)

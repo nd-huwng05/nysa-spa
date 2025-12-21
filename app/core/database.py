@@ -1,8 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
-
+from enum import Enum
 from app.extensions import db
-from sqlalchemy import Column, Integer, DateTime, func
+from sqlalchemy import Column, DateTime, func
+
 
 class BaseModel(db.Model):
     __abstract__ = True
@@ -19,6 +20,8 @@ class BaseModel(db.Model):
                 data[key] = value.isoformat()
             elif isinstance(value, Decimal):
                 data[key] = str(value)
+            elif isinstance(value, Enum):  # <--- Add this check
+                data[key] = value.value
             elif key.startswith('_'):
                 continue
             else:

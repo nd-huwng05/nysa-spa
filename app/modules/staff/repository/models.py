@@ -26,6 +26,7 @@ class Staff(BaseModel):
     staff_code = Column(String(10), unique=True, nullable=False)
     fullname = Column(String(255), nullable=False)
     phone = Column(String(20), nullable=False)
+    email = Column(String(255))
     address = Column(Text, nullable=True)
     user_id = Column(Integer, ForeignKey('user.id'), unique=True)
     active = Column(Boolean, nullable=False, default=True)

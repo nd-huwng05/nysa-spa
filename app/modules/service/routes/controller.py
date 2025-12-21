@@ -25,3 +25,6 @@ class Controller:
             flash("500 Internal Server Error", "error")
             return None
         return render_template('components/service_list.html', **result)
+
+    def search_json(self):
+        return self.handler.search_service_json(request)

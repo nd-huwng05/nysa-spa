@@ -45,6 +45,8 @@ class Handler:
         end = end + timedelta(minutes=self.config.private_config.get('TIME_REST'))
         staff_appointment = self.service.get_staff_appointment(staffs, start, end,
                                                                self.config.private_config.get('LIMIT_APPOINTMENTS'))
+
+        print(staff_appointment)
         return {
             "staff_appointment": staff_appointment
         }
@@ -135,3 +137,33 @@ class Handler:
         result = self.service.add_booking(booking, details, voucher)
 
         return NewPackage(result).response()
+
+    def get_data_for_staff_booking(self, request: Request):
+        date = request.args.get('date')
+        if not date:
+            date = datetime.today().strftime('%Y-%m-%d')
+            date = datetime.strptime("2025-12-30",'%Y-%m-%d')
+        else:
+            date = datetime.strptime(date, '%Y-%m-%d')
+
+        bookings = self.service.get_bookings_today(date)
+
+        return {
+            'bookings': bookings
+        }
+
+    def get_data_for_staff_booking_details(self, request: Request):
+        if g.current_user.staff:
+            staff_id = g.current_user.staff.id
+
+        date = request.args.get('date')
+        if not date:
+            date = datetime.today().strftime('%Y-%m-%d')
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+
+        bookings_details = self.service.get_bookings_details(staff_id, date)
+        return {
+            'tasks': bookings_details
+        }
+
+

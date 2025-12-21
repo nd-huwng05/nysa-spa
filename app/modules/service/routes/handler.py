@@ -1,3 +1,6 @@
+from flask import Request
+
+from app.core.errors import NewPackage
 from app.utils.pagination import Pagination
 from ..config.config_module import ServiceConfig
 
@@ -43,6 +46,13 @@ class Handler:
             'pagination': pagination,
         }
 
+    def search_service_json(self, request: Request):
+        q = request.args.get('q', type=str)
+        if q is None:
+            return NewPackage().response()
+
+        service = self.service.get_service_json(q)
+        return NewPackage(service).response()
 
 
 

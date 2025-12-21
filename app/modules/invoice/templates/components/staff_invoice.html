@@ -1,0 +1,149 @@
+<div class="max-w-full overflow-x-auto bg-white shadow-sm rounded-lg border border-gray-200">
+    <table class="w-full table-auto text-sm text-left">
+        <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200 uppercase text-xs">
+            <tr>
+                <th class="py-3 px-4 min-w-[120px]">Invoice / Time</th>
+                <th class="py-3 px-4 min-w-[180px]">Customer & Booking</th>
+                <th class="py-3 px-4 min-w-[150px]">Payment Details</th>
+                <th class="py-3 px-4 min-w-[120px] text-right">Amount</th>
+                <th class="py-3 px-4 min-w-[120px] text-center">Status</th>
+                <th class="py-3 px-4 min-w-[150px]">Notes</th>
+                <th class="py-3 px-4 text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for inv in invoices %}
+            <tr class="hover:bg-gray-50 transition group">
+
+                <td class="py-4 px-4 align-top">
+                    <div class="flex flex-col">
+                        <span class="font-bold text-[var(--accent-color)] text-sm">
+                            #{{ inv.invoice_code }}
+                        </span>
+                        <div class="flex items-center text-xs text-gray-500 mt-1">
+                            <i class="far fa-clock mr-1"></i>
+                            {{ inv.create_at.strftime('%H:%M') }}
+                        </div>
+                        <span class="text-[10px] text-gray-400">
+                            {{ inv.create_at.strftime('%d/%m/%Y') }}
+                        </span>
+                    </div>
+                </td>
+
+                <td class="py-4 px-4 align-top">
+                    <div class="flex flex-col gap-1">
+                        <div class="font-bold text-gray-800 flex items-center gap-2">
+                            {{ inv.booking.customer.fullname if inv.booking.customer else 'Guest (Walk-in)' }}
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            {{ inv.booking.customer.phone or '---' }}
+                        </div>
+                        <a href="/bookings/{{ inv.booking_id }}" class="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded w-fit hover:bg-gray-200 transition mt-1">
+                            <i class="fas fa-link mr-1"></i>Booking #{{ inv.booking.booking_code }}
+                        </a>
+                    </div>
+                </td>
+
+                <td class="py-4 px-4 align-top">
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider
+                            {% if inv.payment_type.value == 'DEPOSIT' %} text-purple-600
+                            {% else %} text-blue-600 {% endif %}">
+                            {{ inv.payment_type.value }}
+                        </span>
+
+                        <div class="flex items-center gap-2 text-xs font-medium text-gray-700">
+                            {% if inv.payment_method.value == 'BANK_TRANSFER' %}
+                                <div class="w-6 h-6 rounded bg-blue-50 text-blue-600 flex items-center justify-center">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <span>Transfer</span>
+                            {% else %}
+                                <div class="w-6 h-6 rounded bg-green-50 text-green-600 flex items-center justify-center">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <span>Cash</span>
+                            {% endif %}
+                        </div>
+
+                        {% if inv.type.value == 'REFUND' %}
+                        <span class="text-[10px] bg-red-100 text-red-600 px-1 rounded border border-red-200 w-fit">
+                            <i class="fas fa-undo mr-1"></i> REFUND
+                        </span>
+                        {% endif %}
+                    </div>
+                </td>
+
+                <td class="py-4 px-4 align-top text-right">
+                    <div class="font-bold text-base
+                        {% if inv.type.value == 'REFUND' %} text-red-500 {% else %} text-gray-800 {% endif %}">
+                        {% if inv.type.value == 'REFUND' %}-{% endif %}
+                        {{ "{:,.0f}".format(inv.amount) }}đ
+                    </div>
+                </td>
+
+                <td class="py-4 px-4 align-top text-center">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border
+                        {% if inv.status.value == 'PAID' %} bg-green-50 text-green-700 border-green-200
+                        {% elif inv.status.value == 'PENDING' %} bg-yellow-50 text-yellow-700 border-yellow-200
+                        {% elif inv.status.value == 'FAILED' %} bg-red-50 text-red-700 border-red-200
+                        {% else %} bg-gray-50 text-gray-600 border-gray-200 {% endif %}">
+
+                        {% if inv.status.value == 'PAID' %}<i class="fas fa-check-circle"></i>
+                        {% elif inv.status.value == 'PENDING' %}<i class="fas fa-clock"></i>
+                        {% elif inv.status.value == 'FAILED' %}<i class="fas fa-times-circle"></i>
+                        {% endif %}
+
+                        {{ inv.status.value }}
+                    </span>
+
+                    {% if inv.status.value == 'PENDING' and inv.expires_at %}
+                    <div class="text-[10px] text-red-400 mt-1">
+                        Exp: {{ inv.expires_at.strftime('%H:%M') }}
+                    </div>
+                    {% endif %}
+                </td>
+
+                <td class="py-4 px-4 align-top">
+                    <p class="text-xs text-gray-500 truncate max-w-[150px]" title="{{ inv.note }}">
+                        {{ inv.note or '--' }}
+                    </p>
+                </td>
+
+                <td class="py-4 px-4 align-top text-center">
+                    <div class="flex items-center justify-center gap-2">
+                        <button class="w-8 h-8 rounded hover:bg-gray-100 text-gray-500 hover:text-gray-800 transition" title="Print Invoice">
+                            <i class="fas fa-print"></i>
+                        </button>
+
+                        <button onclick="openInvoiceDetail('{{ inv.id }}')"
+                                class="w-8 h-8 rounded hover:bg-[var(--accent-color)] hover:text-white text-[var(--accent-color)] transition border border-[var(--accent-color)] flex items-center justify-center"
+                                title="View Details">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        <tfoot class="bg-gray-50 border-t border-gray-200">
+            <tr>
+                <td colspan="3" class="py-3 px-4 text-right font-bold text-gray-600 uppercase text-xs">
+                    Total Revenue (Paid):
+                </td>
+                <td class="py-3 px-4 text-right font-bold text-[var(--accent-color)] text-lg">
+                    {{ "{:,.0f}".format(total_revenue) }}đ
+                </td>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    {% if not invoices %}
+    <div class="p-8 text-center text-gray-400">
+        <i class="fas fa-file-invoice-dollar text-3xl mb-3"></i>
+        <p>No invoices generated today.</p>
+    </div>
+    {% endif %}
+</div>
