@@ -1,4 +1,5 @@
 from app import logger
+from app.core.errors import NewPackage
 from app.utils.pagination import Pagination
 from ..config.config_module import ServiceConfig
 from ..repository.repo import Repository
@@ -40,3 +41,9 @@ class Service:
             logger.error("Can't get list services from repository", e)
             raise Exception("500 Internal Server Error")
 
+    def get_service_json(self, q: str):
+        try:
+            return self.repo.get_service_json(q)
+        except Exception as e:
+            logger.error("Can't get service json from repository", e)
+            raise NewPackage(500, "Internal Server Error").response()

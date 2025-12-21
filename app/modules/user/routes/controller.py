@@ -11,6 +11,10 @@ class Controller:
     def login():
         callback_url = request.args.get('callback_url', '/')
         identity = getattr(g, 'current_user', None)
+
+        if g.current_role and g.current_role.value == "STAFF":
+            print(g.current_role)
+            return redirect('/staff/work-view')
         if identity:
             return redirect(callback_url)
         return render_template('page/login.html', callback_url=callback_url)

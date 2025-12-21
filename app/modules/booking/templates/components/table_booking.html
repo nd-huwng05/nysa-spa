@@ -1,0 +1,204 @@
+<div class="max-w-full overflow-x-auto">
+    <table class="w-full table-auto">
+        <thead>
+        <tr class="bg-white text-left border-b border-gray-200">
+            <th class="min-w-[120px] py-4 px-4 font-medium text-black xl:pl-11">
+                Booking Code
+            </th>
+            <th class="min-w-[180px] py-4 px-4 font-medium text-black">
+                Customer
+            </th>
+            <th class="min-w-[150px] py-4 px-4 font-medium text-black">
+                Time
+            </th>
+            <th class="min-w-[120px] py-4 px-4 font-medium text-black">
+                Status
+            </th>
+            <th class="min-w-[120px] py-4 px-4 font-medium text-black">
+                Payment
+            </th>
+            <th class="min-w-[150px] py-4 px-4 font-medium text-black">
+                Notes
+            </th>
+            <th class="min-w-[120px] py-4 px-4 font-medium text-black">
+                Total Amount
+            </th>
+            <th class="py-4 px-4 font-medium text-black text-center">
+                Action
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for booking in bookings %}
+        <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
+
+            <td class="py-4 px-4 xl:pl-11">
+                <h5 class="font-medium text-black">
+                    #{{ booking.booking_code }}
+                </h5>
+            </td>
+
+            <td class="py-4 px-4">
+                <div class="flex flex-col">
+                        <span class="font-medium text-black">
+                            {{ booking.customer.fullname if booking.customer else 'Guest (Walk-in)' }}
+                        </span>
+                    {% if booking.customer %}
+                    <span class="text-xs text-gray-500">{{ booking.customer.phone }}</span>
+                    {% endif %}
+                </div>
+            </td>
+
+            <td class="py-4 px-4">
+                <p class="text-sm text-black">
+                    {{ booking.booking_time.strftime('%d/%m/%Y') }}
+                </p>
+                <p class="text-xs text-gray-500">
+                    {{ booking.booking_time.strftime('%H:%M') }}
+                </p>
+            </td>
+
+            <td class="py-4 px-4">
+            <span class="inline-flex rounded-full bg-opacity-10 py-1 px-3 text-xs font-bold
+                {% if booking.status.value == 'COMPLETED' %} bg-green-500 text-green-600
+                {% elif booking.status.value == 'PENDING' %} bg-yellow-500 text-yellow-600
+                {% elif booking.status.value == 'CANCELED' %} bg-red-500 text-red-600
+                {% elif booking.status.value == 'PROCESSING' %} bg-blue-500 text-blue-600
+                {% else %} bg-gray-500 text-gray-600 {% endif %}">
+                {{ booking.status.value }}
+            </span>
+            </td>
+
+            <td class="py-4 px-4">
+                <div class="flex items-center gap-2">
+                    {% if booking.payment.value == 'COMPLETE' %}
+                    <i class="fas fa-check-circle text-green-500"></i>
+                    <span class="text-sm font-medium text-green-600">Paid</span>
+                    {% elif booking.payment.value == 'PARTIAL' %}
+                    <i class="fas fa-adjust text-blue-500"></i>
+                    <span class="text-sm font-medium text-blue-600">Partial</span>
+                    {% else %}
+                    <i class="far fa-circle text-gray-400"></i>
+                    <span class="text-sm font-medium text-gray-500">Unpaid</span>
+                    {% endif %}
+                </div>
+            </td>
+
+            <td class="py-4 px-4">
+                <p class="text-sm text-gray-500 truncate max-w-[150px]" title="{{ booking.notes }}">
+                    {{ booking.notes or '--' }}
+                </p>
+            </td>
+
+            <td class="py-4 px-4">
+                <p class="text-sm font-bold text-[var(--accent-color)]">
+                    {{ "{:,.0f}".format(booking.total_amount) }}đ
+                </p>
+            </td>
+
+            <td class="py-4 px-4 text-center">
+                <div class="flex items-center justify-center space-x-3.5">
+                    <button type="button"
+                            onclick="document.getElementById('modal-{{ booking.id }}').showModal()"
+                            class="hover:text-[var(--accent-color)] text-gray-500 transition p-2"
+                            title="Quick View & Check-in">
+                        <i class="far fa-eye text-lg"></i>
+                    </button>
+                </div>
+
+                <dialog id="modal-{{ booking.id }}"
+                        class="m-auto w-full max-w-lg rounded-lg bg-white shadow-2xl backdrop:bg-gray-900/40 p-0 overflow-hidden transition-all open:animate-fade-in">
+                    <div class="flex justify-between items-center p-4 border-b bg-gray-50">
+                        <div>
+                            <h3 class="font-bold text-lg text-black">Booking #{{ booking.booking_code
+                                }}</h3>
+                            <p class="text-sm text-gray-500">{{ booking.booking_time.strftime('%H:%M -
+                                %d/%m/%Y') }}</p>
+                        </div>
+                        <button onclick="document.getElementById('modal-{{ booking.id }}').close()"
+                                class="text-gray-400 hover:text-red-500 transition text-2xl leading-none">
+                            &times;
+                        </button>
+                    </div>
+
+                    <div class="p-5 text-left">
+                        <div class="flex items-center gap-3 mb-6 bg-[#F7F5F2] p-3 rounded-md">
+                            <div class="w-10 h-10 rounded-full bg-[var(--accent-color)]/20 flex items-center justify-center text-[var(--accent-color)]">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-black">
+                                    {{ booking.customer.fullname if booking.customer else 'Walk-in Guest'
+                                    }}
+                                </p>
+                                <p class="text-sm text-gray-600">
+                                    {{ booking.customer.phone or 'No Phone Number' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-wider">Services &
+                            Staff</h4>
+                        <div class="space-y-3 mb-6">
+                            {% for item in booking.booking_details %}
+                            {% if not item.parent_id%}
+                            <div class="border-b border-dashed pb-2 last:border-0">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <div class="font-medium text-black">{{ item.service.name }}</div>
+                                        <div class="text-xs text-[var(--accent-color)] mt-0.5 flex items-center">
+                                            <i class="fas fa-cut mr-1"></i>
+                                            {{ item.staff.fullname if item.staff else '...' }}
+                                        </div>
+                                    </div>
+                                    <div class="font-bold text-gray-700">
+                                        {{ "{:,.0f}".format(item.price) }}đ
+                                    </div>
+                                </div>
+
+                                {% if item.children %}
+                                <div class="mt-2 pl-4 border-l-2 border-gray-200 space-y-2">
+                                    {% for child in item.children %}
+                                    <div class="flex justify-between items-center text-sm">
+                                        <div class="text-gray-600">{{ child.service.name }}</div>
+                                        <div class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                            <i class="fas fa-user-tag mr-1 text-xs"></i>
+                                            {{ child.service.name or '...' }}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {%endif%}
+                            {% endfor %}
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+                            <span class="font-medium text-gray-500">Total</span>
+                            <span class="text-xl font-bold text-[var(--accent-color)]">
+                                        {{ "{:,.0f}".format(booking.total_amount) }}đ
+                                    </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 flex gap-3 justify-end">
+                        <button onclick="document.getElementById('modal-{{ booking.id }}').close()"
+                                class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-md transition">
+                            Close
+                        </button>
+
+                        {% if booking.status.value != 'COMPLETED' and booking.status.value != 'CANCELED' %}
+                        <button onclick="submitAction('{{ booking.id }}', 'check_in')"
+                                class="px-4 py-2 text-sm font-medium text-white bg-[var(--accent-color)] hover:bg-[#a06d42] rounded-md transition shadow-md">
+                            Check In
+                        </button>
+                        {% endif %}
+                    </div>
+                </dialog>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -6,6 +6,9 @@ class Controller:
         self.handler = Handler(config, service, env)
 
     def index(self):
-        return render_template('page/service.html')
+        return render_template('page/admin.html')
+
+    def dashboard(self):
+        return render_template('components/dashboard.html')
 
 

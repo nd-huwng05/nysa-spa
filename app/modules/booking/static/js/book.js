@@ -4,7 +4,6 @@ const SERVICE_BUFFER_MINUTES = 10;
 
 document.addEventListener('DOMContentLoaded', function () {
     let initialTotal = 0;
-    // CHỈNH SỬA: Tính tổng ban đầu chỉ lấy từ combo-box hoặc service-item độc lập
     document.querySelectorAll('#staffContainer > .combo-box, #staffContainer > .service-item:not(.combo-box .service-item)').forEach(item => {
         initialTotal += parseInt(item.getAttribute('data-price') || 0);
     });

@@ -17,7 +17,6 @@ from app.modules.staff import StaffModule
 from app.modules.user import UserModule
 from app.modules.voucher import VoucherModule
 
-
 class Server:
     def __init__(self):
         self.app = Flask(__name__, template_folder='templates')

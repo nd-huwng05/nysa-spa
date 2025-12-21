@@ -21,3 +21,6 @@ class Controller:
 
     def check_status(self, invoice_code):
         return self.handler.check_status(invoice_code)
+
+    def staff_view(self):
+        return render_template('components/staff_invoice.html')

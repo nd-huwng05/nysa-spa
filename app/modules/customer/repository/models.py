@@ -14,9 +14,10 @@ class Customer(BaseModel):
     __tablename__ = 'customer'
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'), unique=True)
-    customer_code = Column(String(10), unique=True, nullable=False)
+    customer_code = Column(String(20), unique=True, nullable=False)
     fullname = Column(String(100), nullable=False)
-    phone = Column(String(20), nullable=False)
+    email = Column(String(255), unique=True)
+    phone = Column(String(20), nullable=False, unique=True)
     address = Column(String(255), nullable=False)
     membership_tier = Column(Enum(MembershipTier), server_default=MembershipTier.STANDARD.value, nullable=False)
     points = Column(Integer, server_default='0')

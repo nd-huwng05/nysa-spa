@@ -10,5 +10,6 @@ def register_routes(app, service, config, env):
 
 
     admin_routes.add_url_rule('/', view_func=c.index, methods=['GET'])
+    admin_routes.add_url_rule('/dashboard', view_func=c.dashboard, methods=['GET'])
 
     app.register_blueprint(admin_routes)

@@ -1,5 +1,5 @@
-from app.core.errors import NewError
-from ..config.config_module import ModuleConfig
+import uuid
+from datetime import datetime
 from ..repository.repo import Repository
 
 class Service:
@@ -23,3 +23,17 @@ class Service:
             customer.address = data['address']
 
         return None
+
+    def search_customer(self, data):
+        return self.repo.search_customer(data)
+
+    def search_customer_by_phone(self, data):
+        return self.repo.search_customer_by_phone(data)
+
+    def search_customer_by_email(self, data):
+        return self.repo.search_customer_by_email(data)
+
+    def create_customer(self, data):
+        customer_code = f"CUS{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
+        self.repo.create_customer(customer_code, data)
+        self.repo.db.session.commit()

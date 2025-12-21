@@ -33,6 +33,12 @@ class Repository:
         return Service.query.offset(pag.offset()).limit(pag.size).all()
 
     @staticmethod
+    def get_service_json(q: str):
+        services = Service.query.filter(Service.name.ilike(f"%{q}%")).all()
+        services_json = [s.to_json() for s in services]
+        return services_json
+
+    @staticmethod
     def get_list_services_filter(filters, pag: Pagination):
         query = Service.query.filter(Service.is_active == True)
         query = query.options(

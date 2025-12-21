@@ -5,7 +5,8 @@ class Controller:
     def __init__(self, config, service, env):
         self.handler = Handler(config, service, env)
 
-    def index(self):
-        return render_template('page/service.html')
+
+    def staff_work(self):
+        return render_template('page/staff.html')
 
 

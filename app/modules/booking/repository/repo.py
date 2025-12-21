@@ -81,3 +81,13 @@ class Repository:
     def update_payment_booking(booking_id:int, payment):
         booking = Booking.query.get(booking_id)
         booking.payment = payment
+
+    def get_bookings_today(self, day):
+        bookings = self.db.session.query(Booking).filter(
+            func.date(Booking.booking_time) == day
+        ).all()
+        return bookings
+
+    def get_bookings_details(self, staff, day):
+        details = self.db.session.query(BookingDetail).filter(BookingDetail.staff_id == staff).filter( func.date(BookingDetail.start) == day).all()
+        return details

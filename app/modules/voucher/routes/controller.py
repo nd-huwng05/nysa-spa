@@ -13,4 +13,5 @@ class Controller:
     def index(self):
         return render_template('page/service.html')
 
-
+    def voucher_suitable(self):
+        return self.handler.voucher_suitable(request)

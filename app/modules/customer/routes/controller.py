@@ -1,4 +1,4 @@
-from flask import request, render_template, redirect, url_for, flash, session
+from flask import request, render_template, redirect, url_for, flash, session, Request
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
 from app.extensions import oauth
@@ -15,3 +15,10 @@ class Controller:
 
     def update_info(self):
         return self.handler.update_info(request)
+
+    def search(self):
+        return self.handler.search(request)
+
+    def create(self):
+        return self.handler.create(request)
+

@@ -1,0 +1,13 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.chart-tab-active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.chart-tab-inactive {
+    background-color: #F1F5F9;
+    color: #64748B;
+}

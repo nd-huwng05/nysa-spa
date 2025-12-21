@@ -51,3 +51,17 @@ class Service:
             self.repo.db.session.commit()
         except Exception as e:
             return NewError(500,"ERROR CAN'T UPDATE PAYMENT BOOKING")
+
+    def get_bookings_today(self, date):
+        try:
+            return self.repo.get_bookings_today(date)
+        except Exception as e:
+            logger.error("ERROR GET_BOOKINGS_TODAY", data=str(e))
+            raise NewError(500,"ERROR CAN'T GET BOOKING")
+
+    def get_bookings_details(self, staff_id, date):
+        try:
+            return self.repo.get_bookings_details(staff_id, date)
+        except Exception as e:
+            logger.error("ERROR GET_BOOKINGS_DETAILS", data=str(e))
+            raise NewError(500,"ERROR CAN'T GET BOOKING")
