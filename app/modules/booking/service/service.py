@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.core.errors import NewError
+from app.core.errors import NewError, NewPackage
 from app.core.logger import logger
 from ..repository.models import Booking, BookingDetail
 from ..repository.repo import Repository
@@ -65,3 +65,13 @@ class Service:
         except Exception as e:
             logger.error("ERROR GET_BOOKINGS_DETAILS", data=str(e))
             raise NewError(500,"ERROR CAN'T GET BOOKING")
+
+    def checkin(self, booking_id):
+        try:
+            booking = self.repo.get_booking_by_id(booking_id)
+            booking.status = "PROCESSING"
+            self.repo.db.session.commit()
+            return NewPackage().response()
+        except Exception as e:
+            logger.error("ERROR CHECKIN", data=str(e))
+            raise NewError(500,"ERROR CAN'T CHECKIN")

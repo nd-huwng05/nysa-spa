@@ -1,0 +1,217 @@
+<main class="flex-1 overflow-x-hidden overflow-y-auto p-6">
+    <div class="max-w-5xl mx-auto space-y-6">
+
+        <div class="bg-white p-6 rounded-sm border border-gray-200 shadow-sm" id="finance">
+            <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                <div class="p-2 bg-blue-50 text-primary rounded"><i class="ri-bank-card-line text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg font-bold text-dark">Tài chính & Thuế (VAT)</h3>
+                    <p class="text-sm text-gray-500">Cấu hình liên quan đến thanh toán và hóa đơn</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Thuế giá trị gia tăng (VAT) %</label>
+                    <div class="relative">
+                        <input type="number"
+                               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
+                               value="8">
+                        <span class="absolute right-3 top-2 text-gray-500">%</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Áp dụng tự động cho tất cả dịch vụ khi xuất hóa đơn.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Đơn vị tiền tệ hiển thị</label>
+                    <select class="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:border-primary">
+                        <option value="VND">Việt Nam Đồng (VNĐ)</option>
+                        <option value="USD">Đô la Mỹ ($)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Yêu cầu đặt cọc trước (Deposit)</label>
+                    <div class="flex items-center gap-3 mt-2">
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" checked id="deposit_toggle"
+                                   class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300"/>
+                            <label for="deposit_toggle"
+                                   class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer"></label>
+                        </div>
+                        <span class="text-sm text-gray-600">Bật yêu cầu cọc</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tỷ lệ cọc tối thiểu</label>
+                    <div class="relative">
+                        <input type="number"
+                               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
+                               value="30">
+                        <span class="absolute right-3 top-2 text-gray-500">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-sm border border-gray-200 shadow-sm" id="staff">
+            <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                <div class="p-2 bg-orange-50 text-orange-600 rounded"><i class="ri-user-star-line text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg font-bold text-dark">Quy định Nhân sự & KPI</h3>
+                    <p class="text-sm text-gray-500">Giới hạn khối lượng công việc để đảm bảo chất lượng</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Số lịch tối đa / ngày / nhân
+                        viên</label>
+                    <input type="number"
+                           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
+                           value="8">
+                    <p class="text-xs text-gray-500 mt-1">Hệ thống sẽ ẩn nhân viên nếu đạt giới hạn này.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Thời gian nghỉ giữa 2 khách (Buffer
+                        Time)</label>
+                    <div class="relative">
+                        <input type="number"
+                               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
+                               value="15">
+                        <span class="absolute right-3 top-2 text-gray-500">Phút</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Thời gian để dọn dẹp, chuẩn bị trước khi đón khách mới.</p>
+                </div>
+
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Cho phép nhận khách quá giờ
+                        (Overtime)</label>
+                    <div class="flex items-center gap-4 mt-2 border border-gray-200 p-3 rounded bg-gray-50">
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="overtime" id="ot_no" class="w-4 h-4 text-primary" checked>
+                            <label for="ot_no" class="text-sm">Không cho phép</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="radio" name="overtime" id="ot_yes" class="w-4 h-4 text-primary">
+                            <label for="ot_yes" class="text-sm">Cho phép (Cần quản lý duyệt)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-sm border border-gray-200 shadow-sm" id="time">
+            <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                <div class="p-2 bg-green-50 text-success rounded"><i class="ri-time-line text-xl"></i></div>
+                <div>
+                    <h3 class="text-lg font-bold text-dark">Thời gian hoạt động (Working Hours)</h3>
+                    <p class="text-sm text-gray-500">Thiết lập giờ mở cửa mặc định cho hệ thống</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="grid grid-cols-12 gap-4 text-sm font-semibold text-gray-500 mb-2">
+                    <div class="col-span-3">Ngày trong tuần</div>
+                    <div class="col-span-4">Giờ mở cửa</div>
+                    <div class="col-span-4">Giờ đóng cửa</div>
+                    <div class="col-span-1 text-center">Nghỉ</div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-4 items-center">
+                    <div class="col-span-3 font-medium text-dark">Thứ Hai - Thứ Sáu</div>
+                    <div class="col-span-4">
+                        <input type="time" class="w-full border border-gray-300 rounded px-2 py-1" value="08:00">
+                    </div>
+                    <div class="col-span-4">
+                        <input type="time" class="w-full border border-gray-300 rounded px-2 py-1" value="21:00">
+                    </div>
+                    <div class="col-span-1 text-center">
+                        <input type="checkbox" class="w-4 h-4 rounded text-primary">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-4 items-center">
+                    <div class="col-span-3 font-medium text-dark">Thứ Bảy</div>
+                    <div class="col-span-4">
+                        <input type="time" class="w-full border border-gray-300 rounded px-2 py-1" value="09:00">
+                    </div>
+                    <div class="col-span-4">
+                        <input type="time" class="w-full border border-gray-300 rounded px-2 py-1" value="22:00">
+                    </div>
+                    <div class="col-span-1 text-center">
+                        <input type="checkbox" class="w-4 h-4 rounded text-primary">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-4 items-center opacity-60">
+                    <div class="col-span-3 font-medium text-dark">Chủ Nhật</div>
+                    <div class="col-span-4">
+                        <input type="time" class="w-full border border-gray-300 rounded px-2 py-1" disabled>
+                    </div>
+                    <div class="col-span-4">
+                        <input type="time" class="w-full border border-gray-300 rounded px-2 py-1" disabled>
+                    </div>
+                    <div class="col-span-1 text-center">
+                        <input type="checkbox" class="w-4 h-4 rounded text-primary" checked>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-sm border border-gray-200 shadow-sm" id="booking">
+            <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                <div class="p-2 bg-purple-50 text-purple-600 rounded"><i class="ri-calendar-check-line text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-dark">Quy tắc đặt & Hủy lịch</h3>
+                    <p class="text-sm text-gray-500">Kiểm soát hành vi khách hàng</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Thời gian đặt trước tối thiểu</label>
+                    <select class="w-full border border-gray-300 rounded px-3 py-2 bg-white">
+                        <option value="30">30 Phút</option>
+                        <option value="60" selected>1 Tiếng</option>
+                        <option value="120">2 Tiếng</option>
+                    </select>
+                    <p class="text-xs text-gray-500 mt-1">Khách không thể đặt lịch quá gấp.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Thời gian đặt xa nhất</label>
+                    <select class="w-full border border-gray-300 rounded px-3 py-2 bg-white">
+                        <option value="7">1 Tuần</option>
+                        <option value="30" selected>1 Tháng</option>
+                        <option value="90">3 Tháng</option>
+                    </select>
+                    <p class="text-xs text-gray-500 mt-1">Tránh việc khách đặt lịch quá xa dễ quên.</p>
+                </div>
+
+                <div class="col-span-1 md:col-span-2 border-t border-gray-100 pt-4">
+                    <h4 class="text-sm font-bold text-dark mb-3">Chính sách hủy (Cancellation Policy)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Cho phép hủy trước (Giờ)</label>
+                            <div class="relative">
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="24">
+                                <span class="absolute right-3 top-2 text-gray-500">Tiếng</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phí phạt nếu hủy muộn</label>
+                            <div class="relative">
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="50">
+                                <span class="absolute right-3 top-2 text-gray-500">% Tiền cọc</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>

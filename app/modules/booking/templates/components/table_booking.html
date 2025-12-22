@@ -189,7 +189,7 @@
                         </button>
 
                         {% if booking.status.value != 'COMPLETED' and booking.status.value != 'CANCELED' %}
-                        <button onclick="submitAction('{{ booking.id }}', 'check_in')"
+                        <button id='checkin' onclick="submitAction('{{ booking.id }}', 'check_in')"
                                 class="px-4 py-2 text-sm font-medium text-white bg-[var(--accent-color)] hover:bg-[#a06d42] rounded-md transition shadow-md">
                             Check In
                         </button>
