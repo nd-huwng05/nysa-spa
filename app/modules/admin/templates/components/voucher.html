@@ -1,0 +1,274 @@
+<main class="flex-1 overflow-x-hidden overflow-y-auto bg-body p-6 h-full">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-5 rounded-sm border border-gray-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 font-medium">Tổng số Voucher</p>
+                    <h3 class="text-2xl font-bold text-dark mt-1">24</h3>
+                </div>
+                <div class="p-3 bg-blue-50 rounded-full text-primary"><i class="ri-ticket-fill text-xl"></i></div>
+            </div>
+            <div class="bg-white p-5 rounded-sm border border-gray-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 font-medium">Đang hoạt động</p>
+                    <h3 class="text-2xl font-bold text-dark mt-1">8</h3>
+                </div>
+                <div class="p-3 bg-green-50 rounded-full text-success"><i class="ri-checkbox-circle-fill text-xl"></i>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-sm border border-gray-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 font-medium">Lượt đã sử dụng</p>
+                    <h3 class="text-2xl font-bold text-dark mt-1">1,450</h3>
+                </div>
+                <div class="p-3 bg-orange-50 rounded-full text-warning"><i class="ri-fire-fill text-xl"></i></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 mb-8">
+            <div class="col-span-12 lg:col-span-8 bg-white p-6 rounded-sm border border-gray-200 shadow-sm">
+                <div class="mb-4">
+                    <h4 class="text-lg font-bold text-dark">Lượt sử dụng Voucher (30 ngày)</h4>
+                </div>
+                <div id="usageChart" class="-ml-2"></div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-4 bg-white p-6 rounded-sm border border-gray-200 shadow-sm">
+                <div class="mb-4">
+                    <h4 class="text-lg font-bold text-dark">Loại Voucher phổ biến</h4>
+                </div>
+                <div class="flex justify-center" id="typeChart"></div>
+                <div class="text-center mt-4">
+                    <p class="text-sm text-gray-500">Tỷ lệ giữa mã giảm % và mã giảm tiền mặt</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 shadow-sm rounded-sm mb-8">
+            <div class="py-4 px-6 border-b border-gray-200 flex justify-between items-center">
+                <h4 class="text-lg font-bold text-dark">Danh sách Voucher</h4>
+                <div class="flex gap-4">
+                    <button onclick="openModal()" class="bg-primary hover:bg-blue-700 text-white px-3 py-2 rounded-md font-medium flex items-center gap-2 text-sm transition">
+                        <i class="ri-add-line"></i> Tạo mới
+                    </button>
+                    <div class="relative">
+                        <input type="text" placeholder="Tìm kiếm mã..."
+                            class="border border-gray-300 rounded-md pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-primary w-64">
+                        <i class="ri-search-line absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full table-auto">
+                    <thead class="bg-gray-50 text-left">
+                        <tr>
+                            <th class="py-3 px-4 font-medium text-dark text-sm">Mã (Code)</th>
+                            <th class="py-3 px-4 font-medium text-dark text-sm">Tên & Phạm vi</th>
+                            <th class="py-3 px-4 font-medium text-dark text-sm">Giảm giá</th>
+                            <th class="py-3 px-4 font-medium text-dark text-sm">Thời gian</th>
+                            <th class="py-3 px-4 font-medium text-dark text-sm">Lượt dùng</th>
+                            <th class="py-3 px-4 font-medium text-dark text-sm">Trạng thái</th>
+                            <th class="py-3 px-4 font-medium text-dark text-sm text-right">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="py-3 px-4">
+                                <span class="font-bold text-primary bg-blue-50 px-2 py-1 rounded border border-blue-100">SUMMER25</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p class="text-sm text-dark font-medium">Chào hè rực rỡ</p>
+                                <span class="text-xs bg-green-100 text-green-700 px-1.5 rounded">GLOBAL</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="text-sm text-dark font-bold">20%</div>
+                                <div class="text-xs text-gray-500">Tối đa 50k</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p class="text-xs text-gray-500">20/12/2025 - 25/12/2025</p>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-1.5 w-16">
+                                        <div class="bg-primary h-1.5 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                    <span class="text-xs text-gray-600">45/100</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">Active</span>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="text-gray-500 hover:text-primary mx-1"><i class="ri-edit-line text-lg"></i></button>
+                                <button class="text-gray-500 hover:text-danger mx-1"><i class="ri-delete-bin-line text-lg"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="py-3 px-4">
+                                <span class="font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded border border-gray-200">WELCOME100</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p class="text-sm text-dark font-medium">Khách hàng mới</p>
+                                <span class="text-xs bg-gray-200 text-gray-600 px-1.5 rounded">HIDDEN</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="text-sm text-dark font-bold">100,000 đ</div>
+                                <div class="text-xs text-gray-500">Đơn min: 500k</div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p class="text-xs text-gray-500">01/01/2026 - 31/01/2026</p>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-1.5 w-16">
+                                        <div class="bg-warning h-1.5 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                    <span class="text-xs text-gray-600">900/1000</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex rounded-full bg-danger bg-opacity-10 py-1 px-3 text-sm font-medium text-danger">Inactive</span>
+                            </td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="text-gray-500 hover:text-primary mx-1"><i class="ri-edit-line text-lg"></i></button>
+                                <button class="text-gray-500 hover:text-danger mx-1"><i class="ri-delete-bin-line text-lg"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <style>
+    .toggle-checkbox:checked {
+        right: 0;
+        border-color: #3C50E0;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+        background-color: #3C50E0;
+    }
+</style>
+
+<div id="voucherModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="flex justify-between items-center mb-5 border-b pb-3">
+                    <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">
+                        Tạo Voucher Mới
+                    </h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500"><i class="ri-close-line text-2xl"></i></button>
+                </div>
+
+                <form>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Mã Voucher (Code) <span class="text-red-500">*</span></label>
+                                <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary uppercase" placeholder="VD: TET2025">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Tên chương trình (Name) <span class="text-red-500">*</span></label>
+                                <input type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="VD: Khuyến mãi tết">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Mô tả (Description)</label>
+                                <textarea rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Phạm vi (Scope)</label>
+                                    <select class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary">
+                                        <option value="GLOBAL">GLOBAL (Công khai)</option>
+                                        <option value="HIDDEN">HIDDEN (Ẩn)</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center pt-6">
+                                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                        <input type="checkbox" name="active" id="active" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300" checked/>
+                                        <label for="active" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                    </div>
+                                    <label for="active" class="text-sm font-medium text-gray-700">Kích hoạt</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 bg-gray-50 p-4 rounded border border-gray-200">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Loại giảm giá (Discount Type)</label>
+                                <div class="flex gap-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="discount_type" class="text-primary focus:ring-primary" value="PERCENT" checked>
+                                        <span class="ml-2 text-sm text-gray-700">Theo phần trăm (%)</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="discount_type" class="text-primary focus:ring-primary" value="FIXED">
+                                        <span class="ml-2 text-sm text-gray-700">Số tiền cố định</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Giá trị giảm</label>
+                                    <input type="number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="VD: 10">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Giảm tối đa (Max)</label>
+                                    <input type="number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="Cho loại %">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Đơn hàng tối thiểu (Min Order)</label>
+                                <input type="number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" value="0">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 border-t border-gray-200 pt-4 mt-2">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Ngày bắt đầu</label>
+                                    <input type="datetime-local" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-2 text-sm focus:outline-none focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Ngày kết thúc</label>
+                                    <input type="datetime-local" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-2 text-sm focus:outline-none focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Tổng giới hạn (Total)</label>
+                                    <input type="number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" placeholder="0 = vô hạn">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Giới hạn/User</label>
+                                    <input type="number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary" value="1">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                    Lưu Voucher
+                </button>
+                <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Hủy bỏ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

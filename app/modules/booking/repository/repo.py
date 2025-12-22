@@ -91,3 +91,8 @@ class Repository:
     def get_bookings_details(self, staff, day):
         details = self.db.session.query(BookingDetail).filter(BookingDetail.staff_id == staff).filter( func.date(BookingDetail.start) == day).all()
         return details
+
+    @staticmethod
+    def get_booking_by_code(booking_code):
+        booking = Booking.query.filter(Booking.booking_code == booking_code).first()
+        return booking

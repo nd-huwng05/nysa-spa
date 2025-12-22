@@ -39,3 +39,6 @@ class Controller:
     def staff_booking_details(self):
         data = self.handler.get_data_for_staff_booking_details(request)
         return render_template('components/booking_details.html',  **data)
+
+    def checkin(self):
+        return self.handler.handler_checkin(request)

@@ -1,13 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. Initialize Animation (AOS)
     AOS.init({
         duration: 800,
         once: true,
         offset: 80
     });
 
-    // 2. Parallax Effect
     const heroSection = document.getElementById('heroSection');
     const parallaxText = document.getElementById('parallaxText');
 

@@ -153,8 +153,12 @@ class Handler:
         }
 
     def get_data_for_staff_booking_details(self, request: Request):
+        staff_id = None
         if g.current_user.staff:
             staff_id = g.current_user.staff.id
+        else:
+            raise PermissionError(403)
+
 
         date = request.args.get('date')
         if not date:
@@ -166,4 +170,10 @@ class Handler:
             'tasks': bookings_details
         }
 
+    def handler_checkin(self, request: Request):
+        data = request.get_json()
+        booking_id = data.get('booking_id')
+        if not booking_id:
+            raise NewError(400, "BOOKING_ID IS REQUIRED")
+        return self.service.checkin(booking_id)
 
