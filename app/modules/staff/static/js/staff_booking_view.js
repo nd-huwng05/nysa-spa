@@ -573,3 +573,66 @@ function resetUI() {
     document.getElementById('totalPrice').innerText = '0 ₫';
     document.getElementById('voucherSelect').innerHTML = '<option value="0">No Voucher</option>';
 }
+
+async function submitAction(bookingId, action) {
+    const targetElement = document.getElementById('checkin') || document.body;
+
+    if (action === 'check_in') {
+        const confirm = await Swal.fire({
+            target: targetElement,
+            title: 'Confirm Check-in',
+            text: "Are you sure you want to check in this booking?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#C18C5D',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (!confirm.isConfirmed) return;
+
+        try {
+            Swal.fire({
+                target: targetElement,
+                title: 'Processing...',
+                didOpen: () => Swal.showLoading(),
+                allowOutsideClick: false
+            });
+
+            const response = await fetch('/booking/checkin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    booking_id: bookingId
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                await Swal.fire({
+                    target: targetElement,
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Check-in successful',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                location.reload();
+            } else {
+                throw new Error(result.message || 'Server Error');
+            }
+
+        } catch (error) {
+            Swal.fire({
+                target: targetElement,
+                icon: 'error',
+                title: 'Error',
+                text: error.message
+            });
+        }
+    }
+}

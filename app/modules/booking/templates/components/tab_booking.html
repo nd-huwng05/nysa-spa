@@ -52,15 +52,24 @@
 
                 {% include 'components/table_booking.html' %}
 
-                <div class="flex flex-col items-center border-t border-gray-100 px-5 py-5 sm:flex-row sm:justify-between">
-                     <span class="text-sm text-gray-500">
-                        Showing list appointments today
-                     </span>
-                    <div class="inline-flex mt-2 xs:mt-0">
-                        <button onclick="navigateDate(-1)" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l hover:bg-gray-100">
-                            <i class="fas fa-chevron-left mr-1"></i> Previous
+                <div class="flex flex-col items-center justify-between border-t border-gray-100 px-5 py-4 sm:flex-row">
+    <span class="text-sm text-gray-500 mb-4 sm:mb-0">
+        Showing appointments for
+    </span>
+
+                    <div class="inline-flex items-center shadow-sm rounded-md isolate">
+                        <button onclick="navigateDate(-1)"
+                                class="relative inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-[var(--accent-color)] focus:z-10 transition">
+                            <i class="fas fa-chevron-left mr-1"></i> Prev
                         </button>
-                        <button onclick="navigateDate(1)" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-700 bg-white border border-gray-300 border-l-0 rounded-r hover:bg-gray-100">
+
+                        <div class="relative -ml-px inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-gray-900 bg-white border border-gray-300 focus:z-10 min-w-[160px]">
+                            <i class="far fa-calendar-alt mr-2 text-gray-400"></i>
+                            <span id="currentDateDisplay">Today</span>
+                        </div>
+
+                        <button onclick="navigateDate(1)"
+                                class="relative -ml-px inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-[var(--accent-color)] focus:z-10 transition">
                             Next <i class="fas fa-chevron-right ml-1"></i>
                         </button>
                     </div>

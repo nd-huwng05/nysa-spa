@@ -11,4 +11,8 @@ class Controller:
     def dashboard(self):
         return render_template('components/dashboard.html')
 
+    def voucher(self):
+        return render_template('components/voucher.html')
 
+    def settings(self):
+        return render_template('components/setting.html')
