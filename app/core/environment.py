@@ -1,15 +1,15 @@
 from types import SimpleNamespace
 from pymysql import OperationalError
 from sqlalchemy import text
-from app.extensions import db, jwt, oauth, migrate
+from app.extensions import db, oauth, login_manager, migrate
 from app.core.logger import logger
 
 
 class Environment:
     def __init__(self):
         self.db = db
-        self.jwt = jwt
         self.oauth = oauth
+        self.login_manager = login_manager
         self.migrate = migrate
         self.app = None
         self.modules = SimpleNamespace()
@@ -22,8 +22,8 @@ class Environment:
             self.db.init_app(app)
             self._exam_connect_database()
             logger.info("Database connected successfully")
-
-            self.jwt.init_app(app)
+            self.login_manager.init_app(app)
+            self.login_manager.login_view = 'user.login'
             self.oauth.init_app(app)
             logger.info("Google OAuth Initialized")
 

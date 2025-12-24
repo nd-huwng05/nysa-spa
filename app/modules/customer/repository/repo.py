@@ -33,3 +33,11 @@ class Repository:
     @staticmethod
     def search_customer_by_email(data: str):
         return Customer.query.filter_by(email=data).all()
+
+    @staticmethod
+    def get_customer_by_email(email):
+        return Customer.query.filter(Customer.email == email).first()
+
+    def create_customer_has_account(self, customer_code, fullname, email, user_id):
+        new_customer = Customer(customer_code=customer_code, fullname=fullname, email=email, user_id=user_id)
+        self.db.session.add(new_customer)

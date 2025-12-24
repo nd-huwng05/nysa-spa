@@ -1,8 +1,8 @@
-"""struct database
+"""database
 
-Revision ID: 23c100e541b0
+Revision ID: dc42485df0ee
 Revises: 
-Create Date: 2025-12-18 12:58:38.595542
+Create Date: 2025-12-24 12:20:13.172549
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '23c100e541b0'
+revision = 'dc42485df0ee'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -111,8 +111,9 @@ def upgrade():
     op.create_table('customer',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('customer_code', sa.String(length=10), nullable=False),
+    sa.Column('customer_code', sa.String(length=20), nullable=False),
     sa.Column('fullname', sa.String(length=100), nullable=False),
+    sa.Column('email', sa.String(length=255), nullable=True),
     sa.Column('phone', sa.String(length=20), nullable=False),
     sa.Column('address', sa.String(length=255), nullable=False),
     sa.Column('membership_tier', sa.Enum('STANDARD', 'SILVER', 'GOLD', 'PLATINUM', name='membershiptier'), server_default='STANDARD', nullable=False),
@@ -123,6 +124,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('customer_code'),
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('phone'),
     sa.UniqueConstraint('user_id')
     )
     op.create_table('service_badge',
@@ -175,6 +178,7 @@ def upgrade():
     sa.Column('staff_code', sa.String(length=10), nullable=False),
     sa.Column('fullname', sa.String(length=255), nullable=False),
     sa.Column('phone', sa.String(length=20), nullable=False),
+    sa.Column('email', sa.String(length=255), nullable=True),
     sa.Column('address', sa.Text(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('active', sa.Boolean(), nullable=False),
@@ -202,7 +206,8 @@ def upgrade():
     sa.Column('booking_code', sa.String(length=20), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
     sa.Column('booking_time', sa.DateTime(), nullable=False),
-    sa.Column('status', sa.Enum('PENDING', 'PAYING', 'PAID', 'PROCESSING', 'COMPLETED', 'CANCELED', name='bookingstatus'), server_default='PENDING', nullable=False),
+    sa.Column('status', sa.Enum('PENDING', 'SUCCESS', 'FAILURE', 'PROCESSING', 'COMPLETED', 'CANCELED', name='bookingstatus'), server_default='PENDING', nullable=False),
+    sa.Column('payment', sa.Enum('NONE', 'PARTIAL', 'COMPLETE', name='paymentstatus'), server_default='NONE', nullable=False),
     sa.Column('notes', sa.Text(), nullable=True),
     sa.Column('expires_at', sa.DateTime(), nullable=True),
     sa.Column('total_amount', sa.DECIMAL(precision=12, scale=0), server_default='0.0', nullable=False),
@@ -265,11 +270,13 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('invoice_code', sa.String(length=50), nullable=False),
     sa.Column('booking_id', sa.Integer(), nullable=False),
-    sa.Column('type', sa.Enum('PAYMENT', 'REFUND', name='invoicetype'), server_default='PAYMENT', nullable=False),
-    sa.Column('amount', sa.DECIMAL(precision=12, scale=0), nullable=False),
-    sa.Column('payment_method', sa.Enum('CASH', 'BANK_TRANSFER', name='paymentmethod'), server_default='CASH', nullable=False),
+    sa.Column('type', sa.Enum('PAYMENT', 'REFUND', name='invoicetype'), nullable=True),
+    sa.Column('amount', sa.DECIMAL(precision=12, scale=0), nullable=True),
+    sa.Column('payment_method', sa.Enum('CASH', 'BANK_TRANSFER', name='paymentmethod'), nullable=True),
+    sa.Column('payment_type', sa.Enum('FULL', 'DEPOSIT', name='paymenttype'), nullable=True),
     sa.Column('status', sa.Enum('PENDING', 'PAID', 'FAILED', name='invoicestatus'), server_default='PENDING', nullable=True),
     sa.Column('note', sa.Text(), nullable=True),
+    sa.Column('expires_at', sa.DateTime(), nullable=True),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['booking_id'], ['booking.id'], ),
@@ -279,11 +286,13 @@ def upgrade():
     op.create_table('voucher_usage',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('voucher_id', sa.Integer(), nullable=False),
+    sa.Column('customer_id', sa.Integer(), nullable=False),
     sa.Column('booking_id', sa.Integer(), nullable=False),
     sa.Column('discount_amount', sa.DECIMAL(precision=12, scale=0), nullable=False),
     sa.Column('create_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('update_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['booking_id'], ['booking.id'], ),
+    sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
     sa.ForeignKeyConstraint(['voucher_id'], ['voucher.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

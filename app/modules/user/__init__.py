@@ -5,6 +5,7 @@ from .routes.controller import Controller
 from .service.service import Service
 from .routes import register_routes
 from app.core.environment import Environment
+from app.modules.customer import CustomerModule
 from ...core.interface import IModule
 
 
@@ -14,7 +15,8 @@ class UserModule(IModule):
         self.config = UserConfig(app.config)
         self._setup_google_oauth()
         repo = Repository(env)
-        self.service = Service(repo=repo, config=self.config)
+        self.service = Service(repo=repo, config=self.config, env=env)
+        self.env.add_module('customer_module', CustomerModule(app, env))
 
     def _register_routes(self):
         register_routes(self.app, self.service, self.config, self.env)

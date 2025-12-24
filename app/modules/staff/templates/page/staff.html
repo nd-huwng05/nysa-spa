@@ -1,12 +1,18 @@
-{%extends 'staff.html'%}
+{%extends 'inner.html'%}
 {%block css%}
 <link href="static/css/booking.css" rel="stylesheet">
+{%endblock%}
+
+{%block slidebar%}
+{%include 'include/slidebar.html'%}
+{%endblock%}
+
+{%block header%}
+{%include 'include/header.html'%}
 {%endblock%}
 
 {%block content%}
 {%endblock%}
 
 {% block scripts%}
-<script src="static/js/staff_booking_view.js"></script>
-<script src="static/js/staff.js"></script>
 {% endblock %}

@@ -1,61 +1,44 @@
-from flask_jwt_extended import create_access_token, create_refresh_token
-from flask import abort
-from app.core.logger import logger
+from app.core.environment import Environment
+from ..config.config_module import UserConfig
 from ..repository.repo import Repository
-from ..repository.models import User
 
 class Service:
-    def __init__(self, repo:Repository, config):
+    def __init__(self, repo:Repository, config: UserConfig, env: Environment):
         self.repo = repo
+        self.env = env
         self.config = config
 
     def auth_user_pass(self, username:str, password:str):
         user = self.repo.get_user_by_username(username)
         if not user or not user.check_password_hash(password):
-            raise Exception('Invalid username or password')
-
-        try:
-            self.repo.update_last_login_at(user.id)
-            self.repo.db.session.commit()
-        except Exception as e:
-            logger.error('Error updating last login at:',data=e)
-            abort(500)
-        access_token = create_access_token(identity=str(user.id))
-        refresh_token = create_refresh_token(identity=str(user.id))
-
-        return access_token, refresh_token
+            raise ValueError('Invalid username or password')
+        self.repo.update_last_login_at(user.id)
+        self.repo.db.session.commit()
+        return user
 
     def google_callback(self, userinfo):
-        user_id = None
-        provider_id = userinfo.get('sub')
         try:
+            provider_id = userinfo.get('sub')
             user_auth_google = self.repo.get_user_auth_by_provider_id(provider_id)
             if not user_auth_google:
                 avatar = userinfo.get('picture')
                 name = userinfo.get('name')
                 email = userinfo.get('email')
-                user_has_email = self.repo.get_user_by_email(email)
-                if not user_has_email:
-                    user_id = self.repo.create_user(email, avatar, name)
+                user = self.repo.create_user(avatar, name)
+                customer = self.env.modules.customer_module.service.get_customer_by_email(email)
+                if not customer:
+                    self.env.modules.customer_module.service.create_customer_has_account(name, email, user.id)
                 else:
-                    user_id = user_has_email.id
-                self.repo.create_auth_method_google(user_id, provider_id)
+                    customer.user_id = user.id
+                self.repo.create_auth_method_google(user.id, provider_id)
             else:
-                user_id = user_auth_google.user_id
+                self.repo.update_last_login_at(user_auth_google.user_id)
+                user = user_auth_google.user
+            self.repo.db.session.commit()
+            return user
         except Exception as e:
             self.repo.db.session.rollback()
-            logger.error("Error google callback", data=e)
-            abort(500)
+            raise e
 
-        self.repo.update_last_login_at(user_id)
-        self.repo.db.session.commit()
-        access_token = create_access_token(identity=str(user_id))
-        refresh_token = create_refresh_token(identity=str(user_id))
-        return access_token, refresh_token
-
-    def get_user_by_id(self, user_id: int) -> User:
-        try:
-            return self.repo.get_user_by_id(user_id)
-        except Exception as e:
-            logger.error("Error get user by id", data=e)
-            abort(500)
+    def get_user(self, id):
+        return self.repo.get_user(id)

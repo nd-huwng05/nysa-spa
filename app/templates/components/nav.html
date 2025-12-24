@@ -1,5 +1,5 @@
 <nav id="navmenu" class="navmenu">
-    {% if current_role.value == "CUSTOMER" or current_role is not defined or current_role is none %}
+    {% if not current_user.is_authenticated or (current_user.role and current_user.role.value == 'CUSTOMER') %}
     <ul>
         <li><a href="/#home">Home</a></li>
         <li><a href="/#about">About</a></li>

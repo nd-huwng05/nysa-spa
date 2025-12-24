@@ -1,0 +1,29 @@
+<header class="main-header h-20 px-8 flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center gap-4"></div>
+
+    <div class="flex items-center gap-6 relative">
+        <input type="checkbox" id="user-menu-toggle" class="peer hidden">
+
+        <label for="user-menu-toggle" class="flex items-center gap-3 cursor-pointer select-none">
+            <div class="text-right hidden md:block">
+                <p class="text-sm font-bold user-name">{{current_user.fullname}}</p>
+                <p class="text-[10px] uppercase font-bold text-gray-400">{{current_user.role.value}}</p>
+            </div>
+            <img src="{{current_user.avatar}}"
+                 class="w-10 h-10 rounded-full border border-gray-200 object-cover">
+        </label>
+
+        <div class="hidden peer-checked:block absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100">
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <i class="far fa-user w-5 text-center mr-2"></i> My Profile
+            </a>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-cog w-5 text-center mr-2"></i> Settings
+            </a>
+            <div class="border-t border-gray-100 my-1"></div>
+            <a href="/user/logout" class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-50 hover:text-red-600">
+                Logout
+            </a>
+        </div>
+    </div>
+</header>

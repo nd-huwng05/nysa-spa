@@ -33,7 +33,14 @@ class Service:
     def search_customer_by_email(self, data):
         return self.repo.search_customer_by_email(data)
 
+    def get_customer_by_email(self, email):
+        return self.repo.get_customer_by_email(email)
+
     def create_customer(self, data):
         customer_code = f"CUS{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
         self.repo.create_customer(customer_code, data)
         self.repo.db.session.commit()
+
+    def create_customer_has_account(self, fullname, email, user_id):
+        customer_code = f"CUS{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
+        self.repo.create_customer_has_account(customer_code, fullname, email, user_id)

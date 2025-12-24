@@ -10,14 +10,14 @@
 
         <div class="header-social-links">
             <div id="google_translate_element" class="me-3"></div>
-            {% if not current_user %}
+            {% if not current_user.is_authenticated %}
             <a class="btn-login d-none d-xl-block" href="/user/login?callback_url={{request.full_path}}">Login</a>
             <a href="/user/login?callback_url={{request.full_path}}" class="user-icon d-block d-xl-none fs-4"><i class="bi bi-person"></i></a>
 
             {% else %}
             <div class="user-menu" style="margin-left: 10px;">
                 <ul>
-                    {%if current_role.value=="CUSTOMER"%}
+                    {% if not current_user.is_authenticated or (current_user.role and current_user.role.value == 'CUSTOMER') %}
                     <li>
                         <a href="/cart/cart-view" id="header-cart-btn" class="cart-icon me-3 position-relative text-reset">
                             <i class="bi bi-cart3 fs-4"></i>
@@ -39,15 +39,10 @@
                         </a>
 
                         <ul style="left: auto; right: 0; min-width: 150px;">
-                            {%if current_role.value != "ADMIN"%}
                             <li><a href="/user/profile">Profile</a></li>
                             <li><a href="#">Setting</a></li>
                             <li><a href="#">Booking</a></li>
-                            {%endif%}
-
-                            {%if current_role.value =="CUSTOMER"%}
                             <li><a href="#">Card</a></li>
-                            {%endif%}
                             <li><a href="/user/logout?callback_url={{request.full_path}}">Logout</a></li>
                         </ul>
                     </li>

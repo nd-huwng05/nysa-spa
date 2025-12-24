@@ -1,0 +1,39 @@
+<input type="checkbox" id="sidebar-toggle" class="peer hidden">
+
+<label for="sidebar-toggle" class="fixed inset-0 bg-black/50 z-30 hidden peer-checked:block lg:hidden transition-opacity"></label>
+
+<aside id="sidebar" class="sidebar flex flex-col">
+
+    <div class="sidebar-header h-20 flex items-center px-6 border-b border-gray-100 flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <a href="/" class="logo-link flex items-center gap-2">
+                <img src="../../static/img/favicon.ico" alt="logo" class="logo-image w-8 h-8">
+                <h1 class="brand-title text-2xl font-bold tracking-tight">Nysa</h1>
+            </a>
+        </div>
+
+        <label for="sidebar-toggle" class="ml-auto lg:hidden text-gray-400 hover:text-gray-600 cursor-pointer p-2">
+            <i class="fas fa-times text-xl"></i>
+        </label>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-6 flex flex-col gap-2">
+        <p class="px-6 mb-2 text-[11px] font-bold uppercase tracking-widest text-gray-400">Navigation</p>
+
+        <a href="/booking/staff-book-view"
+           class="menu-item {{ 'active' if request.path == '/booking/staff-book-view' }}">
+            <div class="flex items-center gap-3">
+                <i class="far fa-calendar-alt w-5 text-center"></i>
+                Booking Calendar
+            </div>
+        </a>
+
+        <a href="/booking/staff-book-details"
+           class="menu-item {{ 'active' if request.path == '/booking/staff-book-details' }}">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-spa w-5 text-center"></i>
+                Massage
+            </div>
+        </a>
+    </div>
+</aside>

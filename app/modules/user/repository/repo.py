@@ -1,4 +1,7 @@
 from datetime import datetime
+
+from sqlalchemy import func
+
 from .models import User, UserAuthMethod, AuthMethodEnum, RoleAccount
 
 
@@ -25,14 +28,18 @@ class Repository:
 
     @staticmethod
     def update_last_login_at(user_id: int):
-        UserAuthMethod.query.filter_by(user_id=user_id).update({'last_login_at': datetime.now()})
+        UserAuthMethod.query.filter(UserAuthMethod.user_id == user_id).first().last_login_at = datetime.now()
 
-    def create_user(self, email: str, avatar: str, name: str) -> int:
-        new_user = User(email=email, avatar=avatar, fullname=name, role=RoleAccount.CUSTOMER)
+    def create_user(self, avatar: str, name: str) -> User:
+        new_user = User(avatar=avatar, fullname=name)
         self.db.session.add(new_user)
         self.db.session.flush()
-        return new_user.id
+        return new_user
 
     def create_auth_method_google(self, user_id: int, provider_id: int):
         new_auth_method = UserAuthMethod(user_id=user_id, provider_id=provider_id, provider=AuthMethodEnum.GOOGLE)
         self.db.session.add(new_auth_method)
+
+    @staticmethod
+    def get_user(id: int):
+        return User.query.get(id)

@@ -1,9 +1,6 @@
-from flask import request, render_template, redirect, url_for, flash, session
-from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
-
-from app.extensions import oauth
-from ..config.config_module import ModuleConfig
-from ..service.service import Service
+from flask import render_template, redirect, url_for, flash, abort
+from flask_login import current_user
+from app.core.logger import logger
 from .handler import Handler
 
 class Controller:
@@ -12,4 +9,14 @@ class Controller:
 
     @staticmethod
     def index():
-        return render_template('page/index.html')
+        try:
+            if current_user.is_authenticated and current_user.role.value == 'ADMIN':
+                return redirect(url_for('admin.index'))
+            elif current_user.is_authenticated and current_user.role.value  == 'STAFF':
+                    return redirect(url_for('staff.index'))
+            else:
+                return render_template('page/index.html')
+        except Exception as e:
+            logger.error(e)
+            flash("500 Internal Server Error", category="error")
+            abort(500)

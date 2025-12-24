@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Boolean, Text, text, func
 from app.core.database import BaseModel
 from sqlalchemy.orm import relationship
@@ -15,14 +16,13 @@ class AuthMethodEnum(enum.Enum):
     GOOGLE = "GOOGLE"
     LOCAL = "LOCAL"
 
-class User(BaseModel):
+class User(UserMixin, BaseModel):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(150), unique=True)
     password = Column(String(255))
     fullname = Column(String(255))
     avatar = Column(String(255), server_default="https://static.vecteezy.com/system/resources/thumbnails/027/951/137/small/stylish-spectacles-guy-3d-avatar-character-illustrations-png.png")
-    email = Column(String(255), unique=True, nullable=True)
     role = Column(Enum(RoleAccount), server_default=RoleAccount.CUSTOMER.value)
 
     auth_method = relationship("UserAuthMethod", backref="user", cascade="all, delete-orphan", lazy="selectin")

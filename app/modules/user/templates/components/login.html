@@ -28,18 +28,6 @@
 
                     <form action="/user/auth_user_pass" method="POST">
 
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                        <div class="mb-3">
-                            {% for category, msg in messages %}
-                            <div class="alert alert-{{ 'danger' if category=='error' else category }} rounded-3">
-                                {{ msg }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        {% endwith %}
-
                         <div class="mb-3">
                             <label class="form-label">Username</label>
                             <input name="username" type="text" class="form-control form-control-custom rounded-3"

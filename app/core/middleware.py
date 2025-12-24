@@ -1,14 +1,23 @@
-from flask import redirect, url_for, request, session
-from flask_jwt_extended import verify_jwt_in_request
-from flask_jwt_extended.exceptions import NoAuthorizationError, JWTExtendedException
 from functools import wraps
+from flask import abort
+from flask_jwt_extended import current_user
 
-def jwt_middleware(view_fun):
-    @wraps(view_fun)
-    def wrapper(*args, **kwargs):
-        try:
-            verify_jwt_in_request(locations=['cookies'])
-            return view_fun(*args, **kwargs)
-        except (NoAuthorizationError, JWTExtendedException):
-            return redirect(url_for('user.login', callback_url=request.full_path))
-    return wrapper
+
+def admin_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.role != "ADMIN":
+            return abort(403)
+        return func(*args, **kwargs)
+
+    return decorated_function
+
+
+def staff_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        accepted_roles = ['STAFF', 'ADMIN']
+        if not current_user.is_authenticated or current_user.role not in accepted_roles:
+            return abort(403)
+        return func(*args, **kwargs)
+    return decorated_function

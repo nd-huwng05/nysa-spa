@@ -1,8 +1,8 @@
-"""struct database
+"""database
 
-Revision ID: 46aad5594823
-Revises: 0b71cd92f9ba
-Create Date: 2025-12-19 00:53:08.163942
+Revision ID: 5da0fc77dc2d
+Revises: 91f13de939f8
+Create Date: 2025-12-24 19:55:09.777108
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = '46aad5594823'
-down_revision = '0b71cd92f9ba'
+revision = '5da0fc77dc2d'
+down_revision = '91f13de939f8'
 branch_labels = None
 depends_on = None
 
@@ -203,6 +203,8 @@ def upgrade():
                existing_type=mysql.DATETIME(),
                server_default=sa.text('now()'),
                existing_nullable=True)
+        batch_op.drop_index(batch_op.f('email'))
+        batch_op.drop_column('email')
 
     with op.batch_alter_table('user_auth_method', schema=None) as batch_op:
         batch_op.alter_column('last_login_at',
@@ -286,6 +288,8 @@ def downgrade():
                existing_nullable=True)
 
     with op.batch_alter_table('user', schema=None) as batch_op:
+        batch_op.add_column(sa.Column('email', mysql.VARCHAR(length=255), nullable=True))
+        batch_op.create_index(batch_op.f('email'), ['email'], unique=True)
         batch_op.alter_column('update_at',
                existing_type=mysql.DATETIME(),
                server_default=sa.text('CURRENT_TIMESTAMP'),

@@ -6,7 +6,7 @@ class Controller:
         self.handler = Handler(config, service, env)
 
 
-    def staff_work(self):
+    def index(self):
         return render_template('page/staff.html')
 
 
