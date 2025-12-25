@@ -42,7 +42,7 @@
 
             <li class="page-item {% if pagination.page == 1 %}disabled{% endif %}">
                 <a class="page-link"
-                   href="#" data-page="{{ pagination.page - 1 }}"
+                   href="javascript:void(0)" data-page="{{ pagination.page - 1 }}"
                    aria-disabled="{{ 'true' if pagination.page == 1 else 'false' }}">
                     <i class="bi bi-chevron-left"></i> Previous
                 </a>
@@ -54,7 +54,7 @@
             {% if p == 1 or p == pagination.total_pages or (p >= pagination.page - 2 and p <= pagination.page + 2) %}
 
             <li class="page-item {% if pagination.page == p %}active{% endif %}">
-                <a class="page-link" href="#" data-page="{{ p }}">{{ p }}</a>
+                <a class="page-link" href="javascript:void(0)" data-page="{{ p }}">{{ p }}</a>
             </li>
 
             {% elif p == pagination.page - 3 or p == pagination.page + 3 %}
@@ -65,7 +65,7 @@
             {% endfor %}
 
             <li class="page-item {% if pagination.page == pagination.total_pages %}disabled{% endif %}">
-                <a class="page-link" href="#" data-page="{{ pagination.page + 1 }}">
+                <a class="page-link" href="javascript:void(0)" data-page="{{ pagination.page + 1 }}">
                     Next <i class="bi bi-chevron-right"></i>
                 </a>
             </li>
