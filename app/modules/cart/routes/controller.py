@@ -1,4 +1,4 @@
-from flask import abort, render_template, redirect, url_for, flash, session, jsonify
+from flask import abort, render_template, redirect, url_for, flash, session, jsonify, request
 from app.core.logger import logger
 from .handler import Handler
 
@@ -23,3 +23,6 @@ class Controller:
 
     def remove_service_item(self, item_id):
         return self.handler.remove_service_item(item_id)
+
+    def toggle_check(self):
+        return self.handler.toggle_check(request)

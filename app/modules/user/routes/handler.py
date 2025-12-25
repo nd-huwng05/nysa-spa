@@ -30,7 +30,6 @@ class Handler:
         return self.service.google_callback(user_info)
 
     def user(self, id:int):
-        print(id)
         user = self.service.get_user(id)
         if not user:
             return None
