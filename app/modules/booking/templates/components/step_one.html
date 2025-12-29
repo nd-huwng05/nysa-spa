@@ -3,28 +3,34 @@
         <div class="step-num">1</div>
         <h5 class="step-title">Select Time</h5>
     </div>
+
+    <input type="hidden" id="service-ids" name="service_ids"
+       value="{{ services | map(attribute='id') | join(',') }}">
+
     <div class="row g-3">
         <div class="col-md-6">
             <label class="form-label text-muted">DATE</label>
-
             <div class="position-relative custom-select-wrapper w-100">
-                <input type="text" class="form-control custom-dropdown-btn w-100 ps-3 pe-5" id="inputDate" placeholder="Choose date" style="background-color: #fff; cursor: pointer;">
+                <input type="date"
+                       class="form-control custom-dropdown-btn w-100 ps-3 pe-5"
+                       id="inputDate"
+                       name="booking_date"
+                       onchange="checkUnlockNextStep()"
+                       onclick="this.showPicker()"
+                       style="background-color: #fff; cursor: pointer;">
             </div>
         </div>
         <div class="col-md-6">
             <label class="form-label text-muted">START TIME</label>
 
-            <input type="hidden" id="inputTime" name="start_time" value="">
+            <input type="hidden" id="inputTime" name="booking_time" value="">
 
             <div class="row g-2">
                 <div class="col-6">
                     <div class="dropdown custom-select-wrapper w-100" id="hourWrapper">
                         <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center dropdown-toggle custom-dropdown-btn custom-select-btn custom-time-btn"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                id="btnHour">
-                            <span>Hours</span>
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false" id="btnHour">
+                            <span class="selected-text">Hours</span>
                         </button>
                         <ul class="dropdown-menu w-100 animate slideIn" style="max-height: 200px; overflow-y: auto;">
                             {% for h in range(9, 21) %}
@@ -38,11 +44,8 @@
                 <div class="col-6">
                     <div class="dropdown custom-select-wrapper w-100" id="minuteWrapper">
                         <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center dropdown-toggle custom-dropdown-btn custom-select-btn custom-time-btn"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                id="btnMinute">
-                            <span>Minute</span>
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false" id="btnMinute">
+                            <span class="selected-text">Minute</span>
                         </button>
                         <ul class="dropdown-menu w-100 animate slideIn" style="max-height: 200px; overflow-y: auto;">
                             {% for m in range(0, 59) %}
@@ -58,7 +61,7 @@
         <div class="col-12">
             <div id="timeEstimate" class="time-estimate-info align-items-center">
                 <i class="fas fa-hourglass-half me-2"></i>
-                <span id="durationText">Total duration: 0 mins</span>
+                <span id="durationText">Total duration: {{ total_duration }} mins</span>
                 <span class="mx-2">|</span>
                 <span class="fw-bold" id="endTimeText">Est. finish: --:--</span>
             </div>

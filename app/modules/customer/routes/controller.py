@@ -14,7 +14,16 @@ class Controller:
         return render_template('page/service.html')
 
     def update_info(self):
-        return self.handler.update_info(request)
+        try:
+            self.handler.update_info(request)
+            flash("UPDATE INFO SUCCESS", 'success')
+            return "", 200
+        except ValueError as e:
+            flash(str(e))
+            return "", 400
+        except Exception as e:
+            flash("INTERNAL SERVER ERROR", category="error")
+            return "", 500
 
     def search(self):
         return self.handler.search(request)

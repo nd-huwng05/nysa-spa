@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, get_flashed_messages, json
 from rich.console import Console
 from rich.table import Table
 from app.core.environment import Environment
@@ -59,6 +59,22 @@ class Server:
         @self.app.errorhandler(404)
         def not_found(e):
             return render_template('errors/404.html'),404
+
+        @self.app.after_request
+        def flash_to_htmx(response):
+            if "HX-Request" in request.headers:
+                messages = get_flashed_messages(with_categories=True)
+                if messages:
+                    category, message = messages[0]
+                    if category == 'message': category = 'info'
+                    trigger_data = {
+                        "show-flash-message": {
+                            "type": category,  # 'error', 'success'
+                            "message": message
+                        }
+                    }
+                    response.headers['HX-Trigger'] = json.dumps(trigger_data)
+            return response
 
 
     def print_routes(self):

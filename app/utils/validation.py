@@ -1,28 +1,30 @@
 from datetime import datetime
-from app.core.errors import NewError
 
+def validate_datetime(date_str: str, time_str: str = None) -> datetime:
+    if not date_str:
+        raise ValueError("DATE IS REQUIRED")
 
-def validate_datetime(datetime_str: str) -> datetime:
-    if not datetime_str:
-        raise NewError(400, "DATE IS REQUIRED")
+    if not time_str:
+        time_str = "00:00"
 
     try:
-        clean_str = datetime_str.strip()
+        clean_date = date_str.strip()
+        clean_time = time_str.strip()
+        full_str = f"{clean_date} {clean_time}"
 
-        if len(clean_str) == 16:
+        if len(full_str) == 16:
             format_str = "%Y-%m-%d %H:%M"
-        elif len(clean_str) == 19:
+        elif len(full_str) == 19:
             format_str = "%Y-%m-%d %H:%M:%S"
         else:
-            raise ValueError()
+            raise ValueError("INVALID DATE TIME FORMAT")
 
-        day = datetime.strptime(clean_str, format_str)
+        day = datetime.strptime(full_str, format_str)
 
     except ValueError:
+        raise ValueError(f"INVALID DATETIME FORMAT: '{full_str}'. Use YYYY-MM-DD HH:MM")
 
-        raise NewError(400, f"INVALID DATETIME FORMAT: '{datetime_str}'. Use YYYY-MM-DD HH:MM or HH:MM:SS")
-
-    if day < datetime.now():
-        raise NewError(400, "DATETIME CANNOT BE IN THE PAST")
+    if day <= datetime.now():
+        raise ValueError("DATETIME CANNOT BE IN THE PAST")
 
     return day

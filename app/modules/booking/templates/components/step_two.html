@@ -1,28 +1,63 @@
-<div class="section-card disabled" id="step-2">
+<div class="section-card {%if not check%}disabled{%endif%}" id="step-2"
+     hx-get="/booking/appointment/staff"
+     hx-trigger="load_timeline"
+     hx-target="this"
+     hx-include="#inputDate, #inputTime, #service-ids"
+     hx-swap="outerHTML">
+
     <div class="section-header">
         <div class="step-num">2</div>
         <h5 class="step-title">Staff Allocation</h5>
+        <div class="htmx-indicator spinner-border spinner-border-sm text-primary ms-2"></div>
     </div>
 
     <div id="staffContainer">
         {% for s in services %}
+        {% set p_idx = loop.index %}
 
         {% if s.type.value == "combo" %}
-        <div class="combo-box" data-id="{{s.id}}" data-price="{{s.price}}">
+        <div class="combo-box" data-service-id="{{s.id}}" data-row-key="{{ s.id }}-{{ s.display_time }}" data-price="{{s.price}}">
             <div class="combo-header d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <span class="combo-tag">Combo</span>
                     <span class="fw-bold text-dark">{{s.name}}</span>
                 </div>
 
-                {% with input_id='staff-select-combo-'~s.id, initial_label='Optional', width='140px', btn_class='btn-outline-primary', is_combo_master=True, custom_style='height: 40px; border-color: var(--border-color);', staffs=staff_appointment %}
-                    {% include 'components/staff_dropdown.html' %}
-                {% endwith %}
+                <div class="dropdown custom-select-wrapper" style="width: 140px;">
+                    <input type="hidden" class="staff-input is-combo-master staff-submit" name="staff-{{loop.index}}-{{s.id}}-{{ s.display_time }}-{{s.type.value}}"
+                           value="{{ s.staffs[0].id if s.staffs else '' }}">
+
+                    <button class="btn btn-outline-primary w-100 d-flex justify-content-between align-items-center dropdown-toggle custom-dropdown-btn custom-select-btn custom-time-btn"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                            style="height: 40px; border-color: var(--border-color);">
+                        <span class="text-limit">
+                            {% if s.staffs %}
+                                {{ s.staffs[0].fullname }}
+                            {% else %}
+                                No staff service
+                            {% endif %}
+                        </span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end w-100 animate slideIn">
+                        <li><a class="dropdown-item text-limit" href="#" data-value="split" data-type="combo_action">Split</a></li>
+                        <li><hr class="dropdown-divider"></li>
+
+                        {% for staff in s.staffs or [] %}
+                        <li>
+                            <a class="dropdown-item text-limit {% if loop.first %}active{% endif %}"
+                               href="#" data-value="{{ staff.id }}">
+                                {{ staff.fullname }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
 
             {% for child in s.included_services %}
             <div>
-                <div class="service-row service-item" data-id="{{child.id}}" data-duration="{{child.duration_minutes}}"
+                <div class="service-row service-item" data-service-id="{{child.id}}" data-row-key="{{ child.id }}-{{ child.display_time }}" data-duration="{{child.duration_minutes}}"
                      data-price="{{child.price}}">
                     <div class="d-flex align-items-center">
                         <img src="{{child.img_url}}" alt="{{s.name}}" class="service-img"
@@ -33,18 +68,40 @@
                         </div>
                     </div>
 
-                    {% with input_id='staff-select-'~child.id, input_class='child-select', width='200px',
-                    btn_class='btn-secondary', initial_label='Optional', is_disabled=True, is_hidden=True,
-                    staffs=staff_appointment %}
-                    {% include 'components/staff_dropdown.html' %}
-                    {% endwith %}
+                    <div class="dropdown custom-select-wrapper" style="width: 200px;">
+
+                        <input type="hidden" class="staff-input is-child-select staff-submit" name="child-{{p_idx}}-{{child.id}}-{{ child.display_time }}"
+                               value="{{ child.staffs[0].id if child.staffs else '' }}">
+
+                        <button class="btn btn-secondary w-100 d-flex justify-content-between align-items-center dropdown-toggle custom-dropdown-btn custom-select-btn custom-time-btn d-none"
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="text-limit">
+                                {% if child.staffs %}
+                                    {{ child.staffs[0].fullname }}
+                                {% else %}
+                                    No staff service
+                                {% endif %}
+                            </span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end w-100 animate slideIn">
+                            {% for staff in child.staffs or [] %}
+                            <li>
+                                <a class="dropdown-item text-limit {% if loop.first %}active{% endif %}"
+                                   href="#" data-value="{{ staff.id }}">
+                                    {{ staff.fullname }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
 
         {% else %}
-        <div class="service-row rounded border mb-3 service-item" data-id="{{s.id}}"
+        <div class="service-row rounded border mb-3 service-item" data-row-key="{{ s.id }}-{{ s.display_time }}" data-service-id="{{s.id}}"
              data-duration="{{s.duration_minutes}}" data-price="{{s.price}}">
             <div class="d-flex align-items-center">
                 <img src="{{s.img_url}}" alt="{{s.name}}" class="service-img"
@@ -55,12 +112,36 @@
                 </div>
             </div>
 
-            {% with input_id='staff-select-'~s.id, onchange_func="updateAllocation('"~s.id~"')",
-            initial_label='Optional', width='200px', staffs=staff_appointment %}
-            {% include 'components/staff_dropdown.html' %}
-            {% endwith %}
+            <div class="dropdown custom-select-wrapper" style="width: 200px;">
+
+                <input type="hidden" class="staff-input staff-submit"  name="staff-{{loop.index}}-{{s.id}}-{{ s.display_time }}-{{s.type.value}}"
+                       value="{{ s.staffs[0].id if s.staffs else '' }}">
+
+                <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center dropdown-toggle custom-dropdown-btn custom-select-btn custom-time-btn"
+                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="text-limit">
+                        {% if s.staffs %}
+                            {{ s.staffs[0].fullname }}
+                        {% else %}
+                            No staff service
+                        {% endif %}
+                    </span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end w-100 animate slideIn">
+                    {% for staff in s.staffs or [] %}
+                    <li>
+                        <a class="dropdown-item text-limit {% if loop.first %}active{% endif %}"
+                           href="#" data-value="{{ staff.id }}">
+                            {{ staff.fullname }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         {% endif %}
+
         {% endfor %}
     </div>
 </div>

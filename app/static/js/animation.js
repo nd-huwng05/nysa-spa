@@ -233,16 +233,6 @@
         }
 
         getValueInCategory()
-
-        function showSingleSweetAlert(messageText, iconType, alertTitle) {
-            if (messageText) {
-                Swal.fire({
-                    icon: iconType || 'error',
-                    title: alertTitle || 'Thông báo',
-                    text: messageText,
-                });
-            }
-        }
     }
 )
 ();

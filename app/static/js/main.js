@@ -21,3 +21,23 @@ function removeItemFromCart(serviceId, callback) {
             callback(false);
         });
 }
+
+function showSingleSweetAlert(messageText, iconType, alertTitle) {
+    if (messageText) {
+        Swal.fire({
+            icon: iconType || 'error',
+            title: alertTitle || 'Thông báo',
+            text: messageText,
+        });
+    }
+}
+
+document.body.addEventListener("show-flash-message", function(evt) {
+    const data = evt.detail;
+    Swal.fire({
+        icon: data.type,
+        title: 'Thông báo',
+        text: data.message,
+        showConfirmButton: true
+    });
+});

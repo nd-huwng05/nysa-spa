@@ -1,15 +1,10 @@
-import uuid
-from datetime import timedelta, datetime
-from decimal import Decimal
+import re
+from datetime import datetime
 
-from flask import g, Request
-
-from app.core.errors import NewError, NewPackage
+from flask_login import current_user
 from app.utils.validation import validate_datetime
 from ..config.config_module import BookingConfig
-from ..repository.models import Booking, BookingDetail
 from ..service.service import Service
-
 
 class Handler:
     def __init__(self, config: BookingConfig, service: Service, env):
@@ -17,163 +12,119 @@ class Handler:
         self.service = service
         self.env = env
 
-    def handler_book_view(self, request: Request):
+    def _get_service_ids(self, source):
+        ids_str = source.get('service_ids') or source.get('service')
+        if not ids_str:
+            raise ValueError('YOU NEED CHOOSE A SERVICE')
+        if isinstance(ids_str, list):
+            return [int(x) for x in ids_str]
+        return [int(x) for x in ids_str.split(',') if x.strip()]
+
+    def get_data_for_booking(self, request):
         service_ids = request.args.getlist('service')
         if not service_ids:
-            return None, "You need choose least one service"
+            return ValueError('YOU NEED CHOOSE A SERVICE')
 
         services = self.env.modules.service_module.service.get_list_services_by_ids(service_ids)
-        customer = None
-        if g.current_user.role.value == "CUSTOMER":
-            customer = g.current_user.customer
+        total_price = sum(s.price for s in services)
+        vouchers = self.env.modules.voucher_module.service.get_list_voucher_customer(current_user.customer.id, total_price)
+
+        return {
+            'services': services,
+            'customer': current_user.customer if current_user.customer else None,
+            'vouchers': vouchers,
+            'total_price': total_price,
+            'check': None
+        }
+
+    def get_appointment_staff(self, request):
+        date_str = request.args.get('booking_date')
+        time_str = request.args.get('booking_time')
+        service_ids = self._get_service_ids(request.args)
+
+        if not date_str or not time_str:
+            raise ValueError('YOU NEED CHOOSE TIME')
+
+        start_dt = validate_datetime(date_str, time_str)
+
+        services, total_price = self.service.process_booking_timeline(service_ids, start_dt )
 
         return {
             "services": services,
-            "customer": customer
-        }, None
-
-    def handler_staff_appointment(self, request: Request):
-        day = request.args.get('start')
-        duration = request.args.get('duration', type=int)
-        start = validate_datetime(day)
-        end = start + timedelta(minutes=duration)
-        staffs = self.env.modules.staff_module.service.get_staff_calendar(start, end)
-        if not staffs:
-            return {
-                "staff_appointment": None
-            }
-        end = end + timedelta(minutes=self.config.private_config.get('TIME_REST'))
-        staff_appointment = self.service.get_staff_appointment(staffs, start, end,
-                                                               self.config.private_config.get('LIMIT_APPOINTMENTS'))
-
-        print(staff_appointment)
-        return {
-            "staff_appointment": staff_appointment
+            "total_price": total_price,
+            "booking_date": start_dt.strftime("%A, %d %B %Y"),
+            "booking_time": time_str,
+            "customer": current_user.customer if current_user.customer else None,
+            'check': True
         }
 
-    def handler_booking_voucher(self, request: Request):
-        customer_id = 1
-        if g.current_user.role.value == "CUSTOMER":
-            customer_id = g.current_user.customer.id
+    def parse_booking_data_final(self, form_data, booking_date_obj):
+        date_str = booking_date_obj.strftime("%Y-%m-%d")
+        booked_groups = {}
+        time_regex = r"(\d{1,2}:\d{2})"
 
-        email = request.args.get('email')
-        if not email:
-            raise NewError(400, "You need enter email")
+        for key, value in form_data.items():
+            if key.startswith("staff-"):
+                parts = key.split("-")
+                p_idx = parts[1]
+                s_id = parts[2]
+                s_type = parts[-1]
 
-        total_price = request.args.get('total_price', type=Decimal)
-        if not total_price:
-            raise NewError(400, "TOTAL_PRICE IS REQUIRED")
-        vouchers = self.env.modules.voucher_module.service.get_list_voucher_customer(customer_id, total_price)
-        return vouchers
+                times = re.findall(time_regex, key)
+                start_dt = end_dt = None
+                if len(times) >= 2:
+                    start_dt = datetime.strptime(f"{date_str} {times[0]}", "%Y-%m-%d %H:%M")
+                    end_dt = datetime.strptime(f"{date_str} {times[1]}", "%Y-%m-%d %H:%M")
 
-    def handler_add_booking(self, request: Request):
-        data = request.json
-        booking_time = data.get('booking_time')
-        booking_time = validate_datetime(booking_time)
-        if not booking_time:
-            raise NewError(400, "BOOKING_TIME IS REQUIRED")
+                if p_idx not in booked_groups:
+                    booked_groups[p_idx] = {"parent": {}, "children": []}
 
-        customer_id = data.get('customer_id')
-        if not customer_id:
-            raise NewError(400, "CUSTOMER IS REQUIRED")
+                booked_groups[p_idx]["parent"] = {
+                    "service_id": int(s_id),
+                    "staff_id": int(value) if value and str(value).isdigit() else None,
+                    "type": s_type,
+                    "start": start_dt,
+                    "end": end_dt
+                }
 
-        notes = data.get('notes')
-        booking_code = f"BK{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
+            elif key.startswith("child-"):
+                parts = key.split("-")
+                p_idx = parts[1]
+                child_id = parts[2]
 
-        total_sub_amount = data.get('total_sub_amount')
-        if not total_sub_amount:
-            raise NewError(400, "TOTAL_SUB_AMOUNT IS REQUIRED")
+                times = re.findall(time_regex, key)
+                c_start = c_end = None
+                if len(times) >= 2:
+                    c_start = datetime.strptime(f"{date_str} {times[-2]}", "%Y-%m-%d %H:%M")
+                    c_end = datetime.strptime(f"{date_str} {times[-1]}", "%Y-%m-%d %H:%M")
 
-        expires = datetime.now() + timedelta(minutes=self.config.private_config.get('RESERVER'))
+                if p_idx not in booked_groups:
+                    booked_groups[p_idx] = {"parent": {}, "children": []}
 
-        booking = Booking(
-            booking_code=booking_code,
-            customer_id=customer_id,
-            booking_time=booking_time,
-            total_amount=total_sub_amount,
-            expires_at=expires,
-            notes=notes
-        )
-
-        details = data.get('details')
-        if not details:
-            raise NewError(400, "NO SEE SERVICE DETAILS")
-
-        extracted_details = []
-        for d in details:
-            extracted_details.append({
-                "staff_id": d.get('staff_id'),
-                "start": d.get('start'),
-                "end": d.get('end'),
-            })
-
-            sub_details = d.get('sub_detail', [])
-            for sub in sub_details:
-                extracted_details.append({
-                    "staff_id": sub.get('staff_id'),
-                    "start": sub.get('start'),
-                    "end": sub.get('end'),
+                booked_groups[p_idx]["children"].append({
+                    "service_id": int(child_id),
+                    "staff_id": int(value) if value and str(value).isdigit() else None,
+                    "start": c_start,
+                    "end": c_end
                 })
 
-        self.env.modules.staff_module.service.check_staff_calendar(extracted_details)
-        self.service.check_staff_appointment(extracted_details)
+        sorted_indices = sorted(booked_groups.keys(), key=int)
+        return [booked_groups[idx] for idx in sorted_indices]
 
-        total_amount = data.get('total_amount')
-        if not total_amount:
-            raise NewError(400, "TOTAL_AMOUNT IS REQUIRED")
+    def handler_create_booking(self, request):
+        date_str = request.form.get('booking_date')
+        time_str = request.form.get('booking_time')
+        service_ids = self._get_service_ids(request.form)
+        services = self.env.modules.service_module.service.get_list_services_by_ids(service_ids)
 
-        voucher = None
-        voucher_id = data.get('voucher_id', None)
-        if voucher_id and voucher_id != '':
-            self.env.modules.voucher_module.service.check_voucher(voucher_id, customer_id, total_sub_amount)
-            discount_amount = Decimal(total_sub_amount) - Decimal(total_amount)
-            voucher = {
-                "customer_id": customer_id,
-                "voucher_id": voucher_id,
-                "discount_amount": discount_amount,
-                "booking_id": None
-            }
+        if not services:
+            raise ValueError('YOU NEED CHOOSE SERVICES')
 
-        result = self.service.add_booking(booking, details, voucher)
+        if not date_str or not time_str:
+            raise ValueError('YOU NEED CHOOSE A DATE')
 
-        return NewPackage(result).response()
+        start_dt = validate_datetime(date_str, time_str)
 
-    def get_data_for_staff_booking(self, request: Request):
-        date = request.args.get('date')
-        if not date:
-            date = datetime.today().strftime('%Y-%m-%d')
-            date = datetime.strptime("2025-12-30",'%Y-%m-%d')
-        else:
-            date = datetime.strptime(date, '%Y-%m-%d')
+        booking_details = self.parse_booking_data_final(request.form, start_dt)
 
-        bookings = self.service.get_bookings_today(date)
-
-        return {
-            'bookings': bookings
-        }
-
-    def get_data_for_staff_booking_details(self, request: Request):
-        staff_id = None
-        if g.current_user.staff:
-            staff_id = g.current_user.staff.id
-        else:
-            raise PermissionError(403)
-
-
-        date = request.args.get('date')
-        if not date:
-            date = datetime.today().strftime('%Y-%m-%d')
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-
-        bookings_details = self.service.get_bookings_details(staff_id, date)
-        return {
-            'tasks': bookings_details
-        }
-
-    def handler_checkin(self, request: Request):
-        data = request.get_json()
-        booking_id = data.get('booking_id')
-        if not booking_id:
-            raise NewError(400, "BOOKING_ID IS REQUIRED")
-        return self.service.checkin(booking_id)
-
+        self.service.create_booking(start_dt, services, booking_details, current_user.customer ,request.form)

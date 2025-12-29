@@ -19,4 +19,4 @@ class Service:
         for d in data:
             ok = self.repo.check_staff_calendar(d)
             if not ok:
-                raise NewError(400, "ERROR CHOOSE STAFF, YOU NEED RELOAD PAGE")
+                raise ValueError("ERROR CHOOSE STAFF, YOU NEED RELOAD PAGE")

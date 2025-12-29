@@ -1,7 +1,9 @@
-from datetime import datetime, date
-from sqlalchemy import and_, func
+from datetime import date, datetime
+from decimal import Decimal
 
-from .models import BookingDetail, Booking
+from sqlalchemy import func, and_
+
+from .models import BookingDetail, Booking, BookingStatus, PaymentStatus
 
 
 class Repository:
@@ -10,21 +12,10 @@ class Repository:
         self.db = self.env.db
 
     @staticmethod
-    def get_staff_appointment(staff_ids, start:datetime, end:datetime):
-        filters = and_(
-            BookingDetail.staff_id.in_(staff_ids),
-            BookingDetail.start <= end,
-            BookingDetail.end >= start,
-        )
-        appointments = BookingDetail.query.filter(filters)
-        staff_ids = appointments.with_entities(BookingDetail.staff_id).distinct().all()
-        staff_ids = [i for (i,) in staff_ids]
-        return staff_ids
-
-    @staticmethod
-    def get_staff_overlimit(day: date, limit:int):
+    def get_staff_overlimit(day: date, limit: int):
         count_bookings = func.count(BookingDetail.id)
-        staff_ids = BookingDetail.query.filter(func.date(BookingDetail.create_at) == day).group_by(BookingDetail.staff_id).having(count_bookings >= limit).with_entities(BookingDetail.staff_id).all()
+        staff_ids = BookingDetail.query.filter(func.date(BookingDetail.create_at) == day).group_by(
+            BookingDetail.staff_id).having(count_bookings >= limit).with_entities(BookingDetail.staff_id).all()
         staff_ids = [i for (i,) in staff_ids]
         return staff_ids
 
@@ -40,59 +31,55 @@ class Repository:
             return False
         return True
 
-    def create_booking(self, booking:Booking):
-        self.db.session.add(booking)
-        self.db.session.flush()
-        return booking.id, booking.booking_code
+    @staticmethod
+    def get_staff_appointment(staff_ids, start: datetime, end: datetime):
+        filters = and_(
+            BookingDetail.staff_id.in_(staff_ids),
+            BookingDetail.start <= end,
+            BookingDetail.end >= start,
+        )
+        appointments = BookingDetail.query.filter(filters)
+        staff_ids = appointments.with_entities(BookingDetail.staff_id).distinct().all()
+        staff_ids = [i for (i,) in staff_ids]
+        return staff_ids
 
-    def create_booking_details(self,booking_id:int, booking_details):
-        for booking_detail in booking_details:
-            parent = BookingDetail(
+    def create_booking(self, booking_code, booking_date, total_price, customer):
+        new_booking = Booking(
+            booking_code=booking_code,
+            booking_time=booking_date,
+            customer_id=customer.id,
+            status=BookingStatus.PENDING.value,
+            payment=PaymentStatus.NONE.value,
+            total_amount=Decimal(total_price),
+        )
+        self.db.session.add(new_booking)
+        self.db.session.flush()
+        return new_booking.id
+
+    def create_booking_details(self, booking_id, booking_details):
+        for detail in booking_details:
+            parent_data = detail['parent']
+
+            booking_detail = BookingDetail(
                 booking_id=booking_id,
-                service_id=booking_detail.get('service_id'),
-                staff_id=booking_detail.get('staff_id'),
-                start=booking_detail.get('start'),
-                end=booking_detail.get('end'),
-                price=booking_detail.get('price'),
+                service_id=parent_data['service_id'],
+                staff_id=parent_data['staff_id'],
+                start=parent_data['start'],
+                end=parent_data['end'],
+                price=parent_data.get('price', 0)
             )
-            self.db.session.add(parent)
+            self.db.session.add(booking_detail)
             self.db.session.flush()
 
-            sub = booking_detail.get('sub_detail', [])
-            if sub:
-                for sub_detail in sub:
-                    child = BookingDetail(
+            if detail.get('children'):
+                for child in detail['children']:
+                    new_child = BookingDetail(
                         booking_id=booking_id,
-                        service_id=sub_detail.get('service_id'),
-                        staff_id=sub_detail.get('staff_id'),
-                        start=sub_detail.get('start'),
-                        end=sub_detail.get('end'),
-                        price=sub_detail.get('price'),
-                        parent_id=parent.id,
+                        service_id=child['service_id'],
+                        staff_id=child['staff_id'] if child['staff_id'] else parent_data['staff_id'],
+                        start=child['start'],
+                        end=child['end'],
+                        price=0,
+                        parent_id=booking_detail.id
                     )
-
-                    self.db.session.add(child)
-
-    @staticmethod
-    def get_booking_by_id(id:int):
-        return Booking.query.get(id)
-
-    @staticmethod
-    def update_payment_booking(booking_id:int, payment):
-        booking = Booking.query.get(booking_id)
-        booking.payment = payment
-
-    def get_bookings_today(self, day):
-        bookings = self.db.session.query(Booking).filter(
-            func.date(Booking.booking_time) == day
-        ).all()
-        return bookings
-
-    def get_bookings_details(self, staff, day):
-        details = self.db.session.query(BookingDetail).filter(BookingDetail.staff_id == staff).filter( func.date(BookingDetail.start) == day).all()
-        return details
-
-    @staticmethod
-    def get_booking_by_code(booking_code):
-        booking = Booking.query.filter(Booking.booking_code == booking_code).first()
-        return booking
+                    self.db.session.add(new_child)
