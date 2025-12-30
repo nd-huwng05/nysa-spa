@@ -11,100 +11,54 @@
                 <div class="featured-service-card h-100">
                     <div class="badge-overlay">Signature</div>
                     <div class="img-wrapper-large">
-                        <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=1000&auto=format&fit=crop"
+                        <img src="{{services[0].img_url}}"
                              alt="Royal Massage" class="img-fluid main-img">
-                        <div class="price-tag-large">2.200.000₫ / 90'</div>
+                        <div class="price-tag-large">{{services[0].price}} / {{services[0].duration_minutes}}'</div>
                     </div>
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
-                        <h3 class="service-name">Royal Massage Therapy</h3>
+                        <h3 class="service-name">{{services[0].name}}</h3>
                         <div class="meta-info mb-3">
-                            <span><i class="bi bi-clock"></i> 90 Mins</span>
-                            <span class="mx-2">•</span>
-                            <span><i class="bi bi-geo-alt"></i> VIP Room</span>
+                            <span><i class="bi bi-clock"></i> {{services[0].duration_minutes}} mins </span>
                         </div>
-                        <p class="desc">A perfect combination of traditional acupressure techniques and rare herbal
-                            essential oils, helping to restore energy from deep within.</p>
+                        <p class="desc">{{services[0].short_description}}</p>
 
                         <div class="features-list d-flex gap-3 mb-4">
-                            <div class="feature"><i class="bi bi-music-note-beamed"></i> Zen Music</div>
-                            <div class="feature"><i class="bi bi-cup-hot"></i> Herbal Tea</div>
-                            <div class="feature"><i class="bi bi-person-check"></i> Senior Therapist</div>
+                            {%for f in services[0].feature%}
+                            <div class="feature"><i class="{{f.icon}}"></i>{{f.name}}</div>
+                            {%endfor%}
                         </div>
 
-                        <a href="#" class="btn btn-gold w-100 mt-auto">Book Now</a>
+                        <a href="/booking/appointment?service={{services[0].id}}" class="btn btn-gold w-100 mt-auto">Book Now</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-7">
+
                 <div class="row h-100 gy-4" data-aos="zoom-in" data-aos-delay="100">
+                    {% for s in services [-4:] %}
                     <div class="col-md-6">
                         <div class="service-card-small d-flex align-items-center h-100">
                             <div class="img-wrapper-small position-relative">
-                                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop"
-                                     alt="Facial">
-                                <span class="price-overlay">1.200.000₫</span>
+
+                                <img src="{{s.img_url}}"
+                                     alt="{{s.name}}">
+                                <span class="price-overlay">{{s.price}}</span>
+
                             </div>
                             <div class="content p-3 flex-grow-1">
-                                <h5 class="mb-2 service-title-small">Facial Care</h5>
-                                <p class="text-muted small mb-3"><i class="bi bi-stars"></i> Rejuvenation & Moisture
-                                </p>
+
+                                <h5 class="mb-2 service-title-small">{{s.name}}</h5>
+                                <p class="text-muted small mb-3"><i class="bi bi-stars"></i>{{s.short_description}}</p>
                                 <a href="#" class="small text-gold text-decoration-none d-inline-block">View Details
                                     <i class="bi bi-arrow-right"></i></a>
+
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6">
-                        <div class="service-card-small d-flex align-items-center h-100">
-                            <div class="img-wrapper-small position-relative">
-                                <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=400&auto=format&fit=crop"
-                                     alt="Swedish Massage">
-                                <span class="price-overlay">1.500.000₫</span>
-                            </div>
-                            <div class="content p-3 flex-grow-1">
-                                <h5 class="mb-2 service-title-small">Swedish Massage</h5>
-                                <p class="text-muted small mb-3"><i class="bi bi-activity"></i> Muscle Relaxation
-                                </p>
-                                <a href="#" class="small text-gold text-decoration-none d-inline-block">View Details
-                                    <i class="bi bi-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="service-card-small d-flex align-items-center h-100">
-                            <div class="img-wrapper-small position-relative">
-                                <img src="https://images.unsplash.com/photo-1591343395082-e120087004b4?q=80&w=400&auto=format&fit=crop"
-                                     alt="Hot Stone">
-                                <span class="price-overlay">1.800.000₫</span>
-                            </div>
-                            <div class="content p-3 flex-grow-1">
-                                <h5 class="mb-2 service-title-small">Hot Stone Massage</h5>
-                                <p class="text-muted small mb-3"><i class="bi bi-fire"></i> Blood Circulation</p>
-                                <a href="#" class="small text-gold text-decoration-none d-inline-block">View Details
-                                    <i class="bi bi-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="service-card-small d-flex align-items-center h-100">
-                            <div class="img-wrapper-small position-relative">
-                                <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=400&auto=format&fit=crop"
-                                     alt="Head Spa">
-                                <span class="price-overlay">900.000₫</span>
-                            </div>
-                            <div class="content p-3 flex-grow-1">
-                                <h5 class="mb-2 service-title-small">Herbal Head Spa</h5>
-                                <p class="text-muted small mb-3"><i class="bi bi-droplet"></i> Natural Herbs</p>
-                                <a href="#" class="small text-gold text-decoration-none d-inline-block">View Details
-                                    <i class="bi bi-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
+                   {% endfor %}
                 </div>
+
             </div>
         </div>
 
@@ -196,7 +150,7 @@
         </div>
 
         <div class="text-center mt-5" data-aos="fade-up">
-            <a href="#" class="btn-outline-gold-large">
+            <a href="/service/service-search" class="btn-outline-gold-large">
                 Browse All Services <i class="bi bi-arrow-right ms-2"></i>
             </a>
         </div>
