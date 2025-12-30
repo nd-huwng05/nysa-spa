@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const holdCountdownEl = document.getElementById('hold-countdown');
-    const qrCountdownEl = document.getElementById('expiry-time-display');
     const confirmBtn = document.getElementById('confirm-payment-btn');
     const backBtn = document.getElementById('back-to-step1');
     const paymentSelection = document.getElementById('payment-selection-section');
@@ -14,72 +13,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const amountFull = document.getElementById('full-amount-display').textContent.trim();
     const amountDeposit = document.getElementById('deposit-amount-display').textContent.trim();
 
-    const qrMethodContainer = document.getElementById('qr-method-container') || document.getElementById('qr-placeholder-section');
-    const cashMethodContainer = document.getElementById('cash-method-container') || document.getElementById('step-confirm');
+    const qrMethodContainer = document.getElementById('qr-method-container');
+    const cashMethodContainer = document.getElementById('cash-method-container');
 
     let qrInterval;
     let holdInterval;
-    let paymentCheckInterval;
-
-    async function createInvoice(method) {
-        const amountRaw = summaryAmount.textContent.replace(/[^0-9]/g, '');
-        const paymentType = document.querySelector('input[name="payment_type"]:checked').value;
-        const bookingId = document.getElementById('booking-id') ? document.getElementById('booking-id').value : null;
-        const invoice_code = document.getElementById('invoice-code') ? document.getElementById('invoice-code').dataset.id : null;
-
-        const data = {
-            invoice_code: invoice_code,
-            booking_id: bookingId,
-            amount: amountRaw,
-            payment_method: method,
-            type: 'PAYMENT',
-            payment_type: `${paymentType}`
-        };
-
-        try {
-            Swal.showLoading();
-            const response = await fetch('/invoice/update', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Create Invoice Successful!',
-                    text: 'Code: ' + result.data.invoice_code,
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-                return result;
-            } else {
-                Swal.fire("Error", result.message || "Failed to create invoice", "error");
-                return null;
-            }
-        } catch (error) {
-            Swal.fire('Error', 'Could not create invoice. Please try again.', 'error');
-            return null;
-        }
-    }
-
-    function startPaymentPolling(invoiceCode) {
-        if (paymentCheckInterval) clearInterval(paymentCheckInterval);
-
-        paymentCheckInterval = setInterval(async () => {
-            try {
-                const response = await fetch(`/invoice/check-status/${invoiceCode}`);
-                const result = await response.json();
-                if (result.data.status === 'PAID') {
-                    clearInterval(paymentCheckInterval);
-                    showSuccessModal();
-                }
-            } catch (error) {
-
-            }
-        }, 3000);
-    }
 
     function formatTime(ms) {
         if (ms <= 0) return "00:00";
@@ -91,37 +29,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function startTimer(element, expiryTime, type) {
         if (!element || !expiryTime) return;
+
         if (type === 'QR' && qrInterval) clearInterval(qrInterval);
         if (type === 'HOLD' && holdInterval) clearInterval(holdInterval);
 
-        const expiryDate = new Date(expiryTime.replace(/-/g, "/")).getTime();
+        const dateString = expiryTime.replace(/-/g, "/");
+        const expiryDate = new Date(dateString).getTime();
 
-        const interval = setInterval(() => {
+        const updateTimer = () => {
             const now = new Date().getTime();
             const diff = expiryDate - now;
 
-            element.textContent = formatTime(diff);
-
-            if (diff <= 0) {
-                clearInterval(interval);
+            if (isNaN(diff) || diff <= 0) {
+                element.textContent = "00:00";
                 if (type === 'QR') {
-                    element.textContent = "EXPIRED";
                     if (qrDisplay) qrDisplay.style.filter = "grayscale(1) opacity(0.3)";
                     if (refreshBtn) refreshBtn.style.display = "block";
-                    if (paymentCheckInterval) {
-                        clearInterval(paymentCheckInterval);
-                    }
+                    clearInterval(qrInterval);
+                    window.dispatchEvent(new CustomEvent('qr-expired'));
                 } else {
                     element.style.opacity = "0.5";
                     confirmBtn.disabled = true;
                     confirmBtn.textContent = "EXPIRED";
+                    clearInterval(holdInterval);
                 }
+                return;
             }
-        }, 1000);
+
+            element.textContent = formatTime(diff);
+        };
+
+        const interval = setInterval(updateTimer, 1000);
+        updateTimer();
 
         if (type === 'QR') qrInterval = interval;
         else holdInterval = interval;
     }
+
+    document.body.addEventListener('htmx:afterSwap', function (evt) {
+        const qrCountdown = document.getElementById('expiry-time-display');
+        if (qrCountdown) {
+            const rawExpiry = qrCountdown.getAttribute('data-expiry');
+            if (rawExpiry) {
+                startTimer(qrCountdown, rawExpiry, 'QR');
+            }
+        }
+    });
 
     function init() {
         if (step2) {
@@ -135,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (backBtn) {
         backBtn.addEventListener('click', function () {
             if (qrInterval) clearInterval(qrInterval);
-            if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+            window.dispatchEvent(new CustomEvent('stop-payment-polling'));
             step2.style.opacity = "0";
             setTimeout(() => {
                 step2.style.display = 'none';
@@ -160,64 +113,39 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    confirmBtn.addEventListener('click', async function () {
+    confirmBtn.addEventListener('click', function (e) {
         const selectedAmount = summaryAmount.textContent;
         const methodChecked = document.querySelector('input[name="payment_method"]:checked').value;
 
-        confirmBtn.disabled = true;
-        confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+        paymentSelection.style.transition = "opacity 0.3s, transform 0.3s";
+        paymentSelection.style.opacity = "0";
+        paymentSelection.style.transform = "translateY(-10px)";
 
-        const result = await createInvoice(methodChecked);
+        setTimeout(() => {
+            paymentSelection.style.display = 'none';
+            step2.style.display = 'block';
 
-        if (result && result.data) {
-            paymentSelection.style.transition = "opacity 0.3s, transform 0.3s";
-            paymentSelection.style.opacity = "0";
-            paymentSelection.style.transform = "translateY(-10px)";
+            if (methodChecked === 'CASH') {
+                if (qrMethodContainer) qrMethodContainer.style.display = 'none';
+                if (cashMethodContainer) cashMethodContainer.style.display = 'block';
+                if (cashAmountCollect) cashAmountCollect.textContent = selectedAmount;
+            } else {
+                if (cashMethodContainer) cashMethodContainer.style.display = 'none';
+                if (qrMethodContainer) qrMethodContainer.style.display = 'block';
+
+                const qrCountdown = document.getElementById('expiry-time-display');
+                if (qrCountdown) {
+                    const rawExpiry = qrCountdown.getAttribute('data-expiry');
+                    if (rawExpiry) startTimer(qrCountdown, rawExpiry, 'QR');
+                }
+            }
 
             setTimeout(() => {
-                paymentSelection.style.display = 'none';
-                step2.style.display = 'block';
-
-                if (methodChecked === 'CASH') {
-                    if (qrMethodContainer) qrMethodContainer.style.display = 'none';
-                    if (cashMethodContainer) cashMethodContainer.style.display = 'block';
-                    if (cashAmountCollect) cashAmountCollect.textContent = selectedAmount;
-                } else {
-                    if (cashMethodContainer) cashMethodContainer.style.display = 'none';
-                    if (qrMethodContainer) qrMethodContainer.style.display = 'block';
-
-                    if (qrDisplay && result.data.qr_link) {
-                        qrDisplay.innerHTML = `<img src="${result.data.qr_link}" class="img-fluid" style="max-width:250px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="Payment QR">`;
-                    }
-
-                    const expiryDisplay = document.getElementById('expiry-time-display');
-                    const rawExpiry = result.data.expires_at;
-
-                    if (expiryDisplay && rawExpiry) {
-                        startTimer(expiryDisplay, rawExpiry, 'QR');
-                    }
-
-                    startPaymentPolling(result.data.invoice_code);
-                }
-
-                setTimeout(() => {
-                    step2.style.transition = "opacity 0.4s ease";
-                    step2.style.opacity = "1";
-                    confirmBtn.disabled = false;
-                    confirmBtn.textContent = `PAY NOW (${selectedAmount})`;
-                }, 50);
-            }, 300);
-        } else {
-            confirmBtn.disabled = false;
-            confirmBtn.textContent = `PAY NOW (${selectedAmount})`;
-        }
+                step2.style.transition = "opacity 0.4s ease";
+                step2.style.opacity = "1";
+            }, 50);
+        }, 300);
     });
-
-    if (refreshBtn) {
-        refreshBtn.addEventListener('click', function() {
-            window.location.reload();
-        });
-    }
 
     if (completeCashBtn) {
         completeCashBtn.addEventListener('click', function () {
@@ -229,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 confirmButtonColor: '#28a745',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Yes, Received!'
-            }).then(async (resultSwal) => {
+            }).then((resultSwal) => {
                 if (resultSwal.isConfirmed) {
                     completeCashBtn.disabled = true;
                     completeCashBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
@@ -261,5 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    window.showSuccessModal = showSuccessModal;
     init();
 });

@@ -127,4 +127,4 @@ class Handler:
 
         booking_details = self.parse_booking_data_final(request.form, start_dt)
 
-        self.service.create_booking(start_dt, services, booking_details, current_user.customer ,request.form)
+        return self.service.create_booking(start_dt, services, booking_details, current_user.customer ,request.form)

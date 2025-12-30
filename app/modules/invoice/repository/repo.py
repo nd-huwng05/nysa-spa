@@ -22,7 +22,7 @@ class Repository:
         return Invoice.query.filter(Invoice.invoice_code == code).first()
 
     @staticmethod
-    def sepay_webhook(transaction_content, amount_received):
+    def update_status(transaction_content, amount_received):
         invoice = Invoice.query.filter(Invoice.status == 'PENDING',
                                       amount_received >= Invoice.amount,
                                       func.lower(transaction_content).contains(func.lower(Invoice.invoice_code))
@@ -46,4 +46,17 @@ class Repository:
                               invoice_code=invoice_code)
         self.db.session.add(new_invoice)
         self.db.session.commit()
+        return new_invoice
+
+    def create_invoice(self, invoices):
+        new_invoice = Invoice(booking_id=invoices['booking_id'],
+                              invoice_code=invoices['invoice_code'],
+                              amount=invoices['amount'],
+                              payment_method=invoices['payment_method'],
+                              payment_type=invoices['payment_type'])
+        if invoices['expires_at']:
+            new_invoice.expires_at = invoices['expires_at']
+
+        self.db.session.add(new_invoice)
+        self.db.session.flush()
         return new_invoice

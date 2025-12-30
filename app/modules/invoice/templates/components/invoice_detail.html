@@ -6,10 +6,6 @@
         <div class="info-group">
             <div class="info-group-title">ID & Status</div>
             <div class="info-row">
-                <span class="info-label" style="color: var(--combo-text-default)">Invoice ID:</span>
-                <span class="info-value font-monospace" id="invoice-code" data-id="{{invoice.invoice_code}}">{{invoice.invoice_code}}</span>
-            </div>
-            <div class="info-row">
                 <span class="info-label" style="color: var(--combo-text-default)">Booking Code:</span>
                 <span class="info-value text-accent font-monospace">{{booking.booking_code}}</span>
             </div>
@@ -31,7 +27,7 @@
             </div>
             <div class="info-row">
                 <span class="info-label" style="color: var(--combo-text-default)">Email:</span>
-                <span class="info-value">{{booking.customer.user.email}}</span>
+                <span class="info-value">{{booking.customer.email}}</span>
             </div>
             <div class="info-row">
                 <span class="info-label" style="color: var(--combo-text-default)">Phone:</span>

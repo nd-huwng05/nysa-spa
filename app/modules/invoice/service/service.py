@@ -35,9 +35,9 @@ class Service:
         }
 
 
-    def search_invoice(self, booking_id):
+    def search_invoice(self, code, booking_id):
         try:
-            invoice = self.repo.get_invoices_old(booking_id)
+            invoice = self.repo.get_invoices_old(code)
             if invoice:
                 return invoice, None
 
@@ -55,27 +55,18 @@ class Service:
 
 
 
-    def update_invoice(self, invoices):
-        try:
-            invoice = self.repo.get_invoice_by_code(invoices.get("invoice_code"))
-            if not invoice:
-                raise NewError(400,"INVOICE NOT FOUND")
-
-            invoice.payment_method = invoices.get("payment_method")
-            invoice.payment_type = invoices.get("payment_type")
-            invoice.type = invoices.get("type")
-            invoice.amount = invoices.get("amount")
-            invoice.expires_at = datetime.now() + timedelta(minutes=self.config.private_config.get("INVOICE_EXPIRATION_TIME"))
-            self.repo.db.session.commit()
-            return invoice
-        except Exception as e:
-            self.repo.db.session.rollback()
-            print(e)
-            raise NewError(500,"Error Server")
+    def create_invoice(self, invoices):
+        invoice = self.repo.create_invoice(invoices)
+        self.repo.db.session.commit()
+        return invoice
 
     def sepay_webhook(self, transaction_content, amount_received):
-        self.repo.sepay_webhook(transaction_content, amount_received)
+        self.repo.update_status(transaction_content, amount_received)
         self.repo.db.session.commit()
 
     def check_invoice_status(self, invoice_code):
         return self.repo.check_invoice_status(invoice_code)
+
+    def update_status(self, invoice_code):
+        invoice = self.repo.get_invoice_by_code(invoice_code)
+        self.repo.update_status(invoice.invoice_code, invoice.amount)

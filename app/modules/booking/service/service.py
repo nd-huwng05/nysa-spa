@@ -86,7 +86,8 @@ class Service:
         try:
             booking_code = f"BK{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
             total_price = sum(s.price for s in services)
-            booking_id = self.repo.create_booking(booking_code, booking_date, total_price, customer)
+            expires_at = booking_date + timedelta(minutes=self.config.private_config.get("RESERVER"))
+            booking_id = self.repo.create_booking(booking_code, booking_date, total_price, customer, expires_at)
 
             extracted_details = []
             for bd in booking_details:
@@ -116,11 +117,16 @@ class Service:
                 voucher = {
                     "customer_id": customer.id,
                     "voucher_id": voucher_use.id,
-                    "discount_amount": Decimal(total_price*voucher_use.discount_value) if voucher_use.discount_type.value == "PERCENT" else voucher_use.discount_value,
+                    "discount_amount": Decimal(total_price*voucher_use.discount_value/100) if voucher_use.discount_type.value == "PERCENT" else voucher_use.discount_value,
                     "booking_id": booking_id,
                 }
                 self.env.modules.voucher_module.service.create_voucher_usage(voucher)
+
             self.repo.db.session.commit()
+            return booking_code
         except Exception as e:
             self.repo.db.session.rollback()
             raise e
+
+    def get_booking_by_code(self, code):
+        return self.repo.get_booking_by_code(code)

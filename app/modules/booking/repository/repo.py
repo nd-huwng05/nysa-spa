@@ -43,7 +43,7 @@ class Repository:
         staff_ids = [i for (i,) in staff_ids]
         return staff_ids
 
-    def create_booking(self, booking_code, booking_date, total_price, customer):
+    def create_booking(self, booking_code, booking_date, total_price, customer, expires_at):
         new_booking = Booking(
             booking_code=booking_code,
             booking_time=booking_date,
@@ -51,6 +51,7 @@ class Repository:
             status=BookingStatus.PENDING.value,
             payment=PaymentStatus.NONE.value,
             total_amount=Decimal(total_price),
+            expires_at = expires_at
         )
         self.db.session.add(new_booking)
         self.db.session.flush()
@@ -83,3 +84,6 @@ class Repository:
                         parent_id=booking_detail.id
                     )
                     self.db.session.add(new_child)
+
+    def get_booking_by_code(self, code):
+        return Booking.query.filter(Booking.booking_code == code).first()

@@ -34,10 +34,10 @@ class Controller:
 
     def booking_create(self):
         try:
-            self.handler.handler_create_booking(request)
+            booking_code = self.handler.handler_create_booking(request)
             flash("BOOKING CREATED", 'success')
             response = make_response("", 200)
-            response.headers["HX-Redirect"] = url_for('invoice.invoice_view')
+            response.headers["HX-Redirect"] = url_for('invoice.invoice_view', code=booking_code)
             return response
         except ValueError as e:
             flash(str(e), 'error')
