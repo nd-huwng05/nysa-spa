@@ -36,20 +36,30 @@ class Repository:
         return Voucher.query.filter_by(code=voucher_code).first().limit_per_user
 
     @staticmethod
-    def check_voucher_by_id(voucher_code, customer_id, total_price, limit_per_user ):
-        base_conditions = and_(
+    def check_voucher_by_id(voucher_code, customer_id, total_price, limit_per_user):
+        voucher = Voucher.query.filter(
+            Voucher.code == voucher_code,
             Voucher.active == True,
             Voucher.min_order_value <= total_price,
             Voucher.start_at <= datetime.now(),
             Voucher.end_at >= datetime.now(),
-            Voucher.usage_count < Voucher.usage_limit,
-            Voucher.scope == VoucherScope.GLOBAL,
-            Voucher.code == voucher_code,
-            VoucherUsage.customer_id == customer_id
-        )
-        usage = VoucherUsage.query.filter(base_conditions).count()
-        if usage >= limit_per_user:
+            Voucher.scope == VoucherScope.GLOBAL
+        ).first()
+
+        if not voucher:
             return False
+
+        if voucher.usage_count >= voucher.usage_limit:
+            return False
+
+        usage_count = VoucherUsage.query.filter(
+            VoucherUsage.voucher_id == voucher.id,
+            VoucherUsage.customer_id == customer_id
+        ).count()
+
+        if usage_count >= limit_per_user:
+            return False
+
         return True
 
     def get_voucher_by_code(self, voucher_code):

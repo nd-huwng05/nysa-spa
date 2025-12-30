@@ -24,7 +24,7 @@ def validate_datetime(date_str: str, time_str: str = None) -> datetime:
     except ValueError:
         raise ValueError(f"INVALID DATETIME FORMAT: '{full_str}'. Use YYYY-MM-DD HH:MM")
 
-    if day <= datetime.now():
+    if day < datetime.now():
         raise ValueError("DATETIME CANNOT BE IN THE PAST")
 
     return day

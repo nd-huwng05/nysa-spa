@@ -45,7 +45,7 @@ class Controller:
 
     def update_status(self, invoice_code):
         try:
-            self.handler.update_status(invoice_code)
+            return self.handler.update_status(invoice_code)
         except ValueError as e:
             flash(str(e), 'error')
             return NewError(message=str(e), status_code=400)

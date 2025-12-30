@@ -12,9 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const summaryAmount = document.getElementById('summary-payment-amount');
     const amountFull = document.getElementById('full-amount-display').textContent.trim();
     const amountDeposit = document.getElementById('deposit-amount-display').textContent.trim();
-
-    const qrMethodContainer = document.getElementById('qr-method-container');
-    const cashMethodContainer = document.getElementById('cash-method-container');
+    const header = document.getElementById('header');
 
     let qrInterval;
     let holdInterval;
@@ -89,6 +87,9 @@ document.addEventListener('DOMContentLoaded', function () {
         backBtn.addEventListener('click', function () {
             if (qrInterval) clearInterval(qrInterval);
             window.dispatchEvent(new CustomEvent('stop-payment-polling'));
+
+            if (header) header.style.setProperty('display', 'flex', 'important');
+
             step2.style.opacity = "0";
             setTimeout(() => {
                 step2.style.display = 'none';
@@ -124,19 +125,29 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             paymentSelection.style.display = 'none';
             step2.style.display = 'block';
+            step2.style.opacity = '1';
+
+            const currentQrContainer = document.getElementById('qr-method-container');
+            const currentCashContainer = document.getElementById('cash-method-container');
 
             if (methodChecked === 'CASH') {
-                if (qrMethodContainer) qrMethodContainer.style.display = 'none';
-                if (cashMethodContainer) cashMethodContainer.style.display = 'block';
-                if (cashAmountCollect) cashAmountCollect.textContent = selectedAmount;
+                if (header) header.style.setProperty('display', 'none', 'important');
+                if (currentQrContainer) currentQrContainer.style.setProperty('display', 'none', 'important');
+                if (currentCashContainer) {
+                    currentCashContainer.style.setProperty('display', 'block', 'important');
+                    if (cashAmountCollect) cashAmountCollect.textContent = selectedAmount;
+                }
             } else {
-                if (cashMethodContainer) cashMethodContainer.style.display = 'none';
-                if (qrMethodContainer) qrMethodContainer.style.display = 'block';
+                if (header) header.style.setProperty('display', 'flex', 'important');
+                if (currentCashContainer) currentCashContainer.style.setProperty('display', 'none', 'important');
+                if (currentQrContainer) {
+                    currentQrContainer.style.setProperty('display', 'block', 'important');
 
-                const qrCountdown = document.getElementById('expiry-time-display');
-                if (qrCountdown) {
-                    const rawExpiry = qrCountdown.getAttribute('data-expiry');
-                    if (rawExpiry) startTimer(qrCountdown, rawExpiry, 'QR');
+                    const qrCountdown = document.getElementById('expiry-time-display');
+                    if (qrCountdown) {
+                        const rawExpiry = qrCountdown.getAttribute('data-expiry');
+                        if (rawExpiry) startTimer(qrCountdown, rawExpiry, 'QR');
+                    }
                 }
             }
 
@@ -191,4 +202,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.showSuccessModal = showSuccessModal;
     init();
-});
+})

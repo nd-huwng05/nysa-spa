@@ -70,3 +70,4 @@ class Service:
     def update_status(self, invoice_code):
         invoice = self.repo.get_invoice_by_code(invoice_code)
         self.repo.update_status(invoice.invoice_code, invoice.amount)
+        self.repo.db.session.commit()

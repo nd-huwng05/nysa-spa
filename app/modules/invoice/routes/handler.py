@@ -21,7 +21,8 @@ class Handler:
             raise ValueError("'code' is required")
 
         booking = self.env.modules.booking_module.service.get_booking_by_code(code)
-
+        if booking is None:
+            raise ValueError("NO FOUND BOOKING")
         data = self.service.get_invoice_data(booking)
 
         return {
@@ -94,6 +95,7 @@ class Handler:
         data = {
             'invoice': invoice,
             'invoice_code': invoice.invoice_code,
+            'amount': Decimal(invoice.amount),
         }
         return data
 
@@ -119,10 +121,11 @@ class Handler:
 
         data = {
             "invoice_code": invoice.invoice_code,
-            "status": invoice.status.value
+            "status": invoice.status.value,
         }
 
         return NewPackage(data).response()
 
     def update_status(self, invoice_code):
-        return self.service.update_status(invoice_code)
+        self.service.update_status(invoice_code)
+        return NewPackage(message="PAYMENT SUCCESSFULLY").response()

@@ -17,7 +17,7 @@ class Service:
         staff_ids_overlimit = self.repo.get_staff_overlimit(start.date(), limit_appointment)
         staff_ids_appointments = self.repo.get_staff_appointment(staff_ids, start, end)
         staff_unsuitable = list(set(staff_ids_overlimit + staff_ids_appointments))
-        staff = [s.to_json() if s.id not in staff_unsuitable else None for s in staffs]
+        staff = [s.to_json() for s in staffs if s.id not in staff_unsuitable]
         return staff
 
     def get_available_staff(self, start_time, end_time, limit_appt):
@@ -70,7 +70,6 @@ class Service:
             s.display_time = f"{s.start_time.strftime('%H:%M')} - {s.end_time.strftime('%H:%M')}"
             if take_staff:
                 s.staffs = self.get_available_staff(s.start_time, s.end_time, limit_appt)
-
             processed_services.append(s)
             cursor = s.end_time + timedelta(minutes=time_rest)
 

@@ -13,7 +13,7 @@ class Controller:
         callback_url = request.args.get('callback_url', '/')
 
         if current_user.is_authenticated:
-            return redirect(url_for('home.index'))
+            return redirect(callback_url)
         return render_template('page/login.html', callback_url=callback_url)
 
     @staticmethod
