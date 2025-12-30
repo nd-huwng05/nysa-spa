@@ -10,22 +10,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link href="../static/css/base.css" rel="stylesheet">
-    <link href="../static/css/main.css" rel="stylesheet">
     <link href="../static/css/inner.css" rel="stylesheet">
+    <link href="../static/css/main.css" rel="stylesheet">
     {%block css%}
     {%endblock%}
 </head>
-<body>
+<body class="bg-body text-slate-600 font-sans">
 
-<div id="mobile-overlay" class="overlay"></div>
-{%block slidebar%}
-{%endblock%}
+<div class="flex h-screen overflow-hidden">
 
-<div class="main-content lg:ml-[280px] transition-all duration-300">
+    {%block slidebar%}
+    {%endblock%}
+
+<div class="flex-1 flex flex-col overflow-hidden relative">
     {%block header%}
     {%endblock%}
-    {%block content%}
-    {%endblock%}
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-body p-6">
+        {%block content%}
+        {%endblock%}
+    </main>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../static/js/main.js"></script>
@@ -33,7 +37,6 @@
 <script src="../static/js/inner.js"></script>
 {% block scripts%}
 {% endblock %}
-
 <script>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

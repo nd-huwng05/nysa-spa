@@ -32,6 +32,7 @@ class Server:
         self.setup_error_handler()
 
         self.setting_module = SettingModule(self.app, self.env)
+        self.setting_module.register_routes()
 
         self.init_modules()
         self.init_models()

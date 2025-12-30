@@ -1,0 +1,66 @@
+{%extends 'inner.html'%}
+
+{%block slidebar%}
+<aside id="sidebar"
+       class="sidebar flex flex-col w-[280px] h-full bg-white border-r border-gray-100 hidden lg:flex fixed lg:static z-50 transition-all duration-300">
+    <div class="sidebar-header h-20 flex items-center px-6 border-b border-gray-100 flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <img src="../../static/img/favicon.ico" alt="logo" class="w-10 h-10">
+            <h1 class="brand-title text-2xl font-bold tracking-tight text-dark">Nysa</h1>
+        </div>
+        <button class="ml-auto lg:hidden text-gray-400 hover:text-gray-600" onclick="toggleSidebar()">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-6">
+        <p class="px-6 mb-3 text-[11px] font-bold uppercase tracking-widest text-gray-400">Navigation</p>
+
+        <a href="{{ url_for('booking.list_view_inner') }}"
+           class="menu-item px-6 py-3 flex items-center gap-3 transition-all duration-200 font-medium
+               {% if request.endpoint == 'booking.list_view_inner' %} text-[#C18C5D] bg-[#F7F5F2] border-r-4 border-[#C18C5D] {% else %} text-gray-600 hover:bg-gray-50 border-r-4 border-transparent {% endif %}">
+            <i class="far fa-calendar-alt w-5 text-center"></i>
+            Booking
+        </a>
+
+        <a href="{{ url_for('admin.voucher') }}"
+           class="menu-item px-6 py-3 flex items-center gap-3 transition-all duration-200 font-medium
+               {% if request.endpoint == 'admin.voucher' %} text-[#C18C5D] bg-[#F7F5F2] border-r-4 border-[#C18C5D] {% else %} text-gray-600 hover:bg-gray-50 border-r-4 border-transparent {% endif %}">
+            <i class="fas fa-ticket-alt w-5 text-center"></i>
+            Massage
+        </a>
+    </div>
+</aside>
+{%endblock%}
+
+{%block header%}
+<header class="main-header h-20 px-8 flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center gap-4"></div>
+
+    <div class="flex items-center gap-6 relative">
+        <input type="checkbox" id="user-menu-toggle" class="peer hidden">
+
+        <label for="user-menu-toggle" class="flex items-center gap-3 cursor-pointer select-none">
+            <div class="text-right hidden md:block">
+                <p class="text-sm font-bold user-name">{{current_user.fullname}}</p>
+                <p class="text-[10px] uppercase font-bold text-gray-400">{{current_user.role.value}}</p>
+            </div>
+            <img src="{{current_user.avatar}}"
+                 class="w-10 h-10 rounded-full border border-gray-200 object-cover">
+        </label>
+
+        <div class="hidden peer-checked:block absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100">
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <i class="far fa-user w-5 text-center mr-2"></i> My Profile
+            </a>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-cog w-5 text-center mr-2"></i> Settings
+            </a>
+            <div class="border-t border-gray-100 my-1"></div>
+            <a href="/user/logout" class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-50 hover:text-red-600">
+                Logout
+            </a>
+        </div>
+    </div>
+</header>
+{%endblock%}

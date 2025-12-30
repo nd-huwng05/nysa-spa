@@ -129,3 +129,25 @@ class Service:
 
     def get_booking_by_code(self, code):
         return self.repo.get_booking_by_code(code)
+
+    def get_status_booking(self):
+        return self.repo.get_status_booking()
+
+    def get_bookings(self, date:datetime):
+        return self.repo.get_bookings(date)
+
+    def get_statistical(self):
+        week = self.repo.get_statistical_week()
+        month = self.repo.get_statistical_month()
+        year = self.repo.get_statistical_year()
+        return {
+            'week': week,
+            'month': month,
+            'year': year,
+        }
+
+    def get_time_gold(self):
+        return self.repo.get_time_gold()
+
+    def get_frequency(self):
+        return self.repo.get_frequency()

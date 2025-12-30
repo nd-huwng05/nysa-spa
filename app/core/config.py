@@ -23,6 +23,10 @@ class ModuleConfig:
     def get(self, key, default=None):
         return getattr(self, key.upper(), default)
 
+    def update(self, subject):
+        new_settings = subject.get_settings_data()
+        self.reload(new_settings)
+
     def __getattr__(self, name):
         upper_name = name.upper()
         if upper_name in self.private_config:

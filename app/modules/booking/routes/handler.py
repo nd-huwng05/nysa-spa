@@ -128,3 +128,16 @@ class Handler:
         booking_details = self.parse_booking_data_final(request.form, start_dt)
 
         return self.service.create_booking(start_dt, services, booking_details, current_user.customer ,request.form)
+
+    def get_list_booking(self, request):
+        date = request.args.get('date')
+        if not date:
+            date = datetime.today().strftime('%Y-%m-%d')
+        else:
+            date = datetime.strptime(date, '%Y-%m-%d')
+
+        bookings = self.service.get_bookings(date)
+
+        return {
+            'bookings': bookings
+        }

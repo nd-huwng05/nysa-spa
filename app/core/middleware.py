@@ -17,7 +17,7 @@ def staff_required(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
         accepted_roles = ['STAFF', 'ADMIN']
-        if not current_user.is_authenticated or current_user.role not in accepted_roles:
+        if not current_user.is_authenticated or current_user.role.value not in accepted_roles:
             return abort(403)
         return func(*args, **kwargs)
     return decorated_function

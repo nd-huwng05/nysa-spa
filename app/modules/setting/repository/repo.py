@@ -7,13 +7,7 @@ class Repository:
         self.env = env
         self.db = self.env.db
 
-    def get_all_settings(self):
-        return self.db.session.query(Setting).all()
+    def get_data_setting_all(self):
+        return Setting.query.all()
 
-    def get_setting(self, name_module):
-        return self.db.session.query(Setting).filter_by(type=name_module).all()
-
-    def save_setting(self, setting: Setting):
-        self.db.session.add(setting)
-        self.db.session.commit()
 

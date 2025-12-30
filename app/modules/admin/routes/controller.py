@@ -1,4 +1,6 @@
-from flask import request, render_template, redirect, url_for, flash, session
+from flask import request, render_template, redirect, url_for, flash, session, abort
+
+from app.core.logger import logger
 from .handler import Handler
 
 class Controller:
@@ -6,13 +8,26 @@ class Controller:
         self.handler = Handler(config, service, env)
 
     def index(self):
-        return render_template('page/admin.html')
+       return redirect(url_for('admin.dashboard'))
 
     def dashboard(self):
-        return render_template('components/dashboard.html')
+        try:
+            data = self.handler.get_data_for_dashboard()
+            return render_template('page/dashboard.html', **data)
+        except Exception as e:
+            logger.error("Error at admin index: {}".format(e))
+            flash("INTERNAL SERVER ERROR", category="error")
+            abort(500)
 
     def voucher(self):
-        return render_template('components/voucher.html')
+        return render_template('page/voucher.html')
 
     def settings(self):
-        return render_template('components/setting.html')
+        try:
+            data = self.handler.get_data_for_settings()
+            print(data)
+            return render_template('page/setting.html', **data)
+        except Exception as e:
+            logger.error("Error at admin settings: {}".format(e))
+            flash("INTERNAL SERVER ERROR", category="error")
+            abort(500)
