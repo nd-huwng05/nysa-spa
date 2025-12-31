@@ -73,3 +73,7 @@ class Repository:
     def get_list_services_by_ids(ids):
         service = Service.query.filter(Service.id.in_(ids)).all()
         return service
+
+    def get_combo_services(self, pag : Pagination):
+        combo = Service.query.filter(Service.type == "combo").all()
+        return combo

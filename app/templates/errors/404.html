@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Nysa</title>
-</head>
-<body>
-404 NOT FOUND
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold text-primary" style="font-size: 6rem;">404</h1>
+        
+        <h2 class="mb-3">Oops! Page Not Found</h2>
+        
+        <p class="lead text-muted mb-4">
+            The page you are looking for might have been removed, <br>
+            had its name changed, or is temporarily unavailable.
+        </p>
+
+        <a href="{{ url_for('home.index') }}" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
+            <i class="fas fa-home me-2"></i> Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

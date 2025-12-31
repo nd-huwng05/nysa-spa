@@ -27,6 +27,7 @@ class Service:
         except Exception as e:
             logger.error("Can't get list services from repository", e)
 
+
     def get_list_service_filter(self, filters, pag: Pagination):
         try:
             return self.repo.get_list_services_filter(filters, pag)
@@ -47,3 +48,10 @@ class Service:
         except Exception as e:
             logger.error("Can't get service json from repository", e)
             raise NewPackage(500, "Internal Server Error").response()
+
+    def get_combo_services(self, pag: Pagination):
+        try:
+            combo = self.repo.get_combo_services(pag)
+            return combo
+        except Exception as e:
+            logger.error("Can't get list combo services from repository", e)
