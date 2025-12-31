@@ -141,3 +141,6 @@ class Handler:
         return {
             'bookings': bookings
         }
+
+    def check_canceled_booking(self):
+        return self.service.check_canceled_booking()

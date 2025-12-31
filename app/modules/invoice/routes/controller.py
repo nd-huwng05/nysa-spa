@@ -53,3 +53,4 @@ class Controller:
             flash("INTERNAL SERVER ERROR", 'error')
             logger.error('Error in invoice view', data=e)
             return NewError(message="INTERNAL SERVER ERROR", status_code=500)
+

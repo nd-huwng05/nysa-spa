@@ -85,7 +85,7 @@ class Service:
         try:
             booking_code = f"BK{datetime.now().strftime('%Y%m%d')}{uuid.uuid4().hex[:4].upper()}"
             total_price = sum(s.price for s in services)
-            expires_at = booking_date + timedelta(minutes=self.config.private_config.get("RESERVER"))
+            expires_at = datetime.now() + timedelta(minutes=self.config.private_config.get("RESERVER"))
             booking_id = self.repo.create_booking(booking_code, booking_date, total_price, customer, expires_at)
 
             extracted_details = []
@@ -151,3 +151,7 @@ class Service:
 
     def get_frequency(self):
         return self.repo.get_frequency()
+
+    def check_canceled_booking(self):
+        self.repo.check_canceled_booking()
+        self.repo.db.session.commit()

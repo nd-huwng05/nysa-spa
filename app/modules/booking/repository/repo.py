@@ -1,6 +1,6 @@
 from datetime import date, datetime, timedelta
 from decimal import Decimal
-from sqlalchemy import func, and_, extract
+from sqlalchemy import func, and_, extract, or_
 from .models import BookingDetail, Booking, BookingStatus, PaymentStatus
 
 
@@ -95,7 +95,7 @@ class Repository:
     @staticmethod
     def get_status_booking():
         complete = Booking.query.filter(Booking.status == BookingStatus.COMPLETED.value).count()
-        canceled = Booking.query.filter(Booking.status == BookingStatus.CANCELED.value).count()
+        canceled = Booking.query.filter(or_(Booking.status == BookingStatus.CANCELED.value, Booking.status == BookingStatus.FAILURE.value)).count()
         booked = Booking.query.filter(Booking.status == BookingStatus.SUCCESS.value).count()
 
         return {
@@ -154,7 +154,7 @@ class Repository:
             func.sum(Booking.total_amount)
         ).filter(
             Booking.booking_time >= start_year,
-            Booking.status == 'completed'
+            Booking.status == 'COMPLETED'
         ).group_by('m').all()
 
         year_data_arr = [0] * 12
@@ -190,3 +190,8 @@ class Repository:
                                                                                               '%Y-%m-%d').weekday()
             frequency_data_arr[d_idx] = int(count)
         return frequency_data_arr
+
+    def check_canceled_booking(self):
+        bookings = Booking.query.filter(Booking.status == BookingStatus.PENDING.value, Booking.expires_at <= datetime.now()).all()
+        for booking in bookings:
+            booking.status = 'FAILURE'

@@ -54,6 +54,8 @@ class Handler:
         amount = 0
         if payment_type == 'FULL':
             amount = booking.total_amount  - voucher_value + booking.total_amount*Decimal(self.config.private_config.get('VAT'))/100
+        elif payment_type == 'DEPOSIT':
+            amount = (booking.total_amount  - voucher_value + booking.total_amount*Decimal(self.config.private_config.get('VAT'))/100)*self.config.private_config.get('DEPOSIT_PERCENT')/100
 
         payment_methods = request.form.get('payment_method', None)
         if payment_methods is None:

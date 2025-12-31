@@ -58,3 +58,14 @@ class Controller:
             logger.error(msg="Throw at list_view_inner", data=str(e))
             flash("INTERNAL SERVER ERROR", 'error')
             return "", 500
+
+    def check_canceled_booking(self):
+        try:
+            self.handler.check_canceled_booking()
+        except ValueError as e:
+            flash(str(e), 'error')
+            return redirect(url_for('home.index'))
+        # except Exception as e:
+        #     logger.error(msg="Throw at list_view_inner", data=str(e))
+        #     flash("INTERNAL SERVER ERROR", 'error')
+        #     return "", 500
