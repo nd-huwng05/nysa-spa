@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Nysa</title>
-</head>
-<body>
-500 Server Error
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold text-danger" style="font-size: 6rem;">500</h1>
+        
+        <h2 class="mb-3">Internal Server Error</h2>
+        
+        <p class="lead text-muted mb-4">
+            Something went wrong on our end. <br>
+            We are tracking this error and working to fix it as soon as possible.
+        </p>
+
+        <a href="{{ url_for('home.index') }}" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
+            <i class="fas fa-home me-2"></i> Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

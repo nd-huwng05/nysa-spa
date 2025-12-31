@@ -7,16 +7,18 @@ class Controller:
     def __init__(self, config, service, env):
         self.handler = Handler(config, service, env)
 
-    @staticmethod
-    def index():
+
+    def index(self):
         try:
             if current_user.is_authenticated and current_user.role.value == 'ADMIN':
                 return redirect(url_for('admin.index'))
             elif current_user.is_authenticated and current_user.role.value  == 'STAFF':
                     return redirect(url_for('staff.index'))
             else:
-                return render_template('page/index.html')
+                data = self.handler.list_services()
+                return render_template('page/index.html', **data)
         except Exception as e:
             logger.error(e)
             flash("500 Internal Server Error", category="error")
             abort(500)
+
